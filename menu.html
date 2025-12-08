@@ -1,149 +1,252 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Menu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #fafafa;
-      margin: 20px;
-    }
+<style>
 
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+  :root {
+    --gold: #D4AF37;
+    --dark: #0e0e0e;
+    --card: #1a1a1a;
+    --text-light: #f5f5f5;
+  }
 
-    .item-card {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--dark);
+    margin: 0;
+    padding: 0;
+    color: var(--text-light);
+  }
 
-    .item-card h3 {
-      margin: 0;
-      font-size: 18px;
-    }
+  /* Header */
+  .header {
+    background: #000;
+    color: var(--gold);
+    padding: 22px;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--gold);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
 
-    .price {
-      color: #555;
-      margin: 5px 0 15px 0;
-      font-size: 16px;
-    }
+  /* Category Title */
+  .section-title {
+    margin: 30px 16px 10px 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    border-left: 4px solid var(--gold);
+    padding-left: 10px;
+  }
 
-    button {
-      padding: 10px 15px;
-      border: none;
-      background-color: #333;
-      color: white;
-      font-size: 16px;
-      border-radius: 6px;
-    }
+  /* Menu Card */
+  .item-card {
+    background: var(--card);
+    padding: 15px;
+    border-radius: 14px;
+    margin: 16px;
+    box-shadow: 0 0 10px rgba(212,175,55,0.15);
+  }
 
-    button:hover {
-      opacity: 0.8;
-    }
+  .item-card h3 {
+    margin: 0 0 4px 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-light);
+  }
 
-    .option-btn {
-      display: block;
-      margin-top: 10px;
-    }
+  .price {
+    color: #cccccc;
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
 
-    .menu-footer {
-      text-align: center;
-      margin-top: 40px;
-    }
-  </style>
+  /* Icon badges */
+  .tag {
+    background: rgba(212,175,55,0.15);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 11px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    margin-left: 6px;
+  }
 
-  <script>
-    function addToCart(name, price) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      cart.push({ name: name, price: price });
-      localStorage.setItem("cart", JSON.stringify(cart));
-      alert(name + " added to cart!");
-    }
-  </script>
+  /* Add to Cart Button */
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    transition: 0.15s;
+  }
+
+  button:active {
+    transform: scale(0.97);
+    opacity: 0.8;
+  }
+
+  /* Modal Background */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.75);
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 100;
+  }
+
+  /* Modal Box */
+  .modal-box {
+    background: var(--card);
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px 20px 0 0;
+    animation: slideUp 0.25s ease-out;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--gold);
+  }
+
+  .close-btn {
+    float: right;
+    font-size: 22px;
+    margin-top: -5px;
+    color: var(--gold);
+  }
+
+</style>
+
+<script>
+function openModal(name, price, tags='') {
+  document.getElementById("modalName").innerHTML = name + " " + tags;
+  document.getElementById("modalPrice").innerHTML = "$" + price;
+  document.getElementById("confirmBtn").setAttribute("onclick",
+    "addToCart(`" + name + "`, " + price + ")"
+  );
+  document.getElementById("modalBg").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("modalBg").style.display = "none";
+}
+
+function addToCart(name, price) {
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cart.push({ name, price });
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert("Added to cart!");
+  closeModal();
+}
+</script>
+
 </head>
 
 <body>
-  <h1>SHARING PLATES</h1>
 
-  <div class="item-card">
-    <h3>Toasted Garlic Sourdough Bread</h3>
-    <div class="price">$8</div>
-    <button onclick="addToCart('Toasted Garlic Sourdough Bread', 8)">Add to Cart</button>
+<div class="header">SHARING PLATES</div>
+
+<div class="section-title">All Dishes</div>
+
+<!-- Example with tags (⭐ Signature, 🔥 Spicy, etc.) -->
+
+<div class="item-card" onclick="openModal('Toasted Garlic Sourdough Bread', 8)">
+  <h3>Toasted Garlic Sourdough Bread</h3>
+  <span class="tag">⭐ Signature</span>
+  <div class="price">$8</div>
+</div>
+
+<div class="item-card" onclick="openModal('Crispy Spicy Midwings', 14, '🔥')">
+  <h3>Crispy Spicy Midwings</h3>
+  <span class="tag">🔥 Spicy</span>
+  <div class="price">$14</div>
+</div>
+
+<div class="item-card" onclick="openModal('Foie Gras with Malibu Compressed Rock Melon', 23, '⭐')">
+  <h3>Foie Gras w/ Malibu Compressed Rock Melon</h3>
+  <span class="tag">⭐ Premium</span>
+  <div class="price">$23</div>
+</div>
+
+<div class="item-card" onclick="openModal('Smoked Provola Cheese Tempura with Aged Prosciutto', 21)">
+  <h3>Smoked Provola Cheese Tempura</h3>
+  <span class="tag">👍 Recommended</span>
+  <div class="price">$21</div>
+</div>
+
+<div class="item-card" onclick="openModal('Fried Corn Ribs with Assam Aioli', 15, '🔥')">
+  <h3>Fried Corn Ribs with Assam Aioli</h3>
+  <span class="tag">🔥 Spicy</span>
+  <div class="price">$15</div>
+</div>
+
+<div class="item-card" onclick="openModal('Sourdough Bruschetta with Smoked Salmon', 16)">
+  <h3>Sourdough Bruschetta w/ Smoked Salmon</h3>
+  <div class="price">$16</div>
+</div>
+
+<div class="item-card">
+  <h3>Baked Truffle Brie Cheese</h3>
+  <span class="tag">⭐ Signature</span>
+  <div class="price">Options Available</div>
+
+  <button onclick="event.stopPropagation(); openModal('Baked Truffle Brie Cheese (Regular)', 21)">Regular – $21</button>
+  <br><br>
+  <button onclick="event.stopPropagation(); openModal('Baked Truffle Brie Cheese with Aged Prosciutto', 28)">With Prosciutto – $28</button>
+</div>
+
+<div class="item-card" onclick="openModal('Szechuan Spice Crispy Squid', 16, '🔥')">
+  <h3>Szechuan Spice Crispy Squid</h3>
+  <span class="tag">🔥</span>
+  <div class="price">$16</div>
+</div>
+
+<div class="item-card" onclick="openModal('Spicy Live Mussels & White Clams Stew', 20, '🔥')">
+  <h3>Spicy Mussels & White Clams Stew</h3>
+  <span class="tag">🔥</span>
+  <div class="price">$20</div>
+</div>
+
+<div class="item-card" onclick="openModal('Burrata & Aged Prosciutto Salad', 25, '⭐')">
+  <h3>Burrata & Aged Prosciutto Salad</h3>
+  <span class="tag">⭐ Premium</span>
+  <div class="price">$25</div>
+</div>
+
+<!-- MODAL -->
+<div id="modalBg" class="modal-bg" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="close-btn" onclick="closeModal()">×</div>
+    <div class="modal-title" id="modalName"></div>
+    <div class="price" id="modalPrice" style="font-size:18px;"></div>
+
+    <br>
+    <button id="confirmBtn">Add to Cart</button>
   </div>
+</div>
 
-  <div class="item-card">
-    <h3>Crispy Spicy Midwings</h3>
-    <div class="price">$14</div>
-    <button onclick="addToCart('Crispy Spicy Midwings', 14)">Add to Cart</button>
-  </div>
-
-  <div class="item-card">
-    <h3>Foie Gras with Malibu Compressed Rock Melon</h3>
-    <div class="price">$23</div>
-    <button onclick="addToCart('Foie Gras with Malibu Compressed Rock Melon', 23)">Add to Cart</button>
-  </div>
-
-  <div class="item-card">
-    <h3>Smoked Provola Cheese Tempura with Aged Prosciutto</h3>
-    <div class="price">$21</div>
-    <button onclick="addToCart('Smoked Provola Cheese Tempura with Aged Prosciutto', 21)">Add to Cart</button>
-  </div>
-
-  <div class="item-card">
-    <h3>Fried Corn Ribs with Assam Aioli</h3>
-    <div class="price">$15</div>
-    <button onclick="addToCart('Fried Corn Ribs with Assam Aioli', 15)">Add to Cart</button>
-  </div>
-
-  <div class="item-card">
-    <h3>Sourdough Bruschetta with Smoked Salmon</h3>
-    <div class="price">$16</div>
-    <button onclick="addToCart('Sourdough Bruschetta with Smoked Salmon', 16)">Add to Cart</button>
-  </div>
-
-  <div class="item-card">
-    <h3>Baked Truffle Brie Cheese</h3>
-    <div class="price">Choose Option:</div>
-
-    <button class="option-btn"
-      onclick="addToCart('Baked Truffle Brie Cheese (Regular)', 21)">
-      Regular – $21
-    </button>
-
-    <button class="option-btn"
-      onclick="addToCart('Baked Truffle Brie Cheese (With Aged Prosciutto)', 28)">
-      With Aged Prosciutto – $28
-    </button>
-  </div>
-
-  <div class="item-card">
-    <h3>Szechuan Spice Crispy Squid</h3>
-    <div class="price">$16</div>
-    <button onclick="addToCart('Szechuan Spice Crispy Squid', 16)">Add to Cart</button>
-  </div>
-
-  <div class="item-card">
-    <h3>Spicy Live Mussels & White Clams Stew</h3>
-    <div class="price">$20</div>
-    <button onclick="addToCart('Spicy Live Mussels & White Clams Stew', 20)">Add to Cart</button>
-  </div>
-
-  <div class="item-card">
-    <h3>Burrata & Aged Prosciutto Salad</h3>
-    <div class="price">$25</div>
-    <button onclick="addToCart('Burrata & Aged Prosciutto Salad', 25)">Add to Cart</button>
-  </div>
-
-  <div class="menu-footer">
-    <a href="cart.html">
-      <button style="padding:12px 20px;font-size:18px;">View Cart</button>
-    </a>
-  </div>
 </body>
 </html>
