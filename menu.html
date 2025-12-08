@@ -2,42 +2,86 @@
 <html>
 <head>
   <title>Menu</title>
+
   <script>
-    // Add item to cart
     function addToCart(name, price) {
-      // Get existing cart from localStorage
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-      // Add the new item
       cart.push({ name: name, price: price });
-
-      // Save cart
       localStorage.setItem("cart", JSON.stringify(cart));
-
       alert(name + " added to cart!");
     }
   </script>
 </head>
 
 <body>
-  <h1>Our Menu</h1>
+  <h1>SHARING PLATES</h1>
 
   <div>
-    <h3>🍔 Cheeseburger</h3>
-    <p>Price: $5.99</p>
-    <button onclick="addToCart('Cheeseburger', 5.99)">Add to Cart</button>
+    <h3>Toasted Garlic Sourdough Bread</h3>
+    <p>$8</p>
+    <button onclick="addToCart('Toasted Garlic Sourdough Bread', 8)">Add to Cart</button>
   </div>
 
   <div>
-    <h3>🍟 Fries</h3>
-    <p>Price: $2.50</p>
-    <button onclick="addToCart('Fries', 2.50)">Add to Cart</button>
+    <h3>Crispy Spicy Midwings</h3>
+    <p>$14</p>
+    <button onclick="addToCart('Crispy Spicy Midwings', 14)">Add to Cart</button>
   </div>
 
   <div>
-    <h3>🥤 Soft Drink</h3>
-    <p>Price: $1.20</p>
-    <button onclick="addToCart('Soft Drink', 1.20)">Add to Cart</button>
+    <h3>Foie Gras with Malibu Compressed Rock Melon</h3>
+    <p>$23</p>
+    <button onclick="addToCart('Foie Gras with Malibu Compressed Rock Melon', 23)">Add to Cart</button>
+  </div>
+
+  <div>
+    <h3>Smoked Provola Cheese Tempura with Aged Prosciutto</h3>
+    <p>$21</p>
+    <button onclick="addToCart('Smoked Provola Cheese Tempura with Aged Prosciutto', 21)">Add to Cart</button>
+  </div>
+
+  <div>
+    <h3>Fried Corn Ribs with Assam Aioli</h3>
+    <p>$15</p>
+    <button onclick="addToCart('Fried Corn Ribs with Assam Aioli', 15)">Add to Cart</button>
+  </div>
+
+  <div>
+    <h3>Sourdough Bruschetta with Smoked Salmon</h3>
+    <p>$16</p>
+    <button onclick="addToCart('Sourdough Bruschetta with Smoked Salmon', 16)">Add to Cart</button>
+  </div>
+
+  <!-- SPECIAL ITEM WITH TWO OPTIONS -->
+  <div>
+    <h3>Baked Truffle Brie Cheese</h3>
+    <p>Choose option:</p>
+
+    <button onclick="addToCart('Baked Truffle Brie Cheese (Regular)', 21)">
+      Regular – $21
+    </button>
+    <br><br>
+    <button onclick="addToCart('Baked Truffle Brie Cheese (With Aged Prosciutto)', 28)">
+      With Aged Prosciutto – $28
+    </button>
+  </div>
+
+  <div>
+    <h3>Szechuan Spice Crispy Squid</h3>
+    <p>$16</p>
+    <button onclick="addToCart('Szechuan Spice Crispy Squid', 16)">Add to Cart</button>
+  </div>
+
+  <div>
+    <h3>Spicy Live Mussels & White Clams Stew</h3>
+    <p>$20</p>
+    <button onclick="addToCart('Spicy Live Mussels & White Clams Stew', 20)">Add to Cart</button>
+  </div>
+
+  <div>
+    <h3>Burrata & Aged Prosciutto Salad</h3>
+    <p>$25</p>
+    <button onclick="addToCart('Burrata & Aged Prosciutto Salad', 25)">Add to Cart</button>
   </div>
 
   <br><br>
