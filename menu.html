@@ -3,6 +3,61 @@
 <head>
   <title>Menu</title>
 
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .item-card {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .item-card h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .price {
+      color: #555;
+      margin: 5px 0 15px 0;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #333;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .option-btn {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .menu-footer {
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+
   <script>
     function addToCart(name, price) {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
