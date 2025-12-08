@@ -2,24 +2,48 @@
 <html>
 <head>
   <title>Menu</title>
+  <script>
+    // Add item to cart
+    function addToCart(name, price) {
+      // Get existing cart from localStorage
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      // Add the new item
+      cart.push({ name: name, price: price });
+
+      // Save cart
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      alert(name + " added to cart!");
+    }
+  </script>
 </head>
+
 <body>
   <h1>Our Menu</h1>
 
   <div>
     <h3>🍔 Cheeseburger</h3>
     <p>Price: $5.99</p>
+    <button onclick="addToCart('Cheeseburger', 5.99)">Add to Cart</button>
   </div>
 
   <div>
     <h3>🍟 Fries</h3>
     <p>Price: $2.50</p>
+    <button onclick="addToCart('Fries', 2.50)">Add to Cart</button>
   </div>
 
   <div>
     <h3>🥤 Soft Drink</h3>
     <p>Price: $1.20</p>
+    <button onclick="addToCart('Soft Drink', 1.20)">Add to Cart</button>
   </div>
+
+  <br><br>
+  <a href="cart.html">
+    <button style="padding:10px;font-size:16px;">Go to Cart</button>
+  </a>
 
 </body>
 </html>
