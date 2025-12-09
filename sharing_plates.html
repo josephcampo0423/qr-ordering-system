@@ -165,7 +165,27 @@ textarea{
   border:1px solid rgba(255,255,255,0.06);
   background:transparent;color:#ddd;width:100%
 }
+.modal-close-btn{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  border:1px solid var(--gold);
+  background:transparent;
+  color:var(--gold);
+  font-size:16px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  padding:0;
+  transition:transform .12s ease, background .12s ease;
+}
 
+.modal-close-btn:active{
+  transform:scale(.92);
+  background:rgba(212,175,55,0.08);
+}
 .noscroll{overflow:hidden;height:100%;}
 </style>
 
