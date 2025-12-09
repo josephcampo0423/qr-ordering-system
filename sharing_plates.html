@@ -100,12 +100,24 @@ html,body{
 /* Modal (centered glass) */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter: blur(6px);align-items:center;justify-content:center;z-index:400;padding:20px}
 .modal-card{
-  width:clamp(320px,86vw,560px);max-height:86vh;
+  width:clamp(320px, 90vw, 560px);
+  max-height:85vh;
+
   background: linear-gradient(180deg, rgba(20,20,20,0.78), rgba(14,14,14,0.86));
-  border-radius:20px;padding:18px;border:1px solid var(--glass-border);
-  box-shadow: 0 16px 46px rgba(212,175,55,0.12), inset 0 1px 0 rgba(255,255,255,0.02);
-  overflow:auto;transform:scale(.92);opacity:0;transition:transform .18s cubic-bezier(.2,.9,.2,1),opacity .18s;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid var(--glass-border);
+
+  box-shadow:0 16px 46px rgba(212,175,55,0.12), inset 0 1px 0 rgba(255,255,255,0.02);
+
+  overflow-y:auto;            /* scroll inside modal */
+  overflow-x:hidden;          /* prevent horizontal spill */
+
+  transform:scale(.92);
+  opacity:0;
+  transition:transform .18s cubic-bezier(.2,.9,.2,1), opacity .18s linear;
 }
+
 .modal-bg.show .modal-card{transform:scale(1);opacity:1}
 
 /* modal header / close button */
@@ -210,8 +222,8 @@ function openTab(name){
 /* Modal controls */
 function openItem(item){
   // populate modal
-  document.getElementById('modalName').textContent = item.name;
-  document.getElementById('modalPrice').textContent = "$" + item.price;
+  document.getElementById('modalNamePrice').textContent =
+  item.name + " — $" + item.price;
   document.getElementById('modalDesc').textContent = item.desc || "";
 
   // reset fields
@@ -540,11 +552,10 @@ document.addEventListener('DOMContentLoaded', function(){
 <div id="modalBg" class="modal-bg">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalName" onclick="event.stopPropagation()">
     <div class="modal-title">
-      <div id="modalName">Item name</div>
-      <button class="modal-close-btn" onclick="closeModal()" aria-label="Close">✕</button>
+      <div id="modalNamePrice" style="font-size:17px;font-weight:800;color:var(--gold);"></div>
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
     </div>
 
-    <div class="modal-price" id="modalPrice">$0</div>
     <div class="modal-desc" id="modalDesc">Description</div>
 
     <!-- prosciutto option -->
@@ -621,8 +632,8 @@ function qtyChange(delta){
 
 /* Modal open/close re-implemented here for safety */
 function openItem(item){
-  document.getElementById('modalName').textContent = item.name;
-  document.getElementById('modalPrice').textContent = '$' + item.price;
+  document.getElementById('modalNamePrice').textContent =
+  item.name + " — $" + item.price;
   document.getElementById('modalDesc').textContent = item.desc || '';
 
   document.getElementById('specialRequestInput').value = '';
