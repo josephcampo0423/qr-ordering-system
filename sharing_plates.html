@@ -470,8 +470,19 @@ function openItem(item){
     }
 
     const cart = getCart();
-    cart.push({id:item.id, name: finalName, price: finalPrice});
-    saveCart(cart);
+
+// Get special request text
+let specialRequest = document.getElementById('specialRequestInput').value.trim();
+
+cart.push({
+  id: item.id,
+  name: finalName,
+  price: finalPrice,
+  request: specialRequest || ""   // save request, empty if none
+});
+
+saveCart(cart);
+
     alert('Added to cart: ' + finalName);
     closeModal();
   }
