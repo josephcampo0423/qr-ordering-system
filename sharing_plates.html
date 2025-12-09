@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta charset="utf-8">
-<title>Sharing Plates — Mingle Bistro — Page 1</title>
+<title>Sharing Plates — Page 1</title>
 
 <style>
 :root{
@@ -11,12 +11,10 @@
   --bg:#0e0e0e;
   --card:#161616;
   --muted:#cfcfcf;
-  --glass-border: rgba(212,175,55,0.22);
 }
 
 /* Base */
 html,body{
-  height:100%;
   margin:0;
   background:var(--bg);
   color:#fff;
@@ -32,14 +30,14 @@ html,body{
   border-bottom:1px solid rgba(212,175,55,0.08);
 }
 
-/* Container + Tabs */
 .container{padding:12px 12px 120px 12px;}
+
+/* Tabs */
 .tab-row{
   display:flex;
   gap:8px;
   overflow:auto;
   padding:12px 6px;
-  white-space:nowrap;
 }
 .tab{
   padding:10px 14px;
@@ -95,10 +93,10 @@ html,body{
   transition:transform .12s ease;
 }
 .item-card:active{transform:scale(.997)}
+
 .item-row{
   display:flex;
   justify-content:space-between;
-  gap:10px;
 }
 .item-title{
   font-weight:700;
@@ -107,15 +105,10 @@ html,body{
   overflow:hidden;
   text-overflow:ellipsis;
 }
-.item-desc{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:8px;
-}
 .price{color:#ddd;font-weight:700}
 
-/* Shimmer */
-.skeleton-grid{display:grid;grid-template-columns:1fr;gap:12px}
+/* Skeleton */
+.skeleton-grid{display:grid;gap:12px}
 .skel-card{
   height:92px;
   border-radius:12px;
@@ -127,9 +120,11 @@ html,body{
   0%{background-position:-200% 0}
   100%{background-position:200% 0}
 }
-@media(min-width:900px){.skeleton-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){
+  .skeleton-grid{grid-template-columns:repeat(2,1fr)}
+}
 
-/* Cart bubble */
+/* Cart link */
 .cart-link{
   position:fixed;
   right:12px;
@@ -175,36 +170,38 @@ html,body{
   backdrop-filter:blur(6px);
   align-items:center;
   justify-content:center;
-  z-index:500;
+  z-index:400;
   padding:20px;
 }
 .modal-card{
   width:clamp(320px,90vw,560px);
-  max-height:85vh;
+  max-height:86vh;
   background:rgba(20,20,20,0.85);
-  border:1px solid var(--glass-border);
+  border:1px solid rgba(212,175,55,0.25);
+  box-shadow:0 16px 46px rgba(212,175,55,0.12);
   border-radius:20px;
   padding:20px;
   overflow-y:auto;
-  overflow-x:hidden;
-
   transform:scale(.92);
   opacity:0;
   transition:transform .18s ease, opacity .18s ease;
 }
+
 .modal-bg.show .modal-card{
   transform:scale(1);
   opacity:1;
 }
 
 .modal-title{
-  font-size:17px;
-  font-weight:800;
-  color:var(--gold);
   display:flex;
   justify-content:space-between;
   align-items:center;
+  color:var(--gold);
+  font-size:17px;
+  font-weight:800;
 }
+
+/* Close btn */
 .modal-close-btn{
   width:34px;
   height:34px;
@@ -219,8 +216,7 @@ html,body{
   justify-content:center;
 }
 
-/* Options */
-.option-block{margin-top:14px}
+/* Special request */
 textarea{
   width:100%;
   height:70px;
@@ -229,16 +225,15 @@ textarea{
   background:rgba(0,0,0,0.35);
   padding:10px;
   color:#fff;
-  resize:none;
 }
 
-/* Qty */
+/* Qty row */
 .qty-row{
   display:flex;
   justify-content:center;
   align-items:center;
   gap:14px;
-  margin-top:14px;
+  margin-top:16px;
 }
 .qty-btn{
   width:38px;
@@ -250,10 +245,10 @@ textarea{
   font-size:18px;
 }
 .qty-val{
-  font-weight:800;
-  font-size:17px;
-  width:32px;
+  width:30px;
   text-align:center;
+  font-size:17px;
+  font-weight:800;
 }
 
 /* Buttons */
@@ -266,7 +261,6 @@ textarea{
   color:var(--gold);
   font-weight:800;
   margin-top:20px;
-  font-size:15px;
 }
 .small-btn{
   margin-top:10px;
@@ -280,11 +274,11 @@ textarea{
 
 .noscroll{overflow:hidden;height:100%}
 </style>
-
 </head>
+
 <body>
 
-<div class="header">SHARING PLATES — PAGE 1</div>
+<div class="header">Sharing Plates — Page 1</div>
 
 <div class="container">
 
@@ -292,7 +286,7 @@ textarea{
 <div class="tab-row">
   <div class="tab active" onclick="showTab('sharing')">Sharing Plates</div>
   <div class="tab" onclick="showTab('sashimi')">Sashimi & Crudo</div>
-  <div class="tab" onclick="showTab('fries')">Skin On & Twister Fries</div>
+  <div class="tab" onclick="showTab('fries')">Fries</div>
 </div>
 
 <!-- Skeleton -->
@@ -305,10 +299,9 @@ textarea{
 
 <!-- SHARING PLATES -->
 <div id="sharing" class="tab-panel">
-
   <h3 class="section-title">Sharing Plates</h3>
-
   <div class="grid">
+
     <div class="item-card" onclick="openItem(items[0])">
       <div class="item-row">
         <div class="item-title">Toasted Garlic Sourdough Bread</div>
@@ -332,7 +325,7 @@ textarea{
 
     <div class="item-card" onclick="openItem(items[3])">
       <div class="item-row">
-        <div class="item-title">Smoked Provola Tempura w/ Prosciutto</div>
+        <div class="item-title">Smoked Provola Tempura</div>
         <div class="price">$21</div>
       </div>
     </div>
@@ -356,19 +349,18 @@ textarea{
         <div class="item-title">Baked Truffle Brie Cheese</div>
         <div class="price">$21</div>
       </div>
-      <div class="item-desc">Option: Add Aged Prosciutto +$7</div>
     </div>
 
     <div class="item-card" onclick="openItem(items[7])">
       <div class="item-row">
-        <div class="item-title">Szechuan Spiced Crispy Squid</div>
+        <div class="item-title">Szechuan Crispy Squid</div>
         <div class="price">$16</div>
       </div>
     </div>
 
     <div class="item-card" onclick="openItem(items[8])">
       <div class="item-row">
-        <div class="item-title">Spicy Mussels & White Clams Stew</div>
+        <div class="item-title">Mussels & Clams Stew</div>
         <div class="price">$20</div>
       </div>
     </div>
@@ -380,16 +372,14 @@ textarea{
       </div>
     </div>
 
-  </div><!-- end grid -->
-</div><!-- end sharing -->
-
+  </div>
+</div>
 
 <!-- SASHIMI -->
 <div id="sashimi" class="tab-panel">
-
   <h3 class="section-title">Sashimi & Crudo</h3>
-
   <div class="grid">
+
     <div class="item-card" onclick="openItem(items[10])">
       <div class="item-row">
         <div class="item-title">Hokkaido Scallops Crudo</div>
@@ -413,7 +403,7 @@ textarea{
 
     <div class="item-card" onclick="openItem(items[13])">
       <div class="item-row">
-        <div class="item-title">Spicy Salmon Tartare w/ Poppadum</div>
+        <div class="item-title">Spicy Salmon Tartare</div>
         <div class="price">$18</div>
       </div>
     </div>
@@ -424,17 +414,15 @@ textarea{
         <div class="price">$28</div>
       </div>
     </div>
+
   </div>
-
-</div><!-- end sashimi -->
-
+</div>
 
 <!-- FRIES -->
 <div id="fries" class="tab-panel">
-
   <h3 class="section-title">Skin On & Twister Fries</h3>
-
   <div class="grid">
+
     <div class="item-card" onclick="openItem(items[15])">
       <div class="item-row">
         <div class="item-title">Salted Fries</div>
@@ -469,18 +457,18 @@ textarea{
         <div class="price">$14</div>
       </div>
     </div>
-  </div>
 
-</div><!-- end fries -->
+  </div>
+</div>
 
 </div><!-- end container -->
 
 
-<!-- CART FLOAT BUTTON -->
+<!-- Cart -->
 <a href="cart.html" class="cart-link">🛒 Cart</a>
 
 
-<!-- PAGINATION -->
+<!-- Pagination -->
 <div class="footer-pages">
   <div class="page-num current">1</div>
   <a href="mains.html" class="page-num">2</a>
@@ -496,6 +484,7 @@ textarea{
 <div id="modalBg" class="modal-bg">
   <div id="modalCard" class="modal-card">
 
+    <!-- Title with price -->
     <div class="modal-title">
       <div id="modalNamePrice"></div>
       <button class="modal-close-btn" onclick="closeModal()">✕</button>
@@ -504,17 +493,16 @@ textarea{
     <!-- Description -->
     <div id="modalDesc" style="margin-top:12px;color:#ddd;font-size:14px"></div>
 
-    <!-- Dynamic Options Here -->
+    <!-- Options -->
     <div id="optionsArea"></div>
 
     <!-- Special Request -->
-    <div class="option-block">
+    <div class="option-block" style="margin-top:14px;">
       <div style="font-weight:700;color:#ddd;margin-bottom:8px">Special Request (Optional)</div>
-      <textarea id="specialRequestInput"
-        placeholder="e.g., less oil, less spicy, no onion"></textarea>
+      <textarea id="specialRequestInput" placeholder="e.g. less oil, no onion"></textarea>
     </div>
 
-    <!-- Quantity Section -->
+    <!-- Qty -->
     <div class="qty-row">
       <button class="qty-btn" onclick="changeQty(-1)">−</button>
       <div id="qtyValue" class="qty-val">1</div>
@@ -537,16 +525,13 @@ const items = [
   {id:0,name:"Toasted Garlic Sourdough Bread",price:8},
   {id:1,name:"Crispy Spicy Midwings",price:14},
   {id:2,name:"Foie Gras w/ Malibu Rock Melon",price:23},
-  {id:3,name:"Smoked Provola Tempura w/ Prosciutto",price:21},
+  {id:3,name:"Smoked Provola Tempura",price:21},
   {id:4,name:"Fried Corn Ribs w/ Assam Aioli",price:15},
   {id:5,name:"Smoked Salmon Bruschetta",price:16},
-  {
-    id:6,name:"Baked Truffle Brie Cheese",price:21,
-    option:"prosciutto"
-  },
-  {id:7,name:"Szechuan Spiced Crispy Squid",price:16},
+  {id:6,name:"Baked Truffle Brie Cheese",price:21,option:"prosciutto"},
+  {id:7,name:"Szechuan Crispy Squid",price:16},
   {id:8,name:"Mussels & Clams Stew",price:20},
-  {id:9,name:"Burrata & Prosciutto Salad",price:25},
+  {id:9,name:"Burrata & Aged Prosciutto Salad",price:25},
 
   {id:10,name:"Hokkaido Scallops Crudo",price:19},
   {id:11,name:"Salmon Sashimi",price:15},
@@ -561,13 +546,11 @@ const items = [
   {id:19,name:"Nacho Cheese & Assam Aioli Fries",price:14},
 ];
 
-let currentItem = null;
-
-/* Load Fade */
+/* Load animation */
 setTimeout(()=>{
   document.getElementById("skeletonLoader").style.display="none";
   document.getElementById("sharing").classList.add("show");
-},500);
+},600);
 
 /* Tabs */
 function showTab(id){
@@ -578,31 +561,34 @@ function showTab(id){
   document.getElementById(id).classList.add("show");
 }
 
-/* Modal */
-function openItem(item){
-  currentItem = item;
+/* Modal Open */
+let currentItem=null;
+let selectedProsciutto=false;
+let selectedFries=null;
 
-  document.getElementById('modalNamePrice').textContent =
+function openItem(item){
+  currentItem=item;
+
+  document.getElementById("modalNamePrice").textContent =
     item.name + " — $" + item.price;
 
-  document.getElementById('modalDesc').textContent =
-    item.desc || "";
+  document.getElementById("modalDesc").textContent = item.desc || "";
 
-  document.getElementById('specialRequestInput').value="";
-  document.getElementById('qtyValue').textContent = "1";
+  document.getElementById("specialRequestInput").value="";
+  document.getElementById("qtyValue").textContent="1";
 
-  let optHTML = "";
+  let html="";
 
-  if(item.option === "prosciutto"){
-    optHTML += `
+  if(item.option==="prosciutto"){
+    html += `
       <div class="option-block">
-        <div style="font-weight:700;color:#ddd">Add Aged Prosciutto?</div>
+        <div style="font-weight:700;color:#ddd;margin-bottom:6px">Add Aged Prosciutto?</div>
         <button class="small-btn" onclick="selectOption('prosciutto',7)">+ $7 Prosciutto</button>
       </div>`;
   }
 
-  if(item.id >= 15 && item.id <= 19){
-    optHTML += `
+  if(item.id>=15 && item.id<=19){
+    html += `
       <div class="option-block">
         <div style="font-weight:700;color:#ddd;margin-bottom:6px">Choice of Fries</div>
         <button class="small-btn" onclick="selectOption('fries','Skin On')">Skin On Fries</button>
@@ -610,10 +596,9 @@ function openItem(item){
       </div>`;
   }
 
-  document.getElementById('optionsArea').innerHTML = optHTML;
+  document.getElementById("optionsArea").innerHTML = html;
 
   document.getElementById("modalBg").style.display="flex";
-
   setTimeout(()=>{
     document.getElementById("modalBg").classList.add("show");
   },20);
@@ -627,57 +612,51 @@ function closeModal(){
     document.getElementById("modalBg").style.display="none";
   },200);
   document.body.classList.remove("noscroll");
-}
 
-/* Options store */
-let selectedProsciutto = false;
-let selectedFries = null;
-
-function selectOption(type,val){
-  if(type==="prosciutto") selectedProsciutto = true;
-  if(type==="fries") selectedFries = val;
+  selectedProsciutto=false;
+  selectedFries=null;
 }
 
 /* Qty */
-function changeQty(val){
-  let q = Number(document.getElementById('qtyValue').textContent);
-  q += val;
-  if(q<1) q=1;
-  document.getElementById('qtyValue').textContent = q;
+function changeQty(v){
+  let q=Number(document.getElementById("qtyValue").textContent);
+  q+=v;
+  if(q<1)q=1;
+  document.getElementById("qtyValue").textContent=q;
 }
 
-/* Cart Store */
-function getCart(){
-  return JSON.parse(localStorage.getItem("cart")||"[]");
-}
-function saveCart(c){
-  localStorage.setItem("cart",JSON.stringify(c));
+/* Options */
+function selectOption(type,val){
+  if(type==="prosciutto") selectedProsciutto=true;
+  if(type==="fries") selectedFries=val;
 }
 
-/* Add to cart */
+/* Cart */
+function getCart(){return JSON.parse(localStorage.getItem("cart")||"[]");}
+function saveCart(c){localStorage.setItem("cart",JSON.stringify(c));}
+
 function addToCart(){
-  let qty = Number(document.getElementById('qtyValue').textContent);
+  let qty=Number(document.getElementById("qtyValue").textContent);
+  let special=document.getElementById("specialRequestInput").value.trim();
 
-  let special = document.getElementById('specialRequestInput').value.trim();
-
-  let finalName = currentItem.name;
-  let finalPrice = currentItem.price;
+  let finalName=currentItem.name;
+  let finalPrice=currentItem.price;
 
   if(selectedProsciutto){
-    finalName += " (With Aged Prosciutto)";
-    finalPrice += 7;
+    finalName+=" (With Aged Prosciutto)";
+    finalPrice+=7;
   }
   if(selectedFries){
-    finalName += " ("+selectedFries+")";
+    finalName+=" ("+selectedFries+")";
   }
 
-  const cart = getCart();
+  const cart=getCart();
   cart.push({
-    id: currentItem.id,
-    name: finalName,
-    price: finalPrice,
-    qty: qty,
-    request: special
+    id:currentItem.id,
+    name:finalName,
+    price:finalPrice,
+    qty:qty,
+    request:special
   });
   saveCart(cart);
 
@@ -687,7 +666,6 @@ function addToCart(){
   closeModal();
   alert("Added to cart!");
 }
-
 </script>
 
 </body>
