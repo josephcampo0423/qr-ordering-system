@@ -440,7 +440,9 @@ function openItem(item){
   // item: {id,name,price,desc,type,prosciutto,spicy,sig}
   document.getElementById('modalName').textContent = item.name;
   document.getElementById('modalPrice').textContent = '$' + item.price;
-  document.getElementById('modalDesc').textContent = item.desc || '';
+  document.getElementById('modalDesc').textContent = item.
+  // Clear special request input
+document.getElementById('specialRequestInput').value = "";
   // toggle prosciutto option
   document.getElementById('prosciuttoOption').style.display = item.prosciutto ? 'block':'none';
   // toggle fries selector
