@@ -7,9 +7,9 @@
 
 <style>
 :root{
-  --bg: #000;
-  --gold: #D4AF37;
-  --text: #f2f2f2;
+  --bg:#000;
+  --gold:#D4AF37;
+  --text:#f2f2f2;
 }
 
 body{
@@ -20,13 +20,15 @@ body{
   padding:18px;
 }
 
+/* -------------------- HEADER -------------------- */
 h1{
   font-size:22px;
   font-weight:800;
   color:var(--gold);
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 
+/* -------------------- CART ITEM -------------------- */
 .cart-item{
   border:1px solid rgba(255,255,255,0.08);
   background:rgba(18,18,18,0.55);
@@ -47,6 +49,20 @@ h1{
   margin-top:3px;
 }
 
+/* Edit request */
+.req-edit{
+  width:100%;
+  margin-top:8px;
+  background:rgba(255,255,255,0.05);
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);
+  color:#fff;
+  padding:8px;
+  font-size:14px;
+  resize:none;
+}
+
+/* -------------------- QUANTITY -------------------- */
 .qty-row{
   display:flex;
   align-items:center;
@@ -73,6 +89,7 @@ h1{
   font-weight:700;
 }
 
+/* -------------------- BUTTONS -------------------- */
 .remove-btn{
   margin-top:10px;
   padding:8px;
@@ -84,7 +101,8 @@ h1{
   cursor:pointer;
 }
 
-.place-btn{
+.place-btn,
+.back-btn{
   width:100%;
   padding:14px;
   border-radius:50px;
@@ -97,6 +115,52 @@ h1{
   cursor:pointer;
 }
 
+/* -------------------- LOADING MODAL -------------------- */
+#loadingOverlay{
+  position:fixed;
+  top:0; left:0; right:0; bottom:0;
+  background:rgba(0,0,0,0.75);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  backdrop-filter:blur(3px);
+  z-index:999;
+}
+
+.loader{
+  border:4px solid rgba(212,175,55,0.2);
+  border-top:4px solid var(--gold);
+  border-radius:50%;
+  width:48px;
+  height:48px;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  0% { transform:rotate(0deg); }
+  100% { transform:rotate(360deg); }
+}
+
+/* -------------------- SUCCESS SCREEN -------------------- */
+#successPage{
+  display:none;
+  text-align:center;
+  padding-top:60px;
+}
+
+.success-title{
+  font-size:24px;
+  color:var(--gold);
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.success-msg{
+  color:#ddd;
+  font-size:16px;
+}
+
+/* -------------------- EMPTY CART -------------------- */
 .empty-text{
   margin-top:40px;
   color:#aaa;
@@ -112,7 +176,19 @@ h1{
 
 <div id="cartContainer"></div>
 
+<button class="back-btn" onclick="goBack()">← Back to Menu</button>
 <button class="place-btn" onclick="placeOrder()">Place Order</button>
+
+<!-- Loading Animation -->
+<div id="loadingOverlay">
+  <div class="loader"></div>
+</div>
+
+<!-- Success Page -->
+<div id="successPage">
+  <div class="success-title">Order Sent!</div>
+  <div class="success-msg">Your order has been placed successfully.</div>
+</div>
 
 <script>
 // -----------------------------
@@ -123,7 +199,6 @@ function getTableNumber(){
   return params.get("table") || "Unknown";
 }
 
-// Show table label
 document.getElementById("tableLabel").textContent =
   "Table " + getTableNumber() + " — Order Summary";
 
@@ -154,8 +229,12 @@ function renderCart(){
 
     div.innerHTML = `
       <div class="item-name">${item.name}</div>
-      ${item.request ? `<div class="item-request">Special: ${item.request}</div>` : ""}
-      
+
+      <textarea class="req-edit"
+        placeholder="Special request (optional)"
+        oninput="updateRequest(${index}, this.value)"
+      >${item.request || ""}</textarea>
+
       <div class="qty-row">
         <button class="qty-btn" onclick="decreaseQty(${index})">-</button>
         <div class="qty-number">${item.qty}</div>
@@ -189,6 +268,15 @@ function decreaseQty(i){
 }
 
 // -----------------------------
+// EDIT SPECIAL REQUEST
+// -----------------------------
+function updateRequest(i, value){
+  const cart = getCart();
+  cart[i].request = value.trim();
+  saveCart(cart);
+}
+
+// -----------------------------
 // REMOVE ITEM
 // -----------------------------
 function removeItem(i){
@@ -199,31 +287,38 @@ function removeItem(i){
 }
 
 // -----------------------------
+// BACK TO MENU
+// -----------------------------
+function goBack(){
+  window.location.href = "sharing-plates.html";  
+}
+
+// -----------------------------
 // PLACE ORDER (NO PRINTING YET)
 // -----------------------------
 function placeOrder(){
   const cart = getCart();
-  const table = getTableNumber();
-
   if(cart.length === 0){
     alert("Your cart is empty.");
     return;
   }
 
-  // This is the final order object we will later send to the printer
-  const order = {
-    table: table,
-    items: cart,
-    time: new Date().toLocaleString()
-  };
+  // Show loading overlay
+  document.getElementById("loadingOverlay").style.display = "flex";
 
-  console.log("ORDER SENT TO SYSTEM:", order);
+  setTimeout(()=>{
+    // Fake processing time
+    document.getElementById("loadingOverlay").style.display = "none";
+    document.getElementById("cartContainer").style.display = "none";
+    document.querySelector(".back-btn").style.display = "none";
+    document.querySelector(".place-btn").style.display = "none";
 
-  alert("Order placed successfully!");
+    document.getElementById("successPage").style.display = "block";
 
-  // Clear cart after placing order
-  localStorage.removeItem("cart");
-  renderCart();
+    // Clear cart
+    localStorage.removeItem("cart");
+
+  }, 1500);
 }
 
 renderCart();
