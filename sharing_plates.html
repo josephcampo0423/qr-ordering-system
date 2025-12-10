@@ -5,34 +5,9 @@
 <meta charset="utf-8">
 <title>Sharing Plates — Mingle Bistro — Page 1</title>
 
-<style>
-:root{
-  --gold:#D4AF37;
-  --bg:#0e0e0e;
-  --card:#161616;
-  --muted:#cfcfcf;
-  --glass-bg: rgba(17,17,17,0.45);
-  --glass-border: rgba(212,175,55,0.22);
-  --accent-shadow: rgba(212,175,55,0.08);
-}
-@keyframes flyToCart {
-  0% { opacity:1; transform:scale(1); }
-  100% { opacity:0.2; transform:scale(0.2); }
-}
+<body>
 
-@keyframes cartBounce {
-  0% { transform:scale(1); }
-  40% { transform:scale(1.25); }
-  100% { transform:scale(1); }
-}
-
-
-/* Base */
-html,body{
-  height:100%;margin:0;background:var(--bg);color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
+<!-- CART ICON (Required for fly animation) -->
 <div id="cartIcon" style="
   position:fixed;
   top:16px; right:16px;
@@ -50,6 +25,35 @@ html,body{
 ">
   🛒
 </div>
+
+<style>
+@keyframes flyToCart {
+  0% { opacity:1; transform:scale(1); }
+  100% { opacity:0; transform:scale(0.2); }
+}
+
+@keyframes cartBounce {
+  0% { transform:scale(1); }
+  40% { transform:scale(1.25); }
+  100% { transform:scale(1); }
+}
+
+:root{
+  --gold:#D4AF37;
+  --bg:#0e0e0e;
+  --card:#161616;
+  --muted:#cfcfcf;
+  --glass-bg: rgba(17,17,17,0.45);
+  --glass-border: rgba(212,175,55,0.22);
+  --accent-shadow: rgba(212,175,55,0.08);
+}
+
+/* Base */
+html,body{
+  height:100%;margin:0;background:var(--bg);color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
 
 .header{
   background:#000;color:var(--gold);padding:18px;
@@ -205,16 +209,6 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
   </symbol>
 </svg>
 
-<div id="flyingItem" style="
-  position:fixed;
-  width:40px; height:40px;
-  border-radius:50%;
-  background:var(--gold);
-  opacity:0;
-  pointer-events:none;
-  z-index:99999;
-"></div>
-
 <script>
 /* Helper: Cart storage */
 function getCart(){ return JSON.parse(localStorage.getItem('cart')||'[]'); }
@@ -241,7 +235,35 @@ function showWithSkeleton(renderFn, delay=550){
     renderFn();
   }, delay);
 }
+function flyToCart(){
+  const modal = document.querySelector("#modalBg .modal-card");
+  const fly = document.getElementById("flyingItem");
+  const cartIcon = document.getElementById("cartIcon");
 
+  const modalRect = modal.getBoundingClientRect();
+  const cartRect = cartIcon.getBoundingClientRect();
+
+  // starting position
+  fly.style.left = modalRect.left + modalRect.width/2 - 20 + "px";
+  fly.style.top = modalRect.top + modalRect.height/2 - 20 + "px";
+  fly.style.opacity = "1";
+  fly.style.transform = "scale(1)";
+  fly.style.transition = "all 0.6s cubic-bezier(.2,.8,.2,1)";
+
+  // end position
+  requestAnimationFrame(()=>{
+    fly.style.transform = `translate(
+      ${cartRect.left - modalRect.left}px,
+      ${cartRect.top - modalRect.top}px
+    ) scale(0.2)`;
+  });
+
+  setTimeout(()=>{
+    fly.style.opacity = "0";
+    cartIcon.style.animation = "cartBounce 0.4s ease";
+    setTimeout(() => cartIcon.style.animation = "", 400);
+  }, 600);
+}
 /* Tab switching with animation */
 function openTab(name){
   // remove active class
@@ -723,10 +745,10 @@ function openItem(item){
     let finalName = item.name;
     let finalPrice = item.price;
 
-    // prosciutto option
+    // prosciutto
     if(item.prosciutto){
       const opt = document.querySelector('input[name="truf_opt"]:checked');
-      if(!opt){ alert('Please select Regular or With Aged Prosciutto'); return; }
+      if(!opt){ alert('Please choose option'); return; }
       if(opt.value === 'with'){ finalName += ' (With Aged Prosciutto)'; finalPrice += 7; }
       else finalName += ' (Regular)';
     }
@@ -734,20 +756,20 @@ function openItem(item){
     // fries
     if(item.type === 'fries'){
       const fc = document.querySelector('input[name="fries_choice"]:checked');
-      if(!fc){ alert('Please choose Skin-on or Twister fries'); return; }
+      if(!fc){ alert('Please choose fries type'); return; }
       finalName += ' — ' + fc.value;
     }
 
-    const qty = Number(document.getElementById('qtyValue').textContent) || 1;
+    const qty = Number(document.getElementById('qtyValue').textContent);
     const special = document.getElementById('specialRequestInput').value.trim();
 
     const cart = getCart();
     cart.push({ name: finalName, price: finalPrice, qty: qty, request: special });
     saveCart(cart);
 
-    alert('Added to cart: ' + finalName + (special ? (' — ' + special) : ''));
-    closeModal();
-  };
+    flyToCart();              // ← trigger animation
+    setTimeout(closeModal, 250);  // smoother close
+};
 
   // Show modal
   const bg = document.getElementById('modalBg');
@@ -798,5 +820,14 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 </script>
+<div id="flyingItem" style="
+  position:fixed;
+  width:40px; height:40px;
+  border-radius:50%;
+  background:var(--gold);
+  opacity:0;
+  pointer-events:none;
+  z-index:99999;
+"></div>
 </body>
 </html>
