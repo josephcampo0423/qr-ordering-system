@@ -203,7 +203,6 @@ h1{
 
 <button class="back-btn" onclick="goBack()">← Back to Menu</button>
 
-<button class="clear-btn" onclick="openClearConfirm()">Clear Cart</button>
 
 <button class="place-btn" onclick="placeOrder()">Place Order</button>
 
@@ -213,9 +212,23 @@ h1{
 </div>
 
 <!-- Success Page -->
-<div id="successPage">
+<div id="successPage" style="display:none; text-align:center; padding:20px;">
+  
   <div class="success-title">Order Sent!</div>
-  <div class="success-msg">Your order has been placed successfully.</div>
+
+  <div id="successDetails" 
+       style="margin-top:16px; text-align:left; color:#ddd; font-size:14px;">
+  </div>
+
+  <button onclick="goBackAfterSuccess()"
+    style="
+      width:100%; padding:14px; margin-top:22px;
+      border-radius:50px; border:1px solid var(--gold);
+      background:transparent; color:var(--gold);
+      font-size:16px; font-weight:700; cursor:pointer;">
+    Back to Menu
+  </button>
+
 </div>
 
 <script>
@@ -227,22 +240,15 @@ function getTableNumber(){
   return params.get("table") || "Unknown";
 }
 
+function goBackAfterSuccess(){
+  const table = getTableNumber();
+  window.location.href = `sharing_plates.html?table=${table}`;
+}
+
 document.getElementById("tableLabel").textContent =
   "Table " + getTableNumber() + " — Order Summary";
-
-function openClearConfirm(){
-  document.getElementById("clearConfirm").style.display = "flex";
 }
 
-function closeClearConfirm(){
-  document.getElementById("clearConfirm").style.display = "none";
-}
-
-function confirmClear(){
-  localStorage.removeItem("cart");
-  closeClearConfirm();
-  renderCart();
-}
 // -----------------------------
 // CART FUNCTIONS
 // -----------------------------
@@ -351,7 +357,61 @@ function placeOrder(){
     document.querySelector(".back-btn").style.display = "none";
     document.querySelector(".place-btn").style.display = "none";
 
+    function placeOrder(){
+  const cart = getCart();
+  const table = getTableNumber();
+
+  if(cart.length === 0){
+    alert("Your cart is empty.");
+    return;
+  }
+
+  document.getElementById("loadingOverlay").style.display = "flex";
+
+  setTimeout(()=>{
+
+    // Build Summary
+    let summaryHTML = `
+      <div style="font-size:16px; color:var(--gold); font-weight:700;">
+        Table ${table}
+      </div>
+
+      <div style="margin-top:6px; font-size:13px; color:#bbb;">
+        ${new Date().toLocaleString()}
+      </div>
+
+      <div style="margin-top:16px; border-top:1px solid rgba(255,255,255,0.15); padding-top:10px;">
+    `;
+
+    cart.forEach(item=>{
+      summaryHTML += `
+        <div style="margin-bottom:14px;">
+          <div style="font-size:15px; font-weight:700; color:var(--gold);">
+            ${item.name}
+          </div>
+          <div style="color:#fff;">Qty: ${item.qty}</div>
+          ${item.request ? `<div style="color:#bbb;">Special: ${item.request}</div>` : ""}
+        </div>
+      `;
+    });
+
+    summaryHTML += `</div>`;
+
+    document.getElementById("successDetails").innerHTML = summaryHTML;
+
+    // Hide cart, show success page
+    document.getElementById("loadingOverlay").style.display = "none";
+    document.getElementById("cartContainer").style.display = "none";
+    document.querySelector(".back-btn").style.display = "none";
+    document.querySelector(".place-btn").style.display = "none";
+
     document.getElementById("successPage").style.display = "block";
+
+    // clear cart
+    localStorage.removeItem("cart");
+
+  }, 1500);
+}
 
     // Clear cart
     localStorage.removeItem("cart");
@@ -361,54 +421,6 @@ function placeOrder(){
 
 renderCart();
 </script>
-
-<!-- Clear Cart Confirmation Modal -->
-<div id="clearConfirm" 
-     style="
-       position:fixed; top:0; left:0; right:0; bottom:0;
-       display:none; justify-content:center; align-items:center;
-       background:rgba(0,0,0,0.75); backdrop-filter:blur(3px);
-       z-index:999;
-     ">
-  
-  <div style="
-    background:rgba(20,20,20,0.85); 
-    border:1px solid rgba(255,255,255,0.08);
-    padding:24px;  
-    width:80%; max-width:360px;
-    border-radius:18px;
-    text-align:center;
-    color:white;
-  ">
-    <div style="font-size:18px; font-weight:700; margin-bottom:10px; color:var(--gold);">
-      Clear Cart?
-    </div>
-
-    <div style="font-size:14px; color:#ccc; margin-bottom:22px;">
-      This will remove all items from your order.
-    </div>
-
-    <div style="display:flex; gap:10px;">
-      <button onclick="confirmClear()" 
-              style="
-                flex:1; padding:12px; border-radius:10px; 
-                background:rgba(255,0,0,0.18); color:#ff8080;
-                border:1px solid rgba(255,0,0,0.4);
-              ">
-        Yes, Clear All
-      </button>
-
-      <button onclick="closeClearConfirm()" 
-              style="
-                flex:1; padding:12px; border-radius:10px; 
-                background:rgba(255,255,255,0.05); 
-                color:#ddd; border:1px solid rgba(255,255,255,0.1);
-              ">
-        Cancel
-      </button>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
