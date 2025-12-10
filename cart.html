@@ -20,6 +20,19 @@ body{
   padding:18px;
 }
 
+.success-fade{
+  opacity:0;
+  transform:translateY(10px);
+  animation:successFadeIn .5s ease forwards;
+}
+
+@keyframes successFadeIn{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
 /* -------------------- HEADER -------------------- */
 h1{
   font-size:22px;
@@ -173,6 +186,14 @@ h1{
 <div id="cartContainer"></div>
 
 <button class="back-btn" onclick="goBack()">← Back to Menu</button>
+<button onclick="continueOrdering()"
+  style="
+    width:100%; padding:14px; margin-top:12px;
+    border-radius:50px; border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.05); color:#ddd;
+    font-size:15px; font-weight:600; cursor:pointer;">
+  Continue Ordering
+</button>
 <button class="place-btn" onclick="placeOrder()">Place Order</button>
 
 <!-- Loading Animation -->
@@ -205,6 +226,11 @@ h1{
 function getTableNumber(){
   const params = new URLSearchParams(window.location.search);
   return params.get("table") || "Unknown";
+}
+
+function continueOrdering(){
+  const table = getTableNumber();
+  window.location.href = `sharing_plates.html?table=${table}`;
 }
 
 document.getElementById("tableLabel").textContent =
@@ -322,17 +348,22 @@ function placeOrder(){
     cart.forEach(item=>{
       summaryHTML += `
         <div style="margin-bottom:14px;">
-          <div style="font-size:15px; font-weight:700; color:var(--gold);">
-            ${item.name}
+          <div style="
+            font-size:15px; 
+            font-weight:700; 
+            color:var(--gold);
+            display:flex; 
+            justify-content:space-between;
+          ">
+            <span>${item.name}</span>
+            <span style="color:#fff;">× ${item.qty}</span>
           </div>
-          <div style="color:#fff;">Qty: ${item.qty}</div>
-          ${item.request ? `<div style="color:#bbb;">Special: ${item.request}</div>` : ""}
-        </div>
       `;
     });
 
     summaryHTML += `</div>`;
-    document.getElementById("successDetails").innerHTML = summaryHTML;
+    document.getElementById("successDetails").innerHTML =
+  `<div class="success-fade">${summaryHTML}</div>`;
 
     // Switch views
     document.getElementById("loadingOverlay").style.display = "none";
