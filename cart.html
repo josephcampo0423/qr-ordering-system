@@ -1,43 +1,343 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <title>Your Cart</title>
-  <script>
-    function loadCart() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let list = document.getElementById("cart-items");
-      let total = 0;
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cart — Mingle Bistro (Funan)</title>
 
-      cart.forEach(item => {
-        let li = document.createElement("li");
-        li.textContent = item.name + " - $" + item.price.toFixed(2);
-        list.appendChild(li);
-        total += item.price;
-      });
+<style>
+:root{
+  --gold:#D4AF37;
+  --bg:#0f0f0f;
+  --card:#161616;
+  --muted:#cfcfcf;
+}
+html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.container{padding:16px;max-width:900px;margin:0 auto;}
+.header{padding:18px 12px;border-bottom:1px solid rgba(212,175,55,0.06);color:var(--gold);font-weight:800;text-align:center}
+.note{color:var(--muted);font-size:13px;margin-top:6px;text-align:center}
+.list{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.6)}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.left{flex:1;min-width:0}
+.title{font-weight:700;font-size:15px;white-space:normal}
+.small{color:var(--muted);font-size:13px;margin-top:6px}
+.controls{display:flex;gap:8px;align-items:center}
+.qty-control{display:flex;align-items:center;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
+.qty-btn{background:transparent;border:none;color:#fff;padding:8px 10px;cursor:pointer;font-size:16px}
+.qty-val{padding:8px 10px;background:rgba(255,255,255,0.02);min-width:36px;text-align:center;font-weight:700}
+.remove-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#ddd;padding:8px 10px;border-radius:8px;cursor:pointer}
 
-      document.getElementById("total").textContent = total.toFixed(2);
-    }
-  </script>
+/* footer action */
+.footer{position:fixed;left:0;right:0;bottom:0;padding:12px;background:linear-gradient(180deg,rgba(0,0,0,0),#070707 10%);display:flex;justify-content:center;align-items:center;gap:12px;z-index:1000}
+.btn-primary{background:var(--gold);color:#000;padding:12px 18px;border-radius:10px;border:none;font-weight:800;cursor:pointer}
+.btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;color:#ddd;cursor:pointer}
+
+/* empty cart */
+.empty {text-align:center;color:var(--muted);padding:40px 12px}
+
+/* print-friendly style (used by print window) */
+.print-area{font-family:monospace;font-size:14px;color:#000;background:#fff;padding:12px}
+.print-header{font-weight:800;margin-bottom:8px}
+.print-line{border-top:1px dashed #000;margin:8px 0;padding-top:6px}
+@media print{
+  body * {visibility:hidden}
+  #printable {visibility:visible;position:fixed;left:0;top:0;right:0}
+}
+</style>
 </head>
+<body>
 
-<body onload="loadCart()">
-  <h1>Your Cart</h1>
+<div class="header">ORDER BASKET — Mingle Bistro (Funan)</div>
+<div class="container">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+    <div>
+      <div style="font-weight:800">Table: <span id="tableNumber">—</span></div>
+      <div class="note">No prices shown. This copy is for kitchen use only.</div>
+    </div>
+    <div>
+      <button class="btn-secondary" onclick="clearCartConfirm()">Clear All</button>
+    </div>
+  </div>
 
-  <ul id="cart-items"></ul>
+  <div id="cartList" class="list" aria-live="polite"></div>
 
-  <h3>Total: $<span id="total">0.00</span></h3>
+  <div id="empty" class="empty" style="display:none">
+    Your cart is empty. Go back to the menu to add items.
+  </div>
+</div>
 
-  <br>
-  <a href="menu.html">
-    <button>Back to Menu</button>
-  </a>
+<!-- footer with Place Order -->
+<div class="footer">
+  <button class="btn-secondary" onclick="goBack()">Back to Menu</button>
+  <button class="btn-primary" onclick="placeOrder()">Place Order</button>
+</div>
+
+<script>
+/* ---------- Configuration: set these if you want server/webhook automatic printing ----------
+  - Set mainPrinterWebhook to the URL of your print server (for the main/front printer).
+  - Set kitchenPrinterWebhook to the URL of your kitchen print server endpoint.
+  If empty (''), webhook POST will be skipped and we will only open a print preview window.
+  Example:
+    const mainPrinterWebhook = 'https://your-print-server.local/print';
+    const kitchenPrinterWebhook = 'https://your-print-server.local/kitchen-print';
+--------------------------------------------------------------------------------------- */
+const mainPrinterWebhook = '';      // optional: POST order JSON here for main printer
+const kitchenPrinterWebhook = '';   // optional: POST order JSON here for kitchen printer
+
+/* ---------- Utilities ---------- */
+function qsParam(name) {
+  const u = new URL(window.location.href);
+  return u.searchParams.get(name);
+}
+
+function getCart(){
+  try { return JSON.parse(localStorage.getItem('cart')||'[]'); }
+  catch(e){ return []; }
+}
+function saveCart(cart){
+  localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart();
+}
+
+/* ---------- Table detection from URL ?table=12 ---------- */
+function getTableNumber(){
+  const t = qsParam('table');
+  if(t && t.trim()!=='') return t.trim();
+  return '—';
+}
+
+/* ---------- Render Cart UI (no prices) ---------- */
+function renderCart(){
+  const list = document.getElementById('cartList');
+  list.innerHTML = '';
+  const cart = getCart();
+  if(!cart || cart.length===0){
+    document.getElementById('empty').style.display = 'block';
+    return;
+  } else {
+    document.getElementById('empty').style.display = 'none';
+  }
+
+  cart.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    // left area
+    const left = document.createElement('div');
+    left.className = 'left';
+    const title = document.createElement('div');
+    title.className = 'title';
+    title.textContent = item.name;
+    left.appendChild(title);
+    if(item.request && item.request.trim()!==''){
+      const req = document.createElement('div');
+      req.className = 'small';
+      req.textContent = 'Special: ' + item.request;
+      left.appendChild(req);
+    }
+    // right controls
+    const right = document.createElement('div');
+    right.className = 'controls';
+    // quantity controls
+    const qtyWrap = document.createElement('div');
+    qtyWrap.className = 'qty-control';
+    const btnMinus = document.createElement('button');
+    btnMinus.className = 'qty-btn';
+    btnMinus.textContent = '−';
+    btnMinus.onclick = ()=> { changeQty(idx, -1); };
+    const qtyVal = document.createElement('div');
+    qtyVal.className = 'qty-val';
+    qtyVal.textContent = item.qty || 1;
+    const btnPlus = document.createElement('button');
+    btnPlus.className = 'qty-btn';
+    btnPlus.textContent = '+';
+    btnPlus.onclick = ()=> { changeQty(idx, +1); };
+    qtyWrap.appendChild(btnMinus);
+    qtyWrap.appendChild(qtyVal);
+    qtyWrap.appendChild(btnPlus);
+
+    // remove button
+    const remove = document.createElement('button');
+    remove.className = 'remove-btn';
+    remove.textContent = 'Remove';
+    remove.onclick = ()=> { removeItem(idx); };
+
+    right.appendChild(qtyWrap);
+    right.appendChild(remove);
+
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.appendChild(left);
+    row.appendChild(right);
+
+    card.appendChild(row);
+    list.appendChild(card);
+  });
+
+  // update table number
+  document.getElementById('tableNumber').textContent = getTableNumber();
+}
+
+/* ---------- Change qty / Remove ---------- */
+function changeQty(index, delta){
+  const cart = getCart();
+  if(!cart[index]) return;
+  cart[index].qty = Math.max(1, (Number(cart[index].qty) || 1) + delta);
+  saveCart(cart);
+}
+
+function removeItem(index){
+  const cart = getCart();
+  if(!cart[index]) return;
+  if(!confirm('Remove "' + cart[index].name + '" from the order?')) return;
+  cart.splice(index,1);
+  saveCart(cart);
+}
+
+/* ---------- Clear cart ---------- */
+function clearCartConfirm(){
+  if(confirm('Clear all items from cart?')) {
+    localStorage.removeItem('cart');
+    renderCart();
+  }
+}
+
+/* ---------- Back to Menu ---------- */
+function goBack(){
+  // if your menu lives at /sharing-plates.html or index.html adjust accordingly
+  // We'll navigate back to the site's homepage (index.html) or menu root.
+  // If you want to return to the same page the user came from, use history.back()
+  if(document.referrer.includes(window.location.hostname)) {
+    history.back();
+  } else {
+    // change this if your menu home page path differs
+    window.location.href = 'sharing-plates.html';
+  }
+}
+
+/* ---------- Build printable string (Option 1 layout) ---------- */
+function buildPrintText(order){
+  // order = { table, items: [ {name, qty, request} ], created_at }
+  const lines = [];
+  lines.push('TABLE: ' + (order.table || '—'));
+  lines.push('────────────────────────');
+  lines.push('');
+  order.items.forEach(it => {
+    lines.push(it.name + ' × ' + it.qty);
+    if(it.request && it.request.trim()!==''){
+      lines.push('Special: ' + it.request);
+    }
+    lines.push(''); // empty line between items
+  });
+  lines.push('────────────────────────');
+  lines.push('Time: ' + order.created_at);
+  return lines.join('\n');
+}
+
+/* ---------- Open print window and trigger print ---------- */
+function openPrintWindow(text, titleFallback){
+  // Create a small printable window with monospace style for kitchen
+  const w = window.open('', '_blank', 'toolbar=0,location=0,menubar=0');
+  if(!w){
+    alert('Popup blocked. Please allow popups for this site to print orders.');
+    return Promise.reject('popup-blocked');
+  }
+
+  const html = `
+    <html><head>
+    <meta charset="utf-8"/>
+    <title>${titleFallback || 'Kitchen Order'}</title>
+    <style>
+      body{font-family:monospace;white-space:pre-wrap;padding:12px;color:#000}
+      .header{font-weight:800;margin-bottom:8px}
+      .divider{border-top:1px dashed #000;margin:8px 0}
+    </style>
+    </head><body>
+      <div id="printable">
+        <div class="header">${titleFallback || 'Kitchen Order'}</div>
+        <pre style="font-size:14px;line-height:1.3">${escapeHtml(text)}</pre>
+      </div>
+      <script>
+        window.onload = function(){
+          setTimeout(function(){ window.print(); }, 200);
+        };
+      </script>
+    </body></html>
+  `;
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+  return Promise.resolve(true);
+}
+
+/* minimal html escape */
+function escapeHtml(str){
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ---------- Place Order ---------- */
+async function placeOrder(){
+  const cart = getCart();
+  if(!cart || cart.length===0){ alert('Cart is empty'); return; }
+
+  const order = {
+    table: getTableNumber(),
+    items: cart.map(it => ({ name: it.name, qty: it.qty || 1, request: it.request || '' })),
+    created_at: new Date().toLocaleString()
+  };
+
+  // 1) Open print window(s) for immediate printing (kitchen/main)
+  const text = buildPrintText(order);
+
+  // open kitchen print preview (for immediate print)
+  try {
+    await openPrintWindow(text, 'KITCHEN — Table ' + order.table);
+  } catch(e){
+    console.warn('print blocked or failed', e);
+  }
+
+  // 2) Optionally POST to print webhooks (for automatic print server)
+  // If you have a print server (recommended), set the webhook URLs at the top of this file.
+  async function postIf(url){
+    if(!url || url.trim()==='') return null;
+    try {
+      const resp = await fetch(url, {
+        method:'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(order)
+      });
+      return resp.ok ? await resp.text() : null;
+    } catch(err){
+      console.error('Webhook post failed', url, err);
+      return null;
+    }
+  }
+
+  // send to main and kitchen webhooks if configured
+  if(mainPrinterWebhook || kitchenPrinterWebhook){
+    // fire & forget but await so user sees errors (optional)
+    try {
+      await Promise.all([
+        postIf(mainPrinterWebhook),
+        postIf(kitchenPrinterWebhook)
+      ]);
+    } catch(e){
+      console.warn('Webhook errors', e);
+    }
+  }
+
+  // 3) clear cart & confirm to user
+  localStorage.removeItem('cart');
+  renderCart();
+  alert('Order placed! The kitchen has received the order for Table ' + order.table + '.');
+}
+
+/* ---------- Init ---------- */
+document.addEventListener('DOMContentLoaded', function(){
+  // display table number
+  document.getElementById('tableNumber').textContent = getTableNumber();
+  renderCart();
+});
+</script>
 </body>
-</html> 
-
-<br>
-<a href="checkout.html">
-  <button>Checkout</button>
-</a>
-
-
-
+</html>
