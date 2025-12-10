@@ -127,6 +127,18 @@ h1{
   margin-top:18px;
   cursor:pointer;
 }
+.clear-btn{
+  width:100%;
+  padding:12px;
+  border-radius:50px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.05);
+  color:#ffb3b3;
+  font-size:15px;
+  font-weight:600;
+  margin-top:14px;
+  cursor:pointer;
+}
 
 /* -------------------- LOADING MODAL -------------------- */
 #loadingOverlay{
@@ -190,6 +202,9 @@ h1{
 <div id="cartContainer"></div>
 
 <button class="back-btn" onclick="goBack()">← Back to Menu</button>
+
+<button class="clear-btn" onclick="openClearConfirm()">Clear Cart</button>
+
 <button class="place-btn" onclick="placeOrder()">Place Order</button>
 
 <!-- Loading Animation -->
@@ -215,6 +230,19 @@ function getTableNumber(){
 document.getElementById("tableLabel").textContent =
   "Table " + getTableNumber() + " — Order Summary";
 
+function openClearConfirm(){
+  document.getElementById("clearConfirm").style.display = "flex";
+}
+
+function closeClearConfirm(){
+  document.getElementById("clearConfirm").style.display = "none";
+}
+
+function confirmClear(){
+  localStorage.removeItem("cart");
+  closeClearConfirm();
+  renderCart();
+}
 // -----------------------------
 // CART FUNCTIONS
 // -----------------------------
@@ -333,6 +361,54 @@ function placeOrder(){
 
 renderCart();
 </script>
+
+<!-- Clear Cart Confirmation Modal -->
+<div id="clearConfirm" 
+     style="
+       position:fixed; top:0; left:0; right:0; bottom:0;
+       display:none; justify-content:center; align-items:center;
+       background:rgba(0,0,0,0.75); backdrop-filter:blur(3px);
+       z-index:999;
+     ">
+  
+  <div style="
+    background:rgba(20,20,20,0.85); 
+    border:1px solid rgba(255,255,255,0.08);
+    padding:24px;  
+    width:80%; max-width:360px;
+    border-radius:18px;
+    text-align:center;
+    color:white;
+  ">
+    <div style="font-size:18px; font-weight:700; margin-bottom:10px; color:var(--gold);">
+      Clear Cart?
+    </div>
+
+    <div style="font-size:14px; color:#ccc; margin-bottom:22px;">
+      This will remove all items from your order.
+    </div>
+
+    <div style="display:flex; gap:10px;">
+      <button onclick="confirmClear()" 
+              style="
+                flex:1; padding:12px; border-radius:10px; 
+                background:rgba(255,0,0,0.18); color:#ff8080;
+                border:1px solid rgba(255,0,0,0.4);
+              ">
+        Yes, Clear All
+      </button>
+
+      <button onclick="closeClearConfirm()" 
+              style="
+                flex:1; padding:12px; border-radius:10px; 
+                background:rgba(255,255,255,0.05); 
+                color:#ddd; border:1px solid rgba(255,255,255,0.1);
+              ">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
