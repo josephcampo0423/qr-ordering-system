@@ -15,6 +15,17 @@
   --glass-border: rgba(212,175,55,0.22);
   --accent-shadow: rgba(212,175,55,0.08);
 }
+@keyframes flyToCart {
+  0% { opacity:1; transform:scale(1); }
+  100% { opacity:0.2; transform:scale(0.2); }
+}
+
+@keyframes cartBounce {
+  0% { transform:scale(1); }
+  40% { transform:scale(1.25); }
+  100% { transform:scale(1); }
+}
+
 
 /* Base */
 html,body{
@@ -22,6 +33,24 @@ html,body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   -webkit-font-smoothing:antialiased;
 }
+<div id="cartIcon" style="
+  position:fixed;
+  top:16px; right:16px;
+  width:42px; height:42px;
+  border-radius:50%;
+  border:1px solid var(--gold);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:var(--gold);
+  font-size:20px;
+  cursor:pointer;
+  z-index:9999;
+  background:rgba(0,0,0,0.5);
+">
+  🛒
+</div>
+
 .header{
   background:#000;color:var(--gold);padding:18px;
   text-align:center;font-weight:700;letter-spacing:1px;
@@ -176,6 +205,16 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
   </symbol>
 </svg>
 
+<div id="flyingItem" style="
+  position:fixed;
+  width:40px; height:40px;
+  border-radius:50%;
+  background:var(--gold);
+  opacity:0;
+  pointer-events:none;
+  z-index:99999;
+"></div>
+
 <script>
 /* Helper: Cart storage */
 function getCart(){ return JSON.parse(localStorage.getItem('cart')||'[]'); }
@@ -262,11 +301,49 @@ function openItem(item){
     const special = document.getElementById('specialRequestInput').value.trim();
 
     // push into cart (as single entry with qty)
+    function addToCart(){
     const cart = getCart();
-    cart.push({ name: finalName, price: finalPrice, qty: qty, request: special });
+
+    cart.push({
+      id: item.id,
+      name: finalName,
+      price: finalPrice,
+      qty: qtyCount,
+      request: specialRequest
+    });
+
     saveCart(cart);
-    alert('Added to cart: ' + finalName + (special ? (' — ' + special) : ''));
-    closeModal();
+
+    flyToCart();   // ← ADD THIS
+
+    setTimeout(() => {
+      closeModal();
+    }, 300); // close slightly after animation starts
+}
+    function flyToCart(){
+  const modal = document.querySelector("#itemModal .modal-card");
+  const fly = document.getElementById("flyingItem");
+  const cartIcon = document.getElementById("cartIcon");
+
+  const modalRect = modal.getBoundingClientRect();
+  const cartRect = cartIcon.getBoundingClientRect();
+
+  fly.style.left = (modalRect.left + modalRect.width/2 - 20) + "px";
+  fly.style.top = (modalRect.top + modalRect.height/2 - 20) + "px";
+  fly.style.opacity = "1";
+
+  fly.style.transition = "all 0.6s cubic-bezier(.2,.8,.2,1)";
+  fly.style.transform = `translate(${cartRect.left - modalRect.left}px,
+                                     ${cartRect.top - modalRect.top}px)
+                          scale(0.1)`;
+
+  setTimeout(() => {
+    fly.style.opacity = "0";
+    fly.style.transform = "scale(0.1)";
+    cartIcon.style.animation = "cartBounce 0.4s ease";
+    setTimeout(()=> cartIcon.style.animation = "", 400);
+  }, 600);
+}
   };
 
   // show modal
