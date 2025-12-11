@@ -1,311 +1,437 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta charset="utf-8">
-<title>Mingle Bistro — Page 1</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mingle Bistro — Sharing Plates</title>
 
 <style>
 :root{
   --gold:#D4AF37;
-  --bg:#0e0e0e;
-  --card:#161616;
-  --muted:#cfcfcf;
+  --bg:#0f0f0f;
+  --card:#141414;
+  --muted:#bfbfbf;
+  --glass-border: rgba(212,175,55,0.16);
+  --text:#fff;
 }
 
-/* Base */
-html,body{
-  margin:0; padding:0;
-  background:var(--bg); color:#fff;
-  font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-}
+/* Reset / Base */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
 
-/* TOP HEADER */
+/* Top header (restaurant name only) */
 .top-header{
-  padding:20px 16px 6px 16px;
-  border-bottom:1px solid rgba(212,175,55,0.08);
+  padding:18px 16px 10px 16px;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
 }
-
 .restaurant-name{
-  font-size:26px;
+  font-size:24px;
   font-weight:800;
   color:var(--gold);
+  line-height:1;
 }
 
 /* Container */
-.container{
-  padding:18px 14px 110px 14px;
-}
+.container{padding:12px 12px 120px 12px}
 
 /* Tabs */
-.tab-row{
-  display:flex; gap:8px;
-  overflow-x:auto; white-space:nowrap;
-  padding-bottom:16px;
-}
-.tab{
-  padding:10px 14px;
-  border-radius:20px;
-  border:1px solid rgba(212,175,55,0.15);
-  color:var(--gold);
-  background:transparent;
-  cursor:pointer;
-  font-weight:600;
-}
-.tab.active{
-  background:rgba(212,175,55,0.10);
-}
+.tab-row{display:flex;gap:8px;overflow:auto;padding:12px 6px 6px;white-space:nowrap}
+.tab{padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);color:var(--gold);background:transparent;cursor:pointer;font-weight:700;flex:0 0 auto}
+.tab.active{background:rgba(212,175,55,0.08)}
 
-/* Panels */
-.tab-panel{ display:none; }
-.tab-panel.show{ display:block; }
-
-/* Section title (Inside pages only) */
-.section-title{ 
-  color:var(--gold); 
-  font-weight:700; 
-  font-size:17px;
-  margin-bottom:12px;
-}
+/* Section title (inside tab content) */
+.section-title{color:var(--gold);font-weight:800;margin:6px 6px 12px 6px;font-size:16px;border-left:4px solid var(--gold);padding-left:10px}
 
 /* Grid */
-.grid{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
-}
-@media(min-width:900px){
-  .grid{ grid-template-columns:repeat(2,1fr); }
-}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} }
 
 /* Item Card */
 .item-card{
   background:var(--card);
   padding:14px;
   border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.5);
+  box-shadow:0 8px 22px rgba(0,0,0,0.6);
   cursor:pointer;
+  transition:transform .10s ease;
 }
-.item-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-}
-.item-title{
-  font-size:15px; font-weight:700;
-}
-.item-desc{
-  margin-top:6px; color:var(--muted); font-size:13px;
-}
-.price{ 
-  color:#fff; font-weight:700; min-width:50px; text-align:right;
-}
+.item-card:active{transform:scale(.998)}
+.item-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.item-left{min-width:0}
+.item-title{font-weight:800;font-size:15px;white-space:normal}
+.item-desc{color:var(--muted);font-size:13px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.price{color:#ddd;font-weight:800;min-width:54px;text-align:right}
 
-/* CART ICON — FIXED */
-#cartWrap{
-  position:fixed;
-  bottom:90px;        /* ← raised so it doesn't cover page numbers */
-  right:20px;
-  z-index:9999;
-}
-#cartBtn{
-  width:54px; height:54px;
-  border-radius:16px;
-  background:rgba(212,175,55,0.12);
-  border:1px solid rgba(212,175,55,0.25);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  position:relative;
-}
-#cartBtn svg{
-  width:28px; height:28px;
-  stroke:var(--gold); fill:none;
-}
-#cartBadge{
-  position:absolute;
-  top:-4px; right:-4px;
-  background:var(--gold);
-  color:#000;
-  font-size:12px;
-  padding:2px 6px;
-  border-radius:50%;
-  font-weight:900;
-  display:none;
-}
-
-/* Pagination */
-.footer-pages{
-  position:fixed;
-  left:0; right:0;
-  bottom:0;
-  background:#000;
-  padding:10px;
-  display:flex;
-  justify-content:center;
-  gap:6px;
-  border-top:1px solid rgba(255,255,255,0.08);
-  z-index:999;
-}
-.page-num{
-  padding:8px 14px;
-  border-radius:6px;
-  background:rgba(255,255,255,0.05);
-  color:#ccc;
-  font-weight:600;
-}
-.page-num.current{
-  background:var(--gold);
-  color:#000;
-}
-
-/* MODAL */
-.modal-bg{
-  display:none;
-  position:fixed; inset:0;
-  background:rgba(0,0,0,0.55);
-  backdrop-filter:blur(6px);
-  z-index:99999;
-  align-items:center; justify-content:center;
-}
-
+/* Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;z-index:9999;padding:18px}
 .modal-card{
-  width:clamp(320px, 90vw, 470px);
-  background:#171717;
-  border-radius:18px;
-  padding:20px;
-  border:1px solid rgba(255,255,255,0.10);
-  max-height:85vh;
-  overflow-y:auto;
+  width:clamp(320px,92vw,520px);
+  max-height:86vh;
+  background:linear-gradient(180deg, #101010, #0d0d0d);
+  border-radius:16px;padding:18px;border:1px solid var(--glass-border);overflow:auto;
+  box-shadow:0 18px 40px rgba(0,0,0,0.6);
+  transform:translateY(6px);opacity:0;transition:transform .18s ease,opacity .18s ease;
 }
+.modal-bg.show .modal-card{transform:translateY(0);opacity:1}
 
-/* Close button fix */
-.modal-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:12px;
-}
-.modal-title div{
-  flex:1;
-  min-width:0;
-}
+/* modal header */
+.modal-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.modal-title > div{flex:1;min-width:0}
+.modal-name{font-weight:800;color:var(--gold);font-size:17px;line-height:1.1}
+.modal-price{font-weight:800;color:#fff;font-size:14px;opacity:0.95;margin-top:4px}
+.modal-desc{color:var(--muted);margin-top:10px;font-size:13px}
+
+/* fixed close button size (prevents stretching) */
 .modal-close-btn{
-  flex:0 0 auto;
-  width:32px; height:32px;
-  border-radius:50%;
-  border:1px solid var(--gold);
-  background:transparent;
-  color:var(--gold);
-  font-size:16px;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
+  flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--gold);background:transparent;color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:700;font-size:15px;padding:0;
 }
 
-/* Buttons */
-.btn-pill{
-  width:100%;
-  padding:14px 18px;
-  border-radius:999px;
-  border:1px solid var(--gold);
-  background:transparent;
-  color:var(--gold);
-  font-size:15px;
-  font-weight:800;
-  margin-top:14px;
-}
-.cancel-btn{
-  width:65%;
-  padding:12px;
-  margin:12px auto 0 auto;
-  display:block;
-  border-radius:12px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.15);
-  color:#ddd;
-  font-size:15px;
-  font-weight:600;
+/* options / selectors */
+.option-block{margin-top:12px}
+.radio-row{display:flex;gap:8px;margin-top:10px}
+.radio{flex:1;padding:10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);text-align:center;color:#ddd;font-weight:600}
+
+/* textarea (special request) */
+textarea{width:100%;height:72px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.35);padding:10px;color:#fff;font-size:14px;resize:none;outline:none;margin-top:8px}
+
+/* qty row */
+.qty-row{display:flex;align-items:center;gap:12px;margin-top:12px}
+.qty-btn{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.qty-val{min-width:36px;text-align:center;font-weight:800}
+
+/* Add + Cancel buttons */
+.add-row{margin-top:16px;text-align:center}
+.btn-pill{display:inline-block;width:100%;padding:12px 18px;border-radius:999px;text-align:center;background:transparent;color:var(--gold);border:1px solid var(--gold);font-weight:800;font-size:15px;cursor:pointer}
+.cancel-btn{display:block;margin:12px auto 0 auto;width:70%;padding:12px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#ddd;font-weight:700;cursor:pointer}
+
+/* flying clone holder (empty container) */
+#flyingCloneHolder{position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none;z-index:99998}
+
+/* bottom pagination */
+.footer-pages{position:fixed;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(180deg,rgba(0,0,0,0),#070707 20%);display:flex;justify-content:center;gap:8px;z-index:900}
+.page-num{padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.03);color:#ddd;border:1px solid rgba(255,255,255,0.03);font-weight:600}
+.page-num.current{background:var(--gold);color:#000;border-color:var(--gold)}
+
+/* cart bottom-right icon */
+#cartWrap{position:fixed;bottom:92px;right:18px;z-index:1000} /* raised above pagination */
+#cartBtn{width:54px;height:54px;border-radius:14px;background:linear-gradient(180deg, rgba(212,175,55,0.06), rgba(212,175,55,0.02));border:1px solid rgba(212,175,55,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+#cartBtn svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:1.2}
+#cartBadge{position:absolute;top:-6px;right:-6px;background:var(--gold);color:#000;padding:4px 8px;border-radius:999px;font-weight:800;font-size:12px;display:none;min-width:20px;text-align:center}
+
+/* small screens adjustments */
+@media(max-width:420px){
+  .restaurant-name{font-size:20px}
+  #cartWrap{bottom:86px; right:14px}
+  #cartBtn{width:50px;height:50px}
 }
 </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
+<!-- Top header -->
 <div class="top-header">
   <div class="restaurant-name">Mingle Bistro (Funan)</div>
 </div>
 
+<!-- Main content -->
 <div class="container">
 
   <!-- Tabs -->
-  <div class="tab-row">
-    <button class="tab active" data-tab="sharing" onclick="openTab('sharing')">Sharing Plates</button>
-    <button class="tab" data-tab="sashimi" onclick="openTab('sashimi')">Sashimi & Crudo</button>
-    <button class="tab" data-tab="fries" onclick="openTab('fries')">Fries</button>
+  <div class="tab-row" role="tablist" aria-label="Menu sections">
+    <button class="tab active" data-tab="sharing" onclick="openTab('sharing')" role="tab" aria-selected="true">Sharing Plates</button>
+    <button class="tab" data-tab="sashimi" onclick="openTab('sashimi')" role="tab" aria-selected="false">Sashimi & Crudo</button>
+    <button class="tab" data-tab="fries" onclick="openTab('fries')" role="tab" aria-selected="false">Skin-on & Twister Fries</button>
   </div>
 
-  <!-- Sharing Plates -->
-  <div class="tab-panel show" data-panel="sharing">
+  <!-- SHARING PLATES TAB -->
+  <div class="tab-panel" data-panel="sharing" style="display:block">
     <div class="section-title">Sharing Plates</div>
-
     <div class="grid">
-
-      <div class="item-card" onclick="openItem('Toasted Garlic Sourdough Bread', 8, 'Toasted sourdough with garlic butter')">
+      <!-- 1 -->
+      <div class="item-card" onclick="openItem({id:'bread',name:'Toasted Garlic Sourdough Bread',price:8,desc:'Toasted sourdough with garlic confit butter'})">
         <div class="item-row">
-          <div>
-            <div class="item-title">Toasted Garlic Sourdough Bread</div>
-            <div class="item-desc">Toasted sourdough with garlic butter</div>
+          <div class="item-left">
+            <div class="item-title">TOASTED GARLIC SOURDOUGH BREAD</div>
+            <div class="item-desc">Toasted sourdough with garlic confit butter</div>
           </div>
           <div class="price">$8</div>
         </div>
       </div>
 
-      <div class="item-card" onclick="openItem('Crispy Spicy Midwings', 14, 'Crispy spicy wings')">
+      <!-- 2 -->
+      <div class="item-card" onclick="openItem({id:'wings',name:'Crispy Spicy Midwings',price:14,desc:'5 pcs midwings, curry spices, curry ketchup'})">
         <div class="item-row">
-          <div>
-            <div class="item-title">Crispy Spicy Midwings</div>
-            <div class="item-desc">Crispy spicy wings</div>
+          <div class="item-left">
+            <div class="item-title">CRISPY SPICY MIDWINGS</div>
+            <div class="item-desc">5 pcs midwings, curry spices, curry ketchup</div>
           </div>
           <div class="price">$14</div>
         </div>
       </div>
 
-      <!-- Add your other items here identical style -->
+      <!-- 3 -->
+      <div class="item-card" onclick="openItem({id:'foie',name:'Foie Gras with Malibu Compressed Rock Melon',price:23,desc:'Pan-seared foie gras, Malibu compressed rock melon'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">FOIE GRAS WITH MALIBU COMPRESSED ROCK MELON</div>
+            <div class="item-desc">Pan-seared foie gras, Malibu compressed rock melon</div>
+          </div>
+          <div class="price">$23</div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="item-card" onclick="openItem({id:'provola',name:'Smoked Provola Cheese Tempura with Aged Prosciutto',price:21,desc:'Smoked provola tempura with aged prosciutto'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">SMOKED PROVOLA CHEESE TEMPURA WITH AGED PROSCIUTTO</div>
+            <div class="item-desc">Smoked provola tempura with aged prosciutto</div>
+          </div>
+          <div class="price">$21</div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="item-card" onclick="openItem({id:'corn',name:'Fried Corn Ribs with Assam Aioli',price:15,desc:'Fried corn ribs with Assam aioli'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">FRIED CORN RIBS WITH ASSAM AIOLI</div>
+            <div class="item-desc">Fried corn ribs with Assam aioli</div>
+          </div>
+          <div class="price">$15</div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="item-card" onclick="openItem({id:'brusch',name:'Sourdough Bruschetta with Smoked Salmon',price:16,desc:'Sourdough bruschetta topped with smoked salmon'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">SOURDOUGH BRUSCHETTA WITH SMOKED SALMON</div>
+            <div class="item-desc">Sourdough bruschetta topped with smoked salmon</div>
+          </div>
+          <div class="price">$16</div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="item-card" onclick="openItem({id:'truffle',name:'Baked Truffle Brie Cheese',price:21,desc:'Baked truffle brie cheese (add aged prosciutto +$7)',prosciutto:true})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">BAKED TRUFFLE BRIE CHEESE</div>
+            <div class="item-desc">Baked truffle brie cheese (add aged prosciutto +$7)</div>
+          </div>
+          <div class="price">$21</div>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="item-card" onclick="openItem({id:'squid',name:'Szechuan Spice Crispy Squid',price:16,desc:'Crispy squid tossed in Szechuan spices'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">SZECHUAN SPICE CRISPY SQUID</div>
+            <div class="item-desc">Crispy squid tossed in Szechuan spices</div>
+          </div>
+          <div class="price">$16</div>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="item-card" onclick="openItem({id:'mussels',name:'Spicy Live Mussels & White Clams Stew',price:20,desc:'Spicy mussels and clams in white broth'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">SPICY LIVE MUSSELS & WHITE CLAMS STEW</div>
+            <div class="item-desc">Spicy mussels and clams in white broth</div>
+          </div>
+          <div class="price">$20</div>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div class="item-card" onclick="openItem({id:'burrata',name:'Burrata & Aged Prosciutto Salad',price:25,desc:'Burrata, aged prosciutto and seasonal greens'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">BURRATA & AGED PROSCIUTTO SALAD</div>
+            <div class="item-desc">Burrata, aged prosciutto and seasonal greens</div>
+          </div>
+          <div class="price">$25</div>
+        </div>
+      </div>
 
     </div>
   </div>
 
-  <!-- Sashimi -->
-  <div class="tab-panel" data-panel="sashimi">
+  <!-- SASHIMI & CRUDO TAB -->
+  <div class="tab-panel" data-panel="sashimi" style="display:none">
     <div class="section-title">Sashimi & Crudo</div>
+    <div class="grid">
+      <div class="item-card" onclick="openItem({id:'scallop',name:'Hokkaido Scallops Crudo',price:19,desc:'Hokkaido scallops with yuzu vinaigrette'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">HOKKAIDO SCALLOPS CRUDO</div>
+            <div class="item-desc">Hokkaido scallops with yuzu vinaigrette</div>
+          </div>
+          <div class="price">$19</div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="openItem({id:'salmon',name:'Salmon Sashimi',price:15,desc:'Fresh salmon sashimi (5 pcs)'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">SALMON SASHIMI</div>
+            <div class="item-desc">Fresh salmon sashimi (5 pcs)</div>
+          </div>
+          <div class="price">$15</div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="openItem({id:'octopus',name:'Octopus Sashimi',price:13,desc:'Octopus sashimi (5 pcs)'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">OCTOPUS SASHIMI</div>
+            <div class="item-desc">Octopus sashimi (5 pcs)</div>
+          </div>
+          <div class="price">$13</div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="openItem({id:'tartare',name:'Spicy Salmon Tartare with Crispy Poppadum',price:18,desc:'Spicy salmon tartare served with crispy poppadum'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">SPICY SALMON TARTARE WITH CRISPY POPPADUM</div>
+            <div class="item-desc">Spicy salmon tartare served with crispy poppadum</div>
+          </div>
+          <div class="price">$18</div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="openItem({id:'oysters',name:'Japanese Hyogo Prefecture Oysters (1/2 Dozen)',price:28,desc:'Hyogo oysters (6 pcs)'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">JAPANESE HYOGO PREFECTURE OYSTERS — 1/2 DOZEN</div>
+            <div class="item-desc">Hyogo oysters (6 pcs)</div>
+          </div>
+          <div class="price">$28</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- Fries -->
-  <div class="tab-panel" data-panel="fries">
-    <div class="section-title">Fries</div>
+  <!-- FRIES TAB -->
+  <div class="tab-panel" data-panel="fries" style="display:none">
+    <div class="section-title">Skin-on & Twister Fries</div>
+    <div class="grid">
+      <div class="item-card" onclick="openItem({id:'salted',name:'Salted Fries',price:8,desc:'Salted fries',type:'fries'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">SALTED FRIES</div>
+            <div class="item-desc">Salted fries</div>
+          </div>
+          <div class="price">$8</div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="openItem({id:'truffleFries',name:'Truffle & Grana Padano Fries',price:15,desc:'Truffle oil & Grana Padano',type:'fries'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">TRUFFLE & GRANA PADANO FRIES</div>
+            <div class="item-desc">Truffle oil & Grana Padano</div>
+          </div>
+          <div class="price">$15</div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="openItem({id:'noriFries',name:'Nori Fries with Wasabi Aioli',price:13,desc:'Nori & wasabi aioli',type:'fries'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">NORI FRIES WITH WASABI AIOLI</div>
+            <div class="item-desc">Nori & wasabi aioli</div>
+          </div>
+          <div class="price">$13</div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="openItem({id:'malaFries',name:'Mala Garlic Fries',price:13,desc:'Mala garlic fries',type:'fries'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">MALA GARLIC FRIES</div>
+            <div class="item-desc">Mala garlic fries</div>
+          </div>
+          <div class="price">$13</div>
+        </div>
+      </div>
+
+      <div class="item-card" onclick="openItem({id:'nachoFries',name:'Nacho Cheese & Assam Aioli Fries',price:14,desc:'Nacho cheese & Assam aioli',type:'fries'})">
+        <div class="item-row">
+          <div class="item-left">
+            <div class="item-title">NACHO CHEESE & ASSAM AIOLI FRIES</div>
+            <div class="item-desc">Nacho cheese & Assam aioli</div>
+          </div>
+          <div class="price">$14</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
+</div><!-- /.container -->
+
+<!-- Modal -->
+<div id="modalBg" class="modal-bg" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalNamePrice" onclick="event.stopPropagation()">
+    <div class="modal-title">
+      <div>
+        <div id="modalNamePrice" class="modal-name">Item name</div>
+        <div id="modalPrice" class="modal-price">$0</div>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal()" aria-label="Close">✕</button>
+    </div>
+
+    <div id="modalDesc" class="modal-desc">Description ...</div>
+
+    <!-- prosciutto option (for truffle brie) -->
+    <div id="prosciuttoOption" class="option-block" style="display:none">
+      <div style="font-weight:700;color:#ddd;margin-bottom:8px">Choose Option</div>
+      <label class="radio"><input type="radio" name="truf_opt" value="regular"> Regular</label>
+      <label class="radio" style="margin-left:8px"><input type="radio" name="truf_opt" value="with"> With Aged Prosciutto (+$7)</label>
+    </div>
+
+    <!-- fries selectors -->
+    <div id="friesSelector" class="option-block" style="display:none">
+      <div style="font-weight:700;color:#ddd;margin-bottom:8px">Choose Fries Type</div>
+      <div class="radio-row">
+        <label class="radio"><input type="radio" name="fries_choice" value="Skin-on Fries"> Skin-on</label>
+        <label class="radio"><input type="radio" name="fries_choice" value="Twister Fries"> Twister</label>
+      </div>
+    </div>
+
+    <!-- special request -->
+    <div class="option-block">
+      <div style="font-weight:700;color:#ddd;margin-bottom:8px">Special Request (Optional)</div>
+      <textarea id="specialRequestInput" placeholder="e.g., less oil, no onion, sauce on the side"></textarea>
+    </div>
+
+    <!-- quantity -->
+    <div class="qty-row" aria-label="Quantity selector">
+      <button class="qty-btn" onclick="qtyChange(-1)" aria-label="Decrease quantity">−</button>
+      <div class="qty-val" id="qtyValue">1</div>
+      <button class="qty-btn" onclick="qtyChange(1)" aria-label="Increase quantity">+</button>
+    </div>
+
+    <div class="add-row">
+      <button id="modalAddBtn" class="btn-pill" aria-label="Add to cart">Add to Cart</button>
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
 </div>
 
-<!-- CART ICON -->
-<div id="cartWrap">
-  <div id="cartBtn" onclick="location.href='cart.html'">
-    <svg viewBox="0 0 24 24">
-      <path d="M3 4h2l1.5 7h9L21 6H7" stroke-width="1.5"/>
-      <path d="M7 17a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2zm10 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2z" stroke-width="1.5"/>
-    </svg>
-    <div id="cartBadge">0</div>
-  </div>
-</div>
+<!-- flying clone holder (future animation) -->
+<div id="flyingCloneHolder"></div>
 
-<!-- Pagination -->
-<div class="footer-pages">
+<!-- pagination -->
+<div class="footer-pages" role="navigation" aria-label="Pages">
   <a class="page-num current" href="page1.html">1</a>
   <a class="page-num" href="page2.html">2</a>
   <a class="page-num" href="page3.html">3</a>
@@ -315,86 +441,156 @@ html,body{
   <a class="page-num" href="page7.html">7</a>
 </div>
 
-<!-- MODAL -->
-<div id="modalBg" class="modal-bg" onclick="closeModal()">
-  <div class="modal-card" onclick="event.stopPropagation()">
-    <div class="modal-title">
-      <div id="modalNamePrice"></div>
-      <button class="modal-close-btn" onclick="closeModal()">✕</button>
-    </div>
-
-    <div id="modalDesc" style="margin-top:10px;"></div>
-
-    <textarea id="specialReq" placeholder="Special request (optional)" style="margin-top:14px;width:100%;height:70px;border-radius:10px;background:#111;color:#fff;border:1px solid #333;padding:10px;"></textarea>
-
-    <button id="modalAddBtn" class="btn-pill">Add to Cart</button>
-
-    <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+<!-- cart bottom-right -->
+<div id="cartWrap" aria-hidden="false">
+  <div id="cartBtn" title="View cart" role="button" aria-label="View cart">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M3 4h2l1.5 7h9L21 6H7" stroke="currentColor" stroke-width="1.2" />
+      <path d="M7 17a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2zm10 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2z" stroke="currentColor" stroke-width="1.2"/>
+    </svg>
+    <div id="cartBadge" aria-live="polite">0</div>
   </div>
 </div>
 
 <script>
+/* ----------------------------
+   Menu & rendering helpers
+   ---------------------------- */
+
 /* Tabs */
 function openTab(name){
-  document.querySelectorAll('.tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.tab === name);
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.classList.toggle('active', t.dataset.tab===name);
+    // accessibility
+    t.setAttribute('aria-selected', t.dataset.tab===name ? 'true':'false');
   });
-  document.querySelectorAll('.tab-panel').forEach(p => {
-    p.classList.toggle('show', p.dataset.panel === name);
+  document.querySelectorAll('.tab-panel').forEach(p=>{
+    p.style.display = (p.dataset.panel===name) ? 'block' : 'none';
   });
 }
 
-/* Cart storage */
-function getCart(){ return JSON.parse(localStorage.getItem("cart") || "[]"); }
-function saveCart(c){ 
-  localStorage.setItem("cart", JSON.stringify(c));
-  updateCartBadge();
-}
-function updateCartBadge(){
-  const qty = getCart().reduce((s,i)=>s+i.qty,0);
-  const badge = document.getElementById('cartBadge');
-  if(qty>0){
-    badge.style.display='block';
-    badge.textContent = qty;
-  } else {
-    badge.style.display='none';
-  }
-}
-updateCartBadge();
-
-/* Open item modal */
-let currentItem = null;
-
-function openItem(name, price, desc){
-  currentItem = { name, price, desc };
-
-  document.getElementById('modalNamePrice').textContent = `${name} — $${price}`;
-  document.getElementById('modalDesc').textContent = desc;
-
-  document.getElementById('modalBg').style.display='flex';
-}
-
-/* Close modal */
-function closeModal(){
-  document.getElementById('modalBg').style.display='none';
-}
-
-/* Add to cart */
-document.getElementById('modalAddBtn').onclick = function(){
-  const special = document.getElementById('specialReq').value.trim();
+/* ----------------------------
+   Cart storage
+   ---------------------------- */
+function getCart(){ return JSON.parse(localStorage.getItem('cart')||'[]'); }
+function saveCart(cart){ localStorage.setItem('cart', JSON.stringify(cart)); refreshCartBadge(); }
+function refreshCartBadge(){
   const cart = getCart();
+  const qty = cart.reduce((s,it)=>s + (it.qty||0),0);
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = qty;
+  badge.style.display = qty>0 ? 'inline-flex' : 'none';
+}
+refreshCartBadge();
 
-  cart.push({
-    name: currentItem.name,
-    price: currentItem.price,
-    qty: 1,
-    request: special
-  });
+/* ----------------------------
+   Modal open/close and qty
+   ---------------------------- */
+let _currentItem = null;
 
+function openItem(item){
+  _currentItem = item;
+  // populate modal
+  document.getElementById('modalNamePrice').textContent = item.name;
+  document.getElementById('modalPrice').textContent = '$' + item.price;
+  document.getElementById('modalDesc').textContent = item.desc || '';
+  document.getElementById('specialRequestInput').value = '';
+  document.getElementById('qtyValue').textContent = '1';
+
+  // show/hide prosciutto option
+  document.getElementById('prosciuttoOption').style.display = item.prosciutto ? 'block' : 'none';
+  // show/hide fries selector
+  document.getElementById('friesSelector').style.display = item.type === 'fries' ? 'block':'none';
+
+  // show modal
+  const bg = document.getElementById('modalBg');
+  bg.style.display = 'flex';
+  bg.setAttribute('aria-hidden','false');
+  setTimeout(()=> bg.classList.add('show'), 12);
+
+  // set focus for mobile
+  setTimeout(()=> document.getElementById('specialRequestInput').scrollIntoView({behavior:'smooth',block:'center'}), 200);
+}
+
+function closeModal(){
+  const bg = document.getElementById('modalBg');
+  bg.classList.remove('show');
+  bg.setAttribute('aria-hidden','true');
+  setTimeout(()=> bg.style.display = 'none', 160);
+}
+
+function qtyChange(delta){
+  const el = document.getElementById('qtyValue');
+  let v = Number(el.textContent) || 1;
+  v += delta; if(v<1) v = 1; el.textContent = v;
+}
+
+/* ----------------------------
+   Add to cart handler
+   ---------------------------- */
+document.getElementById('modalAddBtn').addEventListener('click', function(){
+  if(!_currentItem) return;
+  let finalName = _currentItem.name;
+  let finalPrice = _currentItem.price;
+
+  // prosciutto choice
+  if(_currentItem.prosciutto){
+    const opt = document.querySelector('input[name="truf_opt"]:checked');
+    if(!opt){ alert('Please choose Regular or With Aged Prosciutto'); return; }
+    if(opt.value === 'with'){ finalName += ' (With Aged Prosciutto)'; finalPrice += 7; }
+    else finalName += ' (Regular)';
+  }
+
+  // fries choice
+  if(_currentItem.type === 'fries'){
+    const fc = document.querySelector('input[name="fries_choice"]:checked');
+    if(!fc){ alert('Please choose Skin-on or Twister fries'); return; }
+    finalName += ' — ' + fc.value;
+  }
+
+  const qty = Number(document.getElementById('qtyValue').textContent) || 1;
+  const special = document.getElementById('specialRequestInput').value.trim();
+
+  const cart = getCart();
+  cart.push({ name: finalName, price: finalPrice, qty: qty, request: special });
   saveCart(cart);
-  closeModal();
-};
-</script>
 
+  // quick confirmation: small pulse on badge
+  const badge = document.getElementById('cartBadge');
+  try { badge.animate([{transform:'scale(1.15)'},{transform:'scale(1)'}], {duration:260, easing:'ease-out'}); } catch(e){}
+  closeModal();
+});
+
+/* ----------------------------
+   Cart button: navigate to cart page (preserve table param)
+   ---------------------------- */
+document.getElementById('cartBtn').addEventListener('click', function(){
+  const params = new URLSearchParams(window.location.search);
+  const table = params.get('table');
+  const href = table ? `cart.html?table=${table}` : 'cart.html';
+  location.href = href;
+});
+
+/* ----------------------------
+   Init: keep tabs working and keyboard accessibility
+   ---------------------------- */
+document.addEventListener('DOMContentLoaded', function(){
+  // accessibility: allow enter to open item cards when focused
+  document.querySelectorAll('.item-card').forEach(card=>{
+    card.setAttribute('tabindex','0');
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+    });
+  });
+  // initial tab
+  openTab('sharing');
+  refreshCartBadge();
+
+  // close modal when clicking backdrop
+  document.getElementById('modalBg').addEventListener('click', function(e){
+    if(e.target === this) closeModal();
+  });
+});
+</script>
 </body>
 </html>
