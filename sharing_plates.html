@@ -79,9 +79,46 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
 
 /* cart bottom-right */
 #cartWrap{position:fixed;bottom:18px;right:18px;z-index:99999;display:flex;align-items:flex-end;gap:8px}
-#cartBtn{width:64px;height:64px;border-radius:14px;background:linear-gradient(180deg, rgba(212,175,55,0.06), rgba(212,175,55,0.02));border:1px solid rgba(212,175,55,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(2px)}
-#cartBtn svg{width:34px;height:34px;fill:var(--gold);stroke:var(--gold)}
-#cartBadge{background:var(--gold);color:#000;padding:6px 10px;border-radius:999px;font-weight:800;font-size:13px;box-shadow:0 8px 20px rgba(0,0,0,0.45);display:none;transform-origin:center;}
+#cartWrap{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:99999;
+}
+
+#cartBtn{
+  width:52px;
+  height:52px;
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(212,175,55,0.08), rgba(212,175,55,0.02));
+  border:1px solid rgba(212,175,55,0.18);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  position:relative; /* important for badge */
+}
+
+#cartBtn svg{
+  width:28px;
+  height:28px;
+  fill:var(--gold);
+}
+
+#cartBadge{
+  position:absolute;
+  top:-4px;
+  right:-4px;
+  background:var(--gold);
+  color:#000;
+  padding:2px 6px;
+  border-radius:50%;
+  font-weight:900;
+  font-size:12px;
+  min-width:18px;
+  text-align:center;
+  display:none;
+}
 
 /* footer pages */
 .footer-pages{position:fixed;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(180deg,rgba(0,0,0,0),#070707 30%);display:flex;justify-content:center;gap:8px;z-index:205}
@@ -103,14 +140,14 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
 <!-- Cart bottom-right with badge -->
 <div id="cartWrap" aria-hidden="false">
   <div id="cartBtn" title="View cart">
-    <!-- Premium Mingle gold SVG (minimal custom) -->
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <!-- simplified premium cart / basket -->
-      <path d="M3 4h2l1.5 7h9L21 6H7" stroke="none"/>
+      <path d="M3 4h2l1.5 7h9L21 6H7"/>
       <path d="M7 17a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2zm10 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2z"/>
     </svg>
+
+    <!-- ITEM COUNT INSIDE ICON -->
+    <div id="cartBadge">0</div>
   </div>
-  <div id="cartBadge" aria-live="polite">0</div>
 </div>
 
 <!-- Main content -->
@@ -351,10 +388,34 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
 <!-- Modal -->
 <div id="modalBg" class="modal-bg" aria-hidden="true">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalNamePrice">
-    <div class="modal-title">
-      <div id="modalNamePrice" style="font-size:17px;font-weight:800;color:var(--gold)"></div>
-      <button class="modal-close-btn" onclick="closeModal()" aria-label="Close">✕</button>
-    </div>
+    .modal-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.modal-title div{
+  flex:1;
+  min-width:0;
+}
+
+.modal-close-btn{
+  flex:0 0 auto; /* prevents stretching */
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  background:transparent;
+  font-size:16px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  cursor:pointer;
+}
 
     <div class="modal-desc" id="modalDesc">Description</div>
 
@@ -383,10 +444,24 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
       <button class="qty-btn" onclick="qtyChange(1)" aria-label="Increase quantity">+</button>
     </div>
 
-    <div style="margin-top:18px">
-      <button id="modalAddBtn" class="btn-pill" aria-label="Add to cart">Add to Cart</button>
-      <button onclick="closeModal()" class="small-btn">Cancel</button>
-    </div>
+    <div style="margin-top:18px; text-align:center;">
+  <button id="modalAddBtn" class="btn-pill" style="margin-bottom:10px;">Add to Cart</button>
+
+  <button onclick="closeModal()" 
+    style="
+      padding:12px 0;
+      width:65%;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      color:#ddd;
+      border:1px solid rgba(255,255,255,0.08);
+      font-size:15px;
+      font-weight:600;
+      margin-top:4px;
+    ">
+    Cancel
+  </button>
+</div>
   </div>
 </div>
 
