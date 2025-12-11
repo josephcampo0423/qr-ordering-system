@@ -20,15 +20,16 @@
 html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 
-/* Top header (restaurant name only) */
+/* Top header - centered */
 .top-header{
   padding:18px 16px 10px 16px;
   border-bottom:1px solid rgba(255,255,255,0.03);
   background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+  text-align:center;
 }
 .restaurant-name{
-  font-size:24px;
-  font-weight:800;
+  font-size:26px;
+  font-weight:900;
   color:var(--gold);
   line-height:1;
 }
@@ -37,7 +38,7 @@ a{color:inherit;text-decoration:none}
 .container{padding:12px 12px 140px 12px}
 
 /* Tabs */
-.tab-row{display:flex;gap:8px;overflow:auto;padding:12px 6px 6px;white-space:nowrap}
+.tab-row{display:flex;gap:8px;overflow:auto;padding:12px 6px 6px;white-space:nowrap;justify-content:center}
 .tab{padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);color:var(--gold);background:transparent;cursor:pointer;font-weight:700;flex:0 0 auto}
 .tab.active{background:rgba(212,175,55,0.08)}
 
@@ -60,14 +61,14 @@ a{color:inherit;text-decoration:none}
 .item-card:active{transform:scale(.998)}
 .item-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .item-left{min-width:0}
-.item-title{font-weight:800;font-size:15px;white-space:normal}
+.item-title{font-weight:900;font-size:15px;white-space:normal}
 .item-desc{color:var(--muted);font-size:13px;margin-top:6px;white-space:normal}
 .price{color:#ddd;font-weight:800;min-width:54px;text-align:right}
 
 /* Modal */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;z-index:9999;padding:18px}
 .modal-card{
-  width:clamp(320px,92vw,520px);
+  width:clamp(340px,92vw,560px);
   max-height:86vh;
   background:linear-gradient(180deg, #101010, #0d0d0d);
   border-radius:16px;padding:18px;border:1px solid var(--glass-border);overflow:auto;
@@ -79,19 +80,22 @@ a{color:inherit;text-decoration:none}
 /* modal header */
 .modal-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .modal-title > div{flex:1;min-width:0}
-.modal-name{font-weight:800;color:var(--gold);font-size:17px;line-height:1.05}
-.modal-price{font-weight:800;color:#fff;font-size:14px;opacity:0.95;margin-top:4px}
-.modal-desc{color:var(--muted);margin-top:10px;font-size:13px;white-space:normal}
+.modal-name{font-weight:900;color:var(--gold);font-size:18px;line-height:1.05}
+.modal-price{font-weight:800;color:#fff;font-size:14px;opacity:0.95;margin-top:6px}
+.modal-desc{color:var(--muted);margin-top:12px;font-size:14px;white-space:normal}
 
 /* fixed close button size (prevents stretching) */
 .modal-close-btn{
-  flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--gold);background:transparent;color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:700;font-size:15px;padding:0;
+  flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--gold);background:transparent;color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:700;font-size:15px;padding:0;
 }
 
-/* options / selectors */
+/* options / selectors: prevent overflow */
 .option-block{margin-top:12px}
-.radio-row{display:flex;gap:8px;margin-top:10px}
-.radio{flex:1;padding:10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);text-align:center;color:#ddd;font-weight:600}
+.radio-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.radio{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#ddd;font-weight:700;font-size:13px;white-space:nowrap;flex:0 0 auto}
+/* ensure radio labels don't wrap, keep price visible by shrinking text if needed */
+.radio input{margin-right:6px}
+.small-add-on{font-size:13px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
 
 /* textarea (special request) */
 textarea{width:100%;height:84px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.35);padding:10px;color:#fff;font-size:14px;resize:none;outline:none;margin-top:8px}
@@ -104,41 +108,55 @@ textarea{width:100%;height:84px;border-radius:12px;border:1px solid rgba(255,255
 /* Add + Cancel buttons */
 .add-row{margin-top:16px;text-align:center}
 .btn-pill{display:inline-block;width:100%;padding:12px 18px;border-radius:999px;text-align:center;background:transparent;color:var(--gold);border:1px solid var(--gold);font-weight:800;font-size:15px;cursor:pointer}
-.cancel-btn{display:block;margin:12px auto 0 auto;width:70%;padding:12px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#ddd;font-weight:700;cursor:pointer}
+.cancel-btn{display:block;margin:12px auto 0 auto;width:68%;padding:12px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#ddd;font-weight:700;cursor:pointer}
 
-/* flying clone holder (future animation) */
-#flyingCloneHolder{position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none;z-index:99998}
+/* flying-clone (the miniature modal that will fly) */
+.flying-clone{
+  position:fixed;
+  z-index:100000;
+  pointer-events:none;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 18px 40px rgba(0,0,0,0.6);
+  transform-origin:center center;
+}
 
 /* bottom pagination */
 .footer-pages{position:fixed;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(180deg,rgba(0,0,0,0),#070707 20%);display:flex;justify-content:center;gap:8px;z-index:900}
 .page-num{padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.03);color:#ddd;border:1px solid rgba(255,255,255,0.03);font-weight:600}
 .page-num.current{background:var(--gold);color:#000;border-color:var(--gold)}
 
-/* cart bottom-right icon (black bubble with gold text) */
-#cartWrap{position:fixed;bottom:92px;right:18px;z-index:1000} /* raised above pagination */
-#cartBtn{width:54px;height:54px;border-radius:14px;background:linear-gradient(180deg, rgba(212,175,55,0.06), rgba(212,175,55,0.02));border:1px solid rgba(212,175,55,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
-#cartBtn svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:1.2}
+/* premium cart bottom-right */
+#cartWrap{position:fixed;bottom:96px;right:18px;z-index:1000} /* raised above pagination */
+#cartBtn{
+  width:56px;height:56px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(212,175,55,0.02));
+  border:1px solid rgba(212,175,55,0.14);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;
+  transition:transform .22s ease, box-shadow .22s ease;
+}
+#cartBtn:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,0.45)}
+/* premium SVG will inherit gold stroke/fill */
 #cartBadge{position:absolute;top:-6px;right:-6px;background:#000;color:var(--gold);padding:4px 8px;border-radius:999px;font-weight:800;font-size:12px;display:none;min-width:20px;text-align:center}
 
-/* small screens adjustments */
+/* responsive */
 @media(max-width:420px){
   .restaurant-name{font-size:20px}
   #cartWrap{bottom:86px; right:14px}
   #cartBtn{width:50px;height:50px}
+  .modal-card{width:92vw}
 }
 </style>
 </head>
 <body>
 
-<!-- Top header -->
+<!-- Top header (CENTERED) -->
 <div class="top-header">
-  <div class="restaurant-name">Mingle Bistro (Funan)</div>
+  <div class="restaurant-name">MINGLE BISTRO (FUNAN)</div>
 </div>
 
 <!-- Main content -->
 <div class="container">
 
-  <!-- Tabs -->
+  <!-- Tabs (centered) -->
   <div class="tab-row" role="tablist" aria-label="Menu sections">
     <button class="tab active" data-tab="sharing" onclick="openTab('sharing')" role="tab" aria-selected="true">Sharing Plates</button>
     <button class="tab" data-tab="sashimi" onclick="openTab('sashimi')" role="tab" aria-selected="false">Sashimi & Crudo</button>
@@ -395,16 +413,16 @@ textarea{width:100%;height:84px;border-radius:12px;border:1px solid rgba(255,255
     <!-- prosciutto option (for truffle brie) -->
     <div id="prosciuttoOption" class="option-block" style="display:none">
       <div style="font-weight:700;color:#ddd;margin-bottom:8px">Choose Option</div>
-      <label class="radio"><input type="radio" name="truf_opt" value="regular"> Regular</label>
-      <label class="radio" style="margin-left:6px"><input type="radio" name="truf_opt" value="with"> With Aged Prosciutto (+$7)</label>
+      <label class="radio"><input type="radio" name="truf_opt" value="regular"> <span class="small-add-on">Regular</span></label>
+      <label class="radio" style="margin-left:6px"><input type="radio" name="truf_opt" value="with"> <span class="small-add-on">With Aged Prosciutto (+$7)</span></label>
     </div>
 
     <!-- fries selectors -->
     <div id="friesSelector" class="option-block" style="display:none">
       <div style="font-weight:700;color:#ddd;margin-bottom:8px">Choose Fries Type</div>
       <div class="radio-row">
-        <label class="radio"><input type="radio" name="fries_choice" value="Skin-on Fries"> Skin-on</label>
-        <label class="radio" style="margin-left:6px"><input type="radio" name="fries_choice" value="Twister Fries"> Twister</label>
+        <label class="radio"><input type="radio" name="fries_choice" value="Skin-on Fries"> <span class="small-add-on">Skin-on</span></label>
+        <label class="radio" style="margin-left:6px"><input type="radio" name="fries_choice" value="Twister Fries"> <span class="small-add-on">Twister</span></label>
       </div>
     </div>
 
@@ -412,8 +430,8 @@ textarea{width:100%;height:84px;border-radius:12px;border:1px solid rgba(255,255
     <div id="spiceOption" class="option-block" style="display:none">
       <div style="font-weight:700;color:#ddd;margin-bottom:8px">Spice Level</div>
       <div class="radio-row">
-        <label class="radio"><input type="radio" name="spice_choice" value="spicy" checked> Spicy</label>
-        <label class="radio" style="margin-left:6px"><input type="radio" name="spice_choice" value="non-spicy"> Non-Spicy</label>
+        <label class="radio"><input type="radio" name="spice_choice" value="spicy" checked> <span class="small-add-on">Spicy</span></label>
+        <label class="radio" style="margin-left:6px"><input type="radio" name="spice_choice" value="non-spicy"> <span class="small-add-on">Non-Spicy</span></label>
       </div>
     </div>
 
@@ -437,7 +455,7 @@ textarea{width:100%;height:84px;border-radius:12px;border:1px solid rgba(255,255
   </div>
 </div>
 
-<!-- flying clone holder (future animation) -->
+<!-- flying clone holder (animation) -->
 <div id="flyingCloneHolder"></div>
 
 <!-- pagination -->
@@ -451,12 +469,16 @@ textarea{width:100%;height:84px;border-radius:12px;border:1px solid rgba(255,255
   <a class="page-num" href="page7.html">7</a>
 </div>
 
-<!-- cart bottom-right -->
+<!-- premium cart bottom-right -->
 <div id="cartWrap" aria-hidden="false">
   <div id="cartBtn" title="View cart" role="button" aria-label="View cart">
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M3 4h2l1.5 7h9L21 6H7" stroke="currentColor" stroke-width="1.2" />
-      <path d="M7 17a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2zm10 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2z" stroke="currentColor" stroke-width="1.2"/>
+    <!-- Premium custom gold SVG (line + filled accents) -->
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="28" height="28">
+      <g stroke="none" fill="none">
+        <path d="M3 4h2l1.5 7h9L21 6H7z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+        <circle cx="9" cy="18.2" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="17" cy="18.2" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      </g>
     </svg>
     <div id="cartBadge" aria-live="polite">0</div>
   </div>
@@ -476,7 +498,9 @@ function refreshCartBadge(){
 }
 refreshCartBadge();
 
-/* Tabs */
+/* ----------------------------
+   Tabs
+   ---------------------------- */
 function openTab(name){
   document.querySelectorAll('.tab').forEach(t=>{
     t.classList.toggle('active', t.dataset.tab===name);
@@ -487,7 +511,9 @@ function openTab(name){
   });
 }
 
-/* Modal open/close & qty */
+/* ----------------------------
+   Modal open/close & qty
+   ---------------------------- */
 let _currentItem = null;
 
 function openItem(item){
@@ -503,17 +529,31 @@ function openItem(item){
   document.getElementById('friesSelector').style.display = item.type === 'fries' ? 'block' : 'none';
   document.getElementById('spiceOption').style.display = item.hasSpiceOption ? 'block' : 'none';
 
+  // clear previously checked radios
+  document.querySelectorAll('input[name="truf_opt"]').forEach(i=>i.checked=false);
+  document.querySelectorAll('input[name="fries_choice"]').forEach(i=>i.checked=false);
+  document.querySelectorAll('input[name="spice_choice"]').forEach(i=>i.checked=false);
+
+  // default spice checked if shown
+  if(item.hasSpiceOption){
+    const el = document.querySelector('input[name="spice_choice"]');
+    if(el) el.checked = true;
+  }
+
   const bg = document.getElementById('modalBg');
   bg.style.display = 'flex';
   bg.setAttribute('aria-hidden','false');
   setTimeout(()=> bg.classList.add('show'), 12);
+
+  // on mobile, scroll modal into view for focus
+  setTimeout(()=> document.getElementById('specialRequestInput').focus(), 200);
 }
 
 function closeModal(){
   const bg = document.getElementById('modalBg');
   bg.classList.remove('show');
   bg.setAttribute('aria-hidden','true');
-  setTimeout(()=> bg.style.display = 'none', 160);
+  setTimeout(()=> bg.style.display = 'none', 180);
 }
 
 function qtyChange(delta){
@@ -524,14 +564,18 @@ function qtyChange(delta){
   el.textContent = v;
 }
 
-/* Add to cart */
-document.getElementById('modalAddBtn').addEventListener('click', function(){
+/* ----------------------------
+   Premium modal-shrink -> clone -> fly -> cart
+   (Animation style A: clone of modal card scales down and flies diagonally)
+   ---------------------------- */
+function animateModalCloneToCartAndAdd(){
   if(!_currentItem) return;
 
+  // prepare final name/price
   let finalName = _currentItem.name;
   let finalPrice = _currentItem.price;
 
-  // prosciutto option
+  // prosciutto
   if(_currentItem.prosciutto){
     const opt = document.querySelector('input[name="truf_opt"]:checked');
     if(!opt){ alert('Please choose Regular or With Aged Prosciutto'); return; }
@@ -539,45 +583,111 @@ document.getElementById('modalAddBtn').addEventListener('click', function(){
     else finalName += ' (Regular)';
   }
 
-  // fries option
+  // fries
   if(_currentItem.type === 'fries'){
     const fc = document.querySelector('input[name="fries_choice"]:checked');
     if(!fc){ alert('Please choose Skin-on or Twister fries'); return; }
     finalName += ' — ' + fc.value;
   }
 
-  // spice option (for mussels)
+  // spice (mussels)
   if(_currentItem.hasSpiceOption){
     const sp = document.querySelector('input[name="spice_choice"]:checked');
-    if(sp && sp.value === 'non-spicy'){
-      finalName += ' (Non-Spicy)';
-    } else {
-      finalName += ' (Spicy)';
-    }
+    if(sp && sp.value === 'non-spicy'){ finalName += ' (Non-Spicy)'; }
+    else finalName += ' (Spicy)';
   }
 
   const qty = Number(document.getElementById('qtyValue').textContent) || 1;
   const special = document.getElementById('specialRequestInput').value.trim();
 
-  const cart = getCart();
-  cart.push({ name: finalName, price: finalPrice, qty: qty, request: special });
-  saveCart(cart);
+  // grab modal-card and compute rect
+  const modalCard = document.querySelector('.modal-card');
+  const rect = modalCard.getBoundingClientRect();
 
-  // small pulse animation on badge
-  const badge = document.getElementById('cartBadge');
-  try { badge.animate([{transform:'scale(1.15)'},{transform:'scale(1)'}], {duration:260, easing:'ease-out'}); } catch(e){}
+  // clone modal-card to flying clone
+  const clone = modalCard.cloneNode(true);
+  clone.className = 'flying-clone';
+  clone.style.width = rect.width + 'px';
+  clone.style.height = rect.height + 'px';
+  clone.style.left = rect.left + 'px';
+  clone.style.top = rect.top + 'px';
+  clone.style.position = 'fixed';
+  clone.style.margin = '0';
+  clone.style.transform = 'none';
+  clone.style.opacity = '1';
+  clone.style.transition = 'transform .82s cubic-bezier(.2,.9,.2,1), opacity .82s linear';
+  document.getElementById('flyingCloneHolder').appendChild(clone);
 
-  closeModal();
+  // inside clone: remove heavy interactive elements to keep animation light
+  try {
+    // remove inputs from clone to reduce repaint cost
+    clone.querySelectorAll('input, textarea, button').forEach(n => n.remove());
+  } catch(e){}
+
+  // compute target (center of cartBtn)
+  const cartBtn = document.getElementById('cartBtn');
+  const cartRect = cartBtn.getBoundingClientRect();
+  const targetX = (cartRect.left + cartRect.width/2) - (rect.left + rect.width/2);
+  const targetY = (cartRect.top + cartRect.height/2) - (rect.top + rect.height/2);
+
+  // start a tiny scale-down of the original modal for visual continuity
+  modalCard.style.transition = 'transform .28s ease, opacity .28s linear';
+  modalCard.style.transform = 'scale(.96)';
+  modalCard.style.opacity = '0.98';
+
+  // animate clone to cart after next frame
+  requestAnimationFrame(()=> {
+    clone.style.transform = `translate(${targetX}px, ${targetY}px) scale(.12)`;
+    clone.style.opacity = '0';
+  });
+
+  // cart bounce visual
+  setTimeout(()=>{ cartBtn.style.transform = 'scale(1.12)'; cartBtn.style.transition = 'transform .32s ease'; }, 520);
+  setTimeout(()=>{ cartBtn.style.transform = ''; }, 840);
+
+  // cleanup and add to cart after animation
+  setTimeout(()=>{
+    // push to cart
+    const cart = getCart();
+    cart.push({ name: finalName, price: finalPrice, qty: qty, request: special });
+    saveCart(cart);
+
+    // remove clone
+    clone.remove();
+
+    // restore original modal visuals and close it
+    modalCard.style.transform = '';
+    modalCard.style.opacity = '';
+    closeModal();
+
+    // tiny pulse on badge
+    const b = document.getElementById('cartBadge');
+    try { b.animate([{transform:'scale(1.18)'},{transform:'scale(1)'}], {duration:320, easing:'ease-out'}); } catch(e){}
+  }, 880);
+}
+
+/* ----------------------------
+   Hook Add button (single binding)
+   ---------------------------- */
+document.addEventListener('click', function(e){
+  if(e.target && e.target.id === 'modalAddBtn'){
+    e.preventDefault();
+    animateModalCloneToCartAndAdd();
+  }
 });
 
-/* Cart click: navigate to cart page (preserve table param) */
+/* ----------------------------
+   Cart click: navigate to cart page (preserve table param)
+   ---------------------------- */
 document.getElementById('cartBtn').addEventListener('click', function(){
   const params = new URLSearchParams(window.location.search);
   const table = params.get('table');
   location.href = table ? `cart.html?table=${table}` : 'cart.html';
 });
 
-/* Init */
+/* ----------------------------
+   Init
+   ---------------------------- */
 document.addEventListener('DOMContentLoaded', function(){
   // accessibility: allow Enter to open items
   document.querySelectorAll('.item-card').forEach(card=>{
