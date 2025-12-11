@@ -1,8 +1,8 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta charset="utf-8">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Sharing Plates — Mingle Bistro — Page 1</title>
 
 <style>
@@ -12,35 +12,29 @@
   --card:#161616;
   --muted:#cfcfcf;
   --glass-border: rgba(212,175,55,0.22);
+  --text:#ffffff;
 }
+
+/* Reset / Base */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+/* Top header: restaurant name + page title */
 .top-header{
-  padding: 18px 14px 8px 14px;
-  text-align: left;
-  border-bottom: 1px solid rgba(212,175,55,0.08);
+  padding:18px 14px 8px 14px;
+  border-bottom:1px solid rgba(212,175,55,0.06);
+  background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
 }
-
 .restaurant-name{
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--gold);
-  letter-spacing: 0.5px;
+  font-size:22px; /* scales well across devices */
+  font-weight:800;color:var(--gold);letter-spacing:0.4px;
 }
-
 .page-title{
-  font-size: 16px;
-  margin-top: 4px;
-  color: #ddd;
-  font-weight: 600;
-  letter-spacing: 0.3px;
+  font-size:15px;margin-top:6px;color:#ddd;font-weight:700;
 }
 
-/* Base */
-html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-
-/* Header */
-.header{background:#000;color:var(--gold);padding:18px;text-align:center;font-weight:700;letter-spacing:1px;border-bottom:1px solid rgba(212,175,55,0.08)}
-
-/* Container + Tabs */
+/* Container + tabs */
 .container{padding:12px 12px 120px 12px}
 .tab-row{display:flex;gap:8px;overflow:auto;padding:12px 6px;white-space:nowrap}
 .tab{padding:10px 14px;border-radius:999px;border:1px solid rgba(212,175,55,0.06);color:var(--gold);background:transparent;cursor:pointer;font-weight:600}
@@ -51,10 +45,10 @@ html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:-appl
 
 /* Grid */
 .grid{display:grid;grid-template-columns:1fr;gap:12px}
-@media(min-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} }
 
 /* Item Card */
-.item-card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.6);position:relative;cursor:pointer;transition:transform .12s ease}
+.item-card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.5);position:relative;cursor:pointer;transition:transform .12s ease}
 .item-card:active{transform:scale(.997)}
 .item-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .item-left{flex:1;min-width:0}
@@ -63,8 +57,10 @@ html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:-appl
 .price{color:#ddd;font-weight:700;min-width:64px;text-align:right}
 
 /* Modal */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter: blur(6px);align-items:center;justify-content:center;z-index:400;padding:20px}
-.modal-card{width:clamp(320px,86vw,560px);max-height:85vh;background: linear-gradient(180deg, rgba(20,20,20,0.78), rgba(14,14,14,0.86));border-radius:20px;padding:18px;border:1px solid var(--glass-border);box-shadow:0 16px 46px rgba(212,175,55,0.12);overflow:auto;transform:scale(.92);opacity:0;transition:transform .18s cubic-bezier(.2,.9,.2,1),opacity .18s linear}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter: blur(6px);align-items:center;justify-content:center;z-index:400;padding:18px}
+.modal-card{
+  width:clamp(320px,86vw,560px);max-height:85vh;background: linear-gradient(180deg, rgba(20,20,20,0.88), rgba(14,14,14,0.96));border-radius:18px;padding:16px;border:1px solid var(--glass-border);box-shadow:0 18px 48px rgba(0,0,0,0.6);overflow:auto;transform:scale(.96);opacity:0;transition:transform .18s cubic-bezier(.2,.9,.2,1),opacity .18s linear
+}
 .modal-bg.show .modal-card{transform:scale(1);opacity:1}
 .modal-title{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:18px;color:var(--gold);font-weight:800}
 .modal-close-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
@@ -78,19 +74,14 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
 .qty-val{min-width:36px;text-align:center;font-weight:800}
 .btn-pill{display:inline-block;width:100%;padding:12px 18px;border-radius:999px;text-align:center;background:transparent;color:var(--gold);border:1px solid var(--gold);font-weight:800;font-size:15px;letter-spacing:0.6px;cursor:pointer}
 
-/* small helpers */
-.small-btn{margin-top:8px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#ddd;width:100%}
+/* Flying clone holder (for animation) */
+#flyingCloneHolder{position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none;z-index:99998}
 
-/* Cart icon top-right */
-#cartWrap{position:fixed;top:12px;right:12px;z-index:9999;display:flex;align-items:flex-end;gap:8px}
-#cartBtn{width:56px;height:56px;border-radius:14px;background:linear-gradient(180deg, rgba(212,175,55,0.06), rgba(212,175,55,0.02));border:1px solid rgba(212,175,55,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(2px)}
-/* premium custom cart svg color */
-#cartBtn svg{width:30px;height:30px;fill:var(--gold);stroke:var(--gold)}
-/* badge placed lower-right beside cart icon */
-#cartBadge{position:relative; margin-left:-12px; margin-top:26px; transform:translateY(0); background:var(--gold); color:#000; padding:6px 10px; border-radius:999px; font-weight:800; font-size:13px; box-shadow:0 8px 20px rgba(0,0,0,0.5)}
-
-/* flying clone */
-.flying-clone{position:fixed;border-radius:14px;overflow:hidden;z-index:99998;transform-origin:center;pointer-events:none;will-change:transform,opacity}
+/* cart bottom-right */
+#cartWrap{position:fixed;bottom:18px;right:18px;z-index:99999;display:flex;align-items:flex-end;gap:8px}
+#cartBtn{width:64px;height:64px;border-radius:14px;background:linear-gradient(180deg, rgba(212,175,55,0.06), rgba(212,175,55,0.02));border:1px solid rgba(212,175,55,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(2px)}
+#cartBtn svg{width:34px;height:34px;fill:var(--gold);stroke:var(--gold)}
+#cartBadge{background:var(--gold);color:#000;padding:6px 10px;border-radius:999px;font-weight:800;font-size:13px;box-shadow:0 8px 20px rgba(0,0,0,0.45);display:none;transform-origin:center;}
 
 /* footer pages */
 .footer-pages{position:fixed;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(180deg,rgba(0,0,0,0),#070707 30%);display:flex;justify-content:center;gap:8px;z-index:205}
@@ -98,41 +89,31 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
 .page-num.current{background:var(--gold);color:#000;border-color:var(--gold)}
 
 /* animations */
-@keyframes cartBounce{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes cartBounce{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
 </style>
 </head>
 <body>
-  
-  <div class="top-header">
+
+<!-- Top header -->
+<div class="top-header">
   <div class="restaurant-name">Mingle Bistro (Funan)</div>
   <div class="page-title">Sharing Plates</div>
 </div>
-  
 
-<!-- CART (top-right) -->
-<div id="cartWrap" aria-hidden="false" style="
-    position: fixed;
-    bottom: 18px;
-    right: 18px;
-    z-index: 9999;
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-">
+<!-- Cart bottom-right with badge -->
+<div id="cartWrap" aria-hidden="false">
   <div id="cartBtn" title="View cart">
-    <!-- Custom premium SVG cart icon (2025 style) -->
+    <!-- Premium Mingle gold SVG (minimal custom) -->
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M3 3h2l1 5h11l3-5H6" stroke="none"/>
-      <path d="M7 13a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
-      <path d="M3 3l2.5 9h11.5" stroke="none"/>
+      <!-- simplified premium cart / basket -->
+      <path d="M3 4h2l1.5 7h9L21 6H7" stroke="none"/>
+      <path d="M7 17a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2zm10 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2z"/>
     </svg>
   </div>
-  <!-- badge lower-right beside cart -->
   <div id="cartBadge" aria-live="polite">0</div>
 </div>
 
-
-
+<!-- Main content -->
 <div class="container">
 
   <!-- Tabs -->
@@ -142,10 +123,12 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
     <button class="tab" data-tab="fries" onclick="openTab('fries')">Skin-on & Twister Fries</button>
   </div>
 
-  <!-- Tab 1: Sharing -->
+  <!-- Tab panels -->
   <div class="tab-panel" data-panel="sharing" style="display:block">
     <div class="section-title">Sharing Plates</div>
     <div class="grid">
+
+      <!-- Items -->
       <div class="item-card" onclick="openItem({id:'bread',name:'Toasted Garlic Sourdough Bread',price:8,desc:'Toasted sourdough with garlic confit butter'})">
         <div class="item-row">
           <div class="item-left">
@@ -249,11 +232,10 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
     </div>
   </div>
 
-  <!-- Tab 2: Sashimi -->
+  <!-- Tab: Sashimi -->
   <div class="tab-panel" data-panel="sashimi" style="display:none">
     <div class="section-title">Sashimi & Crudo</div>
     <div class="grid">
-
       <div class="item-card" onclick="openItem({id:'scallop',name:'Hokkaido Scallops Crudo',price:19,desc:'Yuzu citrus vinaigrette'})">
         <div class="item-row">
           <div class="item-left">
@@ -307,11 +289,10 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
     </div>
   </div>
 
-  <!-- Tab 3: Fries -->
+  <!-- Tab: Fries -->
   <div class="tab-panel" data-panel="fries" style="display:none">
     <div class="section-title">Skin-on & Twister Fries — Choose One</div>
     <div class="grid">
-
       <div class="item-card" onclick="openItem({id:'salted',name:'Salted Fries',price:8,desc:'Salted fries',type:'fries'})">
         <div class="item-row">
           <div class="item-left">
@@ -365,14 +346,14 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
     </div>
   </div>
 
-</div>
+</div> <!-- /.container -->
 
-<!-- modal -->
-<div id="modalBg" class="modal-bg" onclick="closeModal()">
-  <div class="modal-card" onclick="event.stopPropagation()">
+<!-- Modal -->
+<div id="modalBg" class="modal-bg" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalNamePrice">
     <div class="modal-title">
       <div id="modalNamePrice" style="font-size:17px;font-weight:800;color:var(--gold)"></div>
-      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      <button class="modal-close-btn" onclick="closeModal()" aria-label="Close">✕</button>
     </div>
 
     <div class="modal-desc" id="modalDesc">Description</div>
@@ -403,15 +384,13 @@ textarea{width:100%;height:70px;border-radius:12px;border:1px solid rgba(255,255
     </div>
 
     <div style="margin-top:18px">
-      document.getElementById('modalAddBtn').onclick = function () {
-    animateModalToCartAndAdd();
-};
+      <button id="modalAddBtn" class="btn-pill" aria-label="Add to cart">Add to Cart</button>
       <button onclick="closeModal()" class="small-btn">Cancel</button>
     </div>
   </div>
 </div>
 
-<!-- flying clone placeholder (used temporarily by JS) -->
+<!-- clone holder -->
 <div id="flyingCloneHolder"></div>
 
 <!-- footer pages -->
@@ -434,13 +413,14 @@ function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); refreshCa
 function refreshCartBadge(){
   const c = getCart();
   const qty = c.reduce((s,it)=>s + (it.qty||1),0);
-  document.getElementById('cartBadge').textContent = qty;
-  // subtle badge hide if zero
-  document.getElementById('cartBadge').style.display = qty>0 ? 'inline-flex' : 'none';
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = qty;
+  badge.style.display = qty > 0 ? 'inline-flex' : 'none';
+  // subtle pulse if newly added (handled where appropriate)
 }
 
 /* ----------------------------
-   Simple skeleton + tabs
+   Page skeleton + init
    ---------------------------- */
 function showSkeletonThenInit(delay=420){
   const container = document.querySelector('.container');
@@ -450,11 +430,7 @@ function showSkeletonThenInit(delay=420){
   container.insertBefore(skel, container.firstChild);
   setTimeout(()=>{ skel.remove(); init(); }, delay);
 }
-
-function init(){
-  openTab('sharing');
-  refreshCartBadge();
-}
+function init(){ openTab('sharing'); refreshCartBadge(); }
 
 /* ----------------------------
    Tabs
@@ -468,35 +444,30 @@ function openTab(name){
 }
 
 /* ----------------------------
-   Modal open/close & qty
+   Modal open/close and qty
    ---------------------------- */
 function openItem(item){
-  // store current item on modal for add handler
-  window._currentModalItem = item;
-
+  window._currentModalItem = item; // store for add action
   document.getElementById('modalNamePrice').textContent = item.name + " — $" + item.price;
   document.getElementById('modalDesc').textContent = item.desc || '';
-
   document.getElementById('specialRequestInput').value = '';
   document.getElementById('prosciuttoOption').style.display = item.prosciutto ? 'block' : 'none';
   document.getElementById('friesSelector').style.display = item.type === 'fries' ? 'block' : 'none';
   document.getElementById('qtyValue').textContent = '1';
   document.querySelectorAll('input[name="truf_opt"]').forEach(i=>i.checked=false);
   document.querySelectorAll('input[name="fries_choice"]').forEach(i=>i.checked=false);
-
-  // show modal
   const bg = document.getElementById('modalBg');
   bg.style.display = 'flex';
+  bg.setAttribute('aria-hidden', 'false');
   setTimeout(()=> bg.classList.add('show'), 10);
   document.body.classList.add('noscroll');
 }
-
 function closeModal(){
   const bg = document.getElementById('modalBg');
   bg.classList.remove('show');
-  setTimeout(()=>{ bg.style.display='none'; document.body.classList.remove('noscroll'); }, 160);
+  bg.setAttribute('aria-hidden', 'true');
+  setTimeout(()=>{ bg.style.display='none'; document.body.classList.remove('noscroll'); }, 180);
 }
-
 function qtyChange(delta){
   const el = document.getElementById('qtyValue');
   let v = Number(el.textContent) || 1;
@@ -504,13 +475,13 @@ function qtyChange(delta){
 }
 
 /* ----------------------------
-   Modal-to-cart animation (modal shrink+fly)
+   Animate modal clone -> cart then add to storage
    ---------------------------- */
 function animateModalToCartAndAdd(){
   const item = window._currentModalItem;
   if(!item) return;
 
-  // prepare final name/price/qty/request (same logic as add)
+  // build final item text/options
   let finalName = item.name;
   let finalPrice = item.price;
 
@@ -528,39 +499,42 @@ function animateModalToCartAndAdd(){
   const qty = Number(document.getElementById('qtyValue').textContent) || 1;
   const special = document.getElementById('specialRequestInput').value.trim();
 
-  // clone modal-card visually
+  // clone modal card for animation
   const modalCard = document.querySelector('.modal-card');
   const rect = modalCard.getBoundingClientRect();
   const clone = modalCard.cloneNode(true);
+  clone.style.boxSizing = 'border-box';
   clone.className = 'flying-clone';
   clone.style.width = rect.width + 'px';
   clone.style.height = rect.height + 'px';
   clone.style.left = rect.left + 'px';
   clone.style.top = rect.top + 'px';
-  clone.style.margin = 0;
-  clone.style.transform = 'none';
-  clone.style.opacity = '1';
-  clone.style.transition = 'transform .72s cubic-bezier(.2,.9,.2,1), opacity .72s linear';
+  clone.style.position = 'fixed';
+  clone.style.margin = '0';
+  clone.style.zIndex = 99998;
+  clone.style.pointerEvents = 'none';
+  clone.style.borderRadius = window.getComputedStyle(modalCard).borderRadius || '12px';
+  clone.style.overflow = 'hidden';
+  clone.style.transition = 'transform .74s cubic-bezier(.2,.9,.2,1), opacity .74s linear';
   document.getElementById('flyingCloneHolder').appendChild(clone);
 
-  // compute target (cart) position (center of cartBtn)
+  // compute target (cart center)
   const cartBtn = document.getElementById('cartBtn');
   const cartRect = cartBtn.getBoundingClientRect();
-  const targetX = cartRect.left + cartRect.width/2 - rect.left - rect.width/2;
-  const targetY = cartRect.top + cartRect.height/2 - rect.top - rect.height/2;
+  const targetX = cartRect.left + cartRect.width/2 - (rect.left + rect.width/2);
+  const targetY = cartRect.top + cartRect.height/2 - (rect.top + rect.height/2);
 
-  // force reflow then animate
+  // animate (frame)
   requestAnimationFrame(()=> {
-    clone.style.transform = `translate(${targetX}px, ${targetY}px) scale(.12)`;
+    clone.style.transform = `translate(${targetX}px, ${targetY}px) scale(.10)`;
     clone.style.opacity = '0';
   });
 
-  // cart bounce
-  cartBtn.style.transition = 'transform .35s cubic-bezier(.2,.9,.2,1)';
-  setTimeout(()=> cartBtn.style.transform = 'scale(1.12)', 480);
-  setTimeout(()=> cartBtn.style.transform = '', 760);
+  // bounce cart slightly
+  setTimeout(()=>{ cartBtn.style.transform = 'scale(1.12)'; cartBtn.style.transition = 'transform .28s ease'; }, 460);
+  setTimeout(()=>{ cartBtn.style.transform = ''; }, 740);
 
-  // after animation completes: add to cart, cleanup clone, close modal
+  // cleanup, add to storage after animation
   setTimeout(()=>{
     // add to cart storage
     const cart = getCart();
@@ -570,36 +544,35 @@ function animateModalToCartAndAdd(){
     // remove clone
     clone.remove();
 
-    // close original modal
+    // close modal
     closeModal();
 
-    // flash small highlight on cartBadge
+    // tiny pulse on badge
     const b = document.getElementById('cartBadge');
-    b.animate([{transform:'scale(1.18)'},{transform:'scale(1)'}], {duration:360, easing:'ease-out'});
+    try { b.animate([{ transform:'scale(1.15)' }, { transform:'scale(1)' }], { duration:320, easing:'ease-out' }); } catch(e){}
 
   }, 780);
 }
 
 /* ----------------------------
-   Hook Add button
+   Hook Add button (single binding)
    ---------------------------- */
 document.addEventListener('click', function(e){
   if(e.target && e.target.id === 'modalAddBtn'){
-    // prevent double-binding
     e.preventDefault();
     animateModalToCartAndAdd();
   }
 });
 
 /* ----------------------------
-   Page init & skeleton
+   Cart button behavior: go to cart.html (preserve table param)
    ---------------------------- */
 document.addEventListener('DOMContentLoaded', function(){
-  showSkeletonThenInit(520);
+  showSkeletonThenInit(420);
   document.getElementById('modalBg').addEventListener('click', function(e){
     if(e.target === this) closeModal();
   });
-  // cart button opens cart.html (preserve table param if present)
+
   document.getElementById('cartBtn').addEventListener('click', function(){
     const params = new URLSearchParams(window.location.search);
     const table = params.get('table');
