@@ -14,6 +14,7 @@
   --border:rgba(255,255,255,0.05);
 }
 
+/* Base */
 *{box-sizing:border-box}
 body{
   background:var(--bg);
@@ -22,6 +23,7 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
+/* HEADER */
 .header{
   padding:18px 14px;
   text-align:center;
@@ -31,10 +33,13 @@ body{
   font-size:20px;
   font-weight:800;
   color:var(--gold);
+  letter-spacing:0.3px;
 }
 
+/* Container */
 .container{padding:16px;max-width:850px;margin:0 auto;}
 
+/* Empty Cart */
 .empty{
   padding:40px 12px;
   text-align:center;
@@ -53,6 +58,7 @@ body{
   cursor:pointer;
 }
 
+/* Cart list */
 .cart-item{
   display:flex;
   gap:12px;
@@ -67,6 +73,7 @@ body{
 .item-name{font-size:15px;font-weight:800;color:#fff}
 .item-meta{color:var(--muted);font-size:13px;margin-top:6px;white-space:pre-line}
 
+/* Right column */
 .item-right{
   display:flex;
   flex-direction:column;
@@ -74,11 +81,14 @@ body{
   gap:6px;
 }
 
+/* Qty + remove row */
 .qty-row{
   display:flex;
   align-items:center;
   gap:6px;
 }
+
+/* Premium qty buttons */
 .qty-btn{
   width:34px;
   height:34px;
@@ -99,6 +109,7 @@ body{
   font-weight:800;
 }
 
+/* remove button */
 .remove-btn{
   border:none;
   background:transparent;
@@ -106,15 +117,20 @@ body{
   cursor:pointer;
   display:flex;
   align-items:center;
+  justify-content:center;
 }
-.remove-btn svg{pointer-events:none;}
+.remove-btn svg{
+  pointer-events:none;
+}
 
+/* Price (small) */
 .item-price{
   font-size:13px;
   color:var(--muted);
   font-weight:800;
 }
 
+/* Charges + totals */
 .summary-box{
   margin-top:16px;
   padding:14px;
@@ -122,6 +138,7 @@ body{
   background:rgba(255,255,255,0.02);
   border:1px solid var(--border);
 }
+
 .summary-line{
   display:flex;
   justify-content:space-between;
@@ -135,10 +152,12 @@ body{
   color:var(--gold);
 }
 
+/* Buttons */
 .actions{
   margin-top:18px;
   text-align:center;
 }
+
 .btn-primary{
   width:100%;
   padding:14px;
@@ -150,6 +169,7 @@ body{
   font-size:15px;
   cursor:pointer;
 }
+
 .btn-secondary{
   margin-top:10px;
   width:100%;
@@ -161,6 +181,7 @@ body{
   cursor:pointer;
 }
 
+/* Success overlay */
 #successOverlay{
   position:fixed;
   inset:0;
@@ -200,6 +221,7 @@ body{
   margin-left:4px;
 }
 
+/* Close buttons */
 .success-buttons{
   margin-top:18px;
   display:flex;
@@ -225,15 +247,29 @@ body{
   <div id="cartList"></div>
 
   <div id="summaryBox" class="summary-box" style="display:none;">
-    <div class="summary-line"><span>Subtotal</span><span id="sumSubtotal">$0.00</span></div>
-    <div class="summary-line"><span>Service Charge (10%)</span><span id="sumService">$0.00</span></div>
-    <div class="summary-line"><span>GST (9%)</span><span id="sumGST">$0.00</span></div>
-    <div class="summary-line total"><span>Grand Total</span><span id="sumTotal">$0.00</span></div>
+    <div class="summary-line">
+      <span>Subtotal</span>
+      <span id="sumSubtotal">$0.00</span>
+    </div>
+    <div class="summary-line">
+      <span>Service Charge (10%)</span>
+      <span id="sumService">$0.00</span>
+    </div>
+    <div class="summary-line">
+      <span>GST (9%)</span>
+      <span id="sumGST">$0.00</span>
+    </div>
+    <div class="summary-line total">
+      <span>Grand Total</span>
+      <span id="sumTotal">$0.00</span>
+    </div>
   </div>
 
   <div class="actions" id="actionButtons" style="display:none;">
     <button class="btn-primary" onclick="placeOrder()">Place Order</button>
-    <button class="btn-secondary" onclick="location.href='sharing_plates.html'">Continue Ordering</button>
+    <button class="btn-secondary" onclick="location.href='sharing_plates.html'">
+      Continue Ordering
+    </button>
     <button class="btn-secondary" onclick="clearCart()">Clear Cart</button>
   </div>
 
@@ -258,6 +294,7 @@ function getCart(){ return JSON.parse(localStorage.getItem("cart") || "[]"); }
 function saveCart(c){ localStorage.setItem("cart", JSON.stringify(c)); }
 function clearCart(){ saveCart([]); renderCart(); }
 
+/* Render Cart */
 function renderCart(){
   const cart = getCart();
   const wrap = document.getElementById("cartList");
@@ -333,6 +370,7 @@ function renderCart(){
 
     const remove = document.createElement("button");
     remove.className = "remove-btn";
+
     remove.innerHTML = `
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
            stroke="var(--gold)" stroke-width="2" stroke-linecap="round"
@@ -341,10 +379,13 @@ function renderCart(){
         <path d="M19 6l-1 14H6L5 6m5 0V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2"></path>
         <line x1="10" y1="11" x2="10" y2="17"></line>
         <line x1="14" y1="11" x2="14" y2="17"></line>
-      </svg>`;
+      </svg>
+    `;
+
     remove.onclick = ()=>removeItem(idx);
 
     qty.append(minus,val,plus,remove);
+
     right.append(itemPrice, qty);
 
     row.append(left, right);
@@ -361,6 +402,7 @@ function renderCart(){
   document.getElementById("sumTotal").textContent = "$" + total.toFixed(2);
 }
 
+/* Update quantity */
 function updateQty(idx,delta){
   const cart = getCart();
   cart[idx].qty += delta;
@@ -369,6 +411,7 @@ function updateQty(idx,delta){
   renderCart();
 }
 
+/* Remove item */
 function removeItem(idx){
   const cart = getCart();
   cart.splice(idx,1);
@@ -376,6 +419,9 @@ function removeItem(idx){
   renderCart();
 }
 
+/* ---------------------------- */
+/* FIXED placeOrder() — NO FLASH */
+/* ---------------------------- */
 function placeOrder(){
   const cart = getCart();
   if(cart.length===0) return;
@@ -387,17 +433,18 @@ function placeOrder(){
   document.getElementById("orderNumber").textContent = "Order #" + id;
   document.getElementById("orderTime").textContent = readable;
 
-  renderSuccessItems(cart);
+  renderSuccess(cart);
 
   document.getElementById("successOverlay").style.display="flex";
 
-  // FIX: clear silently without triggering renderCart()
+  // ❗ FIX: clear cart silently without triggering renderCart()
   localStorage.setItem("cart", "[]");
 }
 
-function renderSuccessItems(cart){
+/* New helper */
+function renderSuccess(cart){
   const list = document.getElementById("successList");
-  list.innerHTML = "";
+  list.innerHTML="";
 
   let subtotal = 0;
   cart.forEach(it => subtotal += it.price * it.qty);
@@ -407,10 +454,10 @@ function renderSuccessItems(cart){
   const total = subtotal + service + gst;
 
   cart.forEach(it=>{
-    const div = document.createElement("div");
-    div.className="success-item";
-    div.innerHTML = `<div>x ${it.qty} ${it.name}</div><div>$${(it.qty*it.price).toFixed(2)}</div>`;
-    list.appendChild(div);
+    const row = document.createElement("div");
+    row.className="success-item";
+    row.innerHTML = `<div>x ${it.qty} ${it.name}</div><div>$${(it.price*it.qty).toFixed(2)}</div>`;
+    list.appendChild(row);
 
     const parts=[];
     if(it.prosciutto) parts.push("Option: "+it.prosciutto);
@@ -426,23 +473,29 @@ function renderSuccessItems(cart){
     }
   });
 
-  const totalsBlock = document.createElement("div");
-  totalsBlock.style.marginTop = '12px';
-  totalsBlock.style.borderTop = '1px solid rgba(255,255,255,0.04)';
-  totalsBlock.style.paddingTop = '10px';
-  totalsBlock.innerHTML = `
-    <div style="display:flex;justify-content:space-between;color:#ddd"><div>Subtotal</div><div>$${subtotal.toFixed(2)}</div></div>
-    <div style="display:flex;justify-content:space-between;color:#ddd;margin-top:6px"><div>Service (10%)</div><div>$${service.toFixed(2)}</div></div>
-    <div style="display:flex;justify-content:space-between;color:#ddd;margin-top:6px"><div>GST (9%)</div><div>$${gst.toFixed(2)}</div></div>
-    <div style="display:flex;justify-content:space-between;color:var(--gold);font-weight:900;margin-top:8px"><div>Total</div><div>$${total.toFixed(2)}</div></div>
+  const totals = document.createElement("div");
+  totals.style.marginTop="12px";
+  totals.style.borderTop="1px solid rgba(255,255,255,0.04)";
+  totals.style.paddingTop="10px";
+  totals.innerHTML = `
+    <div style="display:flex;justify-content:space-between;color:#ddd">
+      <div>Subtotal</div><div>$${subtotal.toFixed(2)}</div></div>
+    <div style="display:flex;justify-content:space-between;color:#ddd;margin-top:6px">
+      <div>Service (10%)</div><div>$${service.toFixed(2)}</div></div>
+    <div style="display:flex;justify-content:space-between;color:#ddd;margin-top:6px">
+      <div>GST (9%)</div><div>$${gst.toFixed(2)}</div></div>
+    <div style="display:flex;justify-content:space-between;color:var(--gold);font-weight:900;margin-top:8px">
+      <div>Total</div><div>$${total.toFixed(2)}</div>
+    </div>
   `;
-  list.appendChild(totalsBlock);
+  list.appendChild(totals);
 }
 
 function closeSuccess(){
   document.getElementById("successOverlay").style.display="none";
 }
 
+/* Init */
 renderCart();
 </script>
 
