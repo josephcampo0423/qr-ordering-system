@@ -1,709 +1,275 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Mingle Bistro — Sharing Plates</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Sharing Plates — Mingle Bistro</title>
 
 <style>
 :root{
   --gold:#D4AF37;
-  --bg:#0f0f0f;
+  --bg:#0e0e0e;
   --card:#141414;
-  --muted:#bfbfbf;
-  --glass-border: rgba(212,175,55,0.16);
-  --text:#ffffff;
+  --muted:#bbbbbb;
+  --border:rgba(255,255,255,0.07);
 }
 
-/* Reset / Base */
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-
-/* Top header - centered */
-.top-header{
-  padding:18px 16px 10px 16px;
-  border-bottom:1px solid rgba(255,255,255,0.03);
-  background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
-  text-align:center;
+/* Base */
+body{
+  background:var(--bg);
+  margin:0;
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
-.restaurant-name{
-  font-size:26px;
+.container{padding:16px;max-width:850px;margin:0 auto;}
+
+/* Menu Cards */
+.menu-item{
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:16px;
+  border-radius:12px;
+  margin-bottom:14px;
+}
+.menu-title{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:4px;
+  color:var(--gold);
+}
+.menu-desc{color:var(--muted);font-size:13px;margin-bottom:10px}
+.menu-price{font-weight:800;margin-bottom:12px}
+
+.add-btn{
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:black;
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* MODAL */
+#optionModal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  display:none;
+  justify-content:center;
+  align-items:flex-end;
+  padding:16px;
+  z-index:9999;
+  transition:opacity .25s ease;
+}
+
+.modal-card{
+  width:100%;
+  max-width:500px;
+  background:#111;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px;
+}
+
+.modal-title{
+  font-size:18px;
   font-weight:900;
   color:var(--gold);
-  line-height:1;
+  margin-bottom:8px;
 }
 
-/* Container */
-.container{padding:12px 12px 140px 12px}
+.option-block{margin-top:12px;}
+.option-label{font-size:14px;color:var(--muted);margin-bottom:6px}
+.option-select{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  background:#1a1a1a;
+  border:1px solid var(--border);
+  color:#fff;
+}
 
-/* Tabs */
-.tab-row{display:flex;gap:8px;overflow:auto;padding:12px 6px 6px;white-space:nowrap;justify-content:center}
-.tab{padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);color:var(--gold);background:transparent;cursor:pointer;font-weight:700;flex:0 0 auto}
-.tab.active{background:rgba(212,175,55,0.08)}
+.modal-textarea{
+  width:100%;
+  padding:10px;
+  height:70px;
+  border-radius:8px;
+  background:#1a1a1a;
+  border:1px solid var(--border);
+  color:#fff;
+  resize:none;
+}
 
-/* Section title (inside tab content) */
-.section-title{color:var(--gold);font-weight:800;margin:6px 6px 12px 6px;font-size:16px;border-left:4px solid var(--gold);padding-left:10px}
+.modal-actions{
+  margin-top:16px;
+  display:flex;
+  gap:12px;
+}
 
-/* Grid */
-.grid{display:grid;grid-template-columns:1fr;gap:12px}
-@media(min-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} }
-
-/* Item Card */
-.item-card{
-  background:var(--card);
-  padding:14px;
-  border-radius:12px;
-  box-shadow:0 8px 22px rgba(0,0,0,0.6);
+.btn-secondary{
+  flex:1;
+  padding:12px;
+  background:transparent;
+  border:1px solid var(--border);
+  color:#ddd;
+  border-radius:10px;
   cursor:pointer;
-  transition:transform .10s ease;
-}
-.item-card:active{transform:scale(.998)}
-.item-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.item-left{min-width:0}
-.item-title{font-weight:900;font-size:15px;white-space:normal}
-.item-desc{color:var(--muted);font-size:13px;margin-top:6px;white-space:normal}
-.price{color:#ddd;font-weight:800;min-width:54px;text-align:right}
-
-/* Modal */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;z-index:9999;padding:18px}
-.modal-card{
-  width:clamp(340px,92vw,560px);
-  max-height:86vh;
-  background:linear-gradient(180deg, #101010, #0d0d0d);
-  border-radius:16px;padding:18px;border:1px solid var(--glass-border);overflow:auto;
-  box-shadow:0 18px 40px rgba(0,0,0,0.6);
-  transform:translateY(6px);opacity:0;transition:transform .18s ease,opacity .18s ease;
-}
-.modal-bg.show .modal-card{transform:translateY(0);opacity:1}
-
-/* modal header */
-.modal-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.modal-title > div{flex:1;min-width:0}
-.modal-name{font-weight:900;color:var(--gold);font-size:18px;line-height:1.05}
-.modal-price{font-weight:800;color:#fff;font-size:14px;opacity:0.95;margin-top:6px}
-.modal-desc{color:var(--muted);margin-top:12px;font-size:14px;white-space:normal}
-
-/* fixed close button size (prevents stretching) */
-.modal-close-btn{
-  flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--gold);background:transparent;color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:700;font-size:15px;padding:0;
 }
 
-/* options / selectors: prevent overflow */
-.option-block{margin-top:12px}
-.radio-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.radio{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#ddd;font-weight:700;font-size:13px;white-space:nowrap;flex:0 0 auto}
-/* ensure radio labels don't wrap, keep price visible by shrinking text if needed */
-.radio input{margin-right:6px}
-.small-add-on{font-size:13px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
-
-/* textarea (special request) */
-textarea{width:100%;height:84px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.35);padding:10px;color:#fff;font-size:14px;resize:none;outline:none;margin-top:8px}
-
-/* qty row */
-.qty-row{display:flex;align-items:center;gap:12px;margin-top:12px}
-.qty-btn{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.qty-val{min-width:36px;text-align:center;font-weight:800}
-
-/* Add + Cancel buttons */
-.add-row{margin-top:16px;text-align:center}
-.btn-pill{display:inline-block;width:100%;padding:12px 18px;border-radius:999px;text-align:center;background:transparent;color:var(--gold);border:1px solid var(--gold);font-weight:800;font-size:15px;cursor:pointer}
-.cancel-btn{display:block;margin:12px auto 0 auto;width:68%;padding:12px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#ddd;font-weight:700;cursor:pointer}
-
-/* flying-clone (the miniature modal that will fly) */
-.flying-clone{
-  position:fixed;
-  z-index:100000;
-  pointer-events:none;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 18px 40px rgba(0,0,0,0.6);
-  transform-origin:center center;
-}
-
-/* bottom pagination */
-.footer-pages{position:fixed;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(180deg,rgba(0,0,0,0),#070707 20%);display:flex;justify-content:center;gap:8px;z-index:900}
-.page-num{padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.03);color:#ddd;border:1px solid rgba(255,255,255,0.03);font-weight:600}
-.page-num.current{background:var(--gold);color:#000;border-color:var(--gold)}
-
-/* premium cart bottom-right */
-#cartWrap{position:fixed;bottom:96px;right:18px;z-index:1000} /* raised above pagination */
-#cartBtn{
-  width:56px;height:56px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(212,175,55,0.02));
-  border:1px solid rgba(212,175,55,0.14);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;
-  transition:transform .22s ease, box-shadow .22s ease;
-}
-#cartBtn:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,0.45)}
-/* premium SVG will inherit gold stroke/fill */
-#cartBadge{position:absolute;top:-6px;right:-6px;background:#000;color:var(--gold);padding:4px 8px;border-radius:999px;font-weight:800;font-size:12px;display:none;min-width:20px;text-align:center}
-
-/* responsive */
-@media(max-width:420px){
-  .restaurant-name{font-size:20px}
-  #cartWrap{bottom:86px; right:14px}
-  #cartBtn{width:50px;height:50px}
-  .modal-card{width:92vw}
+.btn-primary{
+  flex:1;
+  padding:12px;
+  background:var(--gold);
+  border:1px solid var(--gold);
+  color:black;
+  border-radius:10px;
+  font-weight:800;
+  cursor:pointer;
 }
 </style>
 </head>
+
 <body>
 
-<!-- Top header (CENTERED) -->
-<div class="top-header">
-  <div class="restaurant-name">MINGLE BISTRO (FUNAN)</div>
-</div>
-
-<!-- Main content -->
 <div class="container">
 
-  <!-- Tabs (centered) -->
-  <div class="tab-row" role="tablist" aria-label="Menu sections">
-    <button class="tab active" data-tab="sharing" onclick="openTab('sharing')" role="tab" aria-selected="true">Sharing Plates</button>
-    <button class="tab" data-tab="sashimi" onclick="openTab('sashimi')" role="tab" aria-selected="false">Sashimi & Crudo</button>
-    <button class="tab" data-tab="fries" onclick="openTab('fries')" role="tab" aria-selected="false">Skin-on & Twister Fries</button>
+  <!-- EXAMPLE — Baked Truffle Brie Cheese -->
+  <div class="menu-item">
+    <div class="menu-title">Baked Truffle Brie Cheese</div>
+    <div class="menu-desc">Creamy baked brie infused with truffle.</div>
+    <div class="menu-price">$27.00</div>
+    <button class="add-btn" onclick="openOptions('Baked Truffle Brie Cheese', 27)">
+      Add to Cart
+    </button>
   </div>
 
-  <!-- SHARING PLATES TAB -->
-  <div class="tab-panel" data-panel="sharing" style="display:block">
-    <div class="section-title">Sharing Plates</div>
-    <div class="grid">
-
-      <!-- 1 -->
-      <div class="item-card" onclick="openItem({id:'bread',name:'TOASTED GARLIC SOURDOUGH BREAD',price:8,desc:'Toasted sourdough bread with homemade garlic confit butter'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">TOASTED GARLIC SOURDOUGH BREAD</div>
-            <div class="item-desc">Toasted sourdough bread with homemade garlic confit butter</div>
-          </div>
-          <div class="price">$8</div>
-        </div>
-      </div>
-
-      <!-- 2 -->
-      <div class="item-card" onclick="openItem({id:'wings',name:'CRISPY SPICY MIDWINGS',price:14,desc:'5 Pieces deep fried spicy midwings, homemade curry, spice mix, curry ketchup'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">CRISPY SPICY MIDWINGS</div>
-            <div class="item-desc">5 Pieces deep fried spicy midwings, homemade curry, spice mix, curry ketchup</div>
-          </div>
-          <div class="price">$14</div>
-        </div>
-      </div>
-
-      <!-- 3 -->
-      <div class="item-card" onclick="openItem({id:'foie',name:'FOIE GRAS WITH MALIBU COMPRESSED ROCK MELON',price:23,desc:'Pan seared hungarian foie gras, malibu marinated, rock melon, sourdough toast'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">FOIE GRAS WITH MALIBU COMPRESSED ROCK MELON</div>
-            <div class="item-desc">Pan seared hungarian foie gras, malibu marinated, rock melon, sourdough toast</div>
-          </div>
-          <div class="price">$23</div>
-        </div>
-      </div>
-
-      <!-- 4 -->
-      <div class="item-card" onclick="openItem({id:'provola',name:'SMOKED PROVOLA CHEESE TEMPURA WITH AGED PROSCIUTTO',price:21,desc:'Smoked provola cheese, aged prosciutto, fresh tomatoes, arugula, balsamic glaze, honey'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SMOKED PROVOLA CHEESE TEMPURA WITH AGED PROSCIUTTO</div>
-            <div class="item-desc">Smoked provola cheese, aged prosciutto, fresh tomatoes, arugula, balsamic glaze, honey</div>
-          </div>
-          <div class="price">$21</div>
-        </div>
-      </div>
-
-      <!-- 5 -->
-      <div class="item-card" onclick="openItem({id:'corn',name:'FRIED CORN RIBS WITH ASSAM AIOLI',price:15,desc:'Sweet corn ribs, assam aioli, homemade curry spice, fried curry leaves'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">FRIED CORN RIBS WITH ASSAM AIOLI</div>
-            <div class="item-desc">Sweet corn ribs, assam aioli, homemade curry spice, fried curry leaves</div>
-          </div>
-          <div class="price">$15</div>
-        </div>
-      </div>
-
-      <!-- 6 -->
-      <div class="item-card" onclick="openItem({id:'brusch',name:'SOURDOUGH BRUSCHETTA WITH SMOKED SALMON',price:16,desc:'Toasted sourdough, garlic confit butter, smoked salmon, bonito aioli, fresh Japanese cucumbers, red onions'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SOURDOUGH BRUSCHETTA WITH SMOKED SALMON</div>
-            <div class="item-desc">Toasted sourdough, garlic confit butter, smoked salmon, bonito aioli, fresh Japanese cucumbers, red onions</div>
-          </div>
-          <div class="price">$16</div>
-        </div>
-      </div>
-
-      <!-- 7 -->
-      <div class="item-card" onclick="openItem({id:'truffle',name:'BAKED TRUFFLE BRIE CHEESE',price:21,desc:'Baked brie cheese, truffle paste, white truffle oil, hot honey, toasted sourdough',prosciutto:true})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">BAKED TRUFFLE BRIE CHEESE</div>
-            <div class="item-desc">Baked brie cheese, truffle paste, white truffle oil, hot honey, toasted sourdough</div>
-          </div>
-          <div class="price">$21</div>
-        </div>
-      </div>
-
-      <!-- 8 -->
-      <div class="item-card" onclick="openItem({id:'squid',name:'SZECHUAN SPICE CRISPY SQUID',price:16,desc:'Crispy fried squid, szechuan spice, garlic sprouts, dried chillies'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SZECHUAN SPICE CRISPY SQUID</div>
-            <div class="item-desc">Crispy fried squid, szechuan spice, garlic sprouts, dried chillies</div>
-          </div>
-          <div class="price">$16</div>
-        </div>
-      </div>
-
-      <!-- 9 -->
-      <div class="item-card" onclick="openItem({id:'mussels',name:'SPICY LIVE MUSSELS & WHITE CLAMS STEW',price:20,desc:'White clams, live greenshell mussels, cherry tomatoes, katsuobushi, stewed in pomodoro & prawn broth',hasSpiceOption:true})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SPICY LIVE MUSSELS & WHITE CLAMS STEW</div>
-            <div class="item-desc">White clams, live greenshell mussels, cherry tomatoes, katsuobushi, stewed in pomodoro & prawn broth</div>
-          </div>
-          <div class="price">$20</div>
-        </div>
-      </div>
-
-      <!-- 10 -->
-      <div class="item-card" onclick="openItem({id:'burrata',name:'BURRATA & AGED PROSCIUTTO SALAD',price:25,desc:'Burrata cheese, aged prosciutto, arugula leaves, cherry tomatoes, peach, balsamic vinaigrette'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">BURRATA & AGED PROSCIUTTO SALAD</div>
-            <div class="item-desc">Burrata cheese, aged prosciutto, arugula leaves, cherry tomatoes, peach, balsamic vinaigrette</div>
-          </div>
-          <div class="price">$25</div>
-        </div>
-      </div>
-
-    </div>
+  <!-- EXAMPLE — Chicken Wings -->
+  <div class="menu-item">
+    <div class="menu-title">Chicken Wings</div>
+    <div class="menu-desc">Crispy wings served with your choice of spice level.</div>
+    <div class="menu-price">$18.00</div>
+    <button class="add-btn" onclick="openOptions('Chicken Wings', 18)">
+      Add to Cart
+    </button>
   </div>
 
-  <!-- SASHIMI & CRUDO TAB -->
-  <div class="tab-panel" data-panel="sashimi" style="display:none">
-    <div class="section-title">Sashimi & Crudo</div>
-    <div class="grid">
-      <div class="item-card" onclick="openItem({id:'scallop',name:'HOKKAIDO SCALLOPS CRUDO',price:19,desc:'HOKKAIDO SCALLOPS CRUDO - Yuzu citrus vinaigrette'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">HOKKAIDO SCALLOPS CRUDO</div>
-            <div class="item-desc">HOKKAIDO SCALLOPS CRUDO - Yuzu citrus vinaigrette</div>
-          </div>
-          <div class="price">$19</div>
-        </div>
-      </div>
+</div>
 
-      <div class="item-card" onclick="openItem({id:'salmon',name:'SALMON SASHIMI',price:15,desc:'SALMON SASHIMI - 5 pcs salmon sashimi'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SALMON SASHIMI</div>
-            <div class="item-desc">SALMON SASHIMI - 5 pcs salmon sashimi</div>
-          </div>
-          <div class="price">$15</div>
-        </div>
-      </div>
+<!-- MODAL -->
+<div id="optionModal">
+  <div class="modal-card">
 
-      <div class="item-card" onclick="openItem({id:'octopus',name:'OCTOPUS SASHIMI',price:13,desc:'OCTOPUS SASHIMI - 5 pcs octopus sashimi'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">OCTOPUS SASHIMI</div>
-            <div class="item-desc">OCTOPUS SASHIMI - 5 pcs octopus sashimi</div>
-          </div>
-          <div class="price">$13</div>
-        </div>
-      </div>
+    <div class="modal-title" id="modalName"></div>
 
-      <div class="item-card" onclick="openItem({id:'tartare',name:'SPICY SALMON TARTARE WITH CRISPY POPPADUM',price:18,desc:'SPICY SALMON TARTARE WITH CRISPY POPPADUM - Spicy salmon tartare'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SPICY SALMON TARTARE WITH CRISPY POPPADUM</div>
-            <div class="item-desc">SPICY SALMON TARTARE WITH CRISPY POPPADUM - Spicy salmon tartare</div>
-          </div>
-          <div class="price">$18</div>
-        </div>
-      </div>
-
-      <div class="item-card" onclick="openItem({id:'oysters',name:'JAPANESE HYOGO PREFECTURE OYSTERS — 1/2 DOZEN',price:28,desc:'JAPANESE HYOGO PREFECTURE OYSTERS — 6 pcs (Hyogo)'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">JAPANESE HYOGO PREFECTURE OYSTERS — 1/2 DOZEN</div>
-            <div class="item-desc">JAPANESE HYOGO PREFECTURE OYSTERS — 6 pcs (Hyogo)</div>
-          </div>
-          <div class="price">$28</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- FRIES TAB -->
-  <div class="tab-panel" data-panel="fries" style="display:none">
-    <div class="section-title">Skin-on & Twister Fries</div>
-    <div class="grid">
-      <div class="item-card" onclick="openItem({id:'salted',name:'SALTED FRIES',price:8,desc:'Salted fries',type:'fries'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SALTED FRIES</div>
-            <div class="item-desc">Salted fries</div>
-          </div>
-          <div class="price">$8</div>
-        </div>
-      </div>
-
-      <div class="item-card" onclick="openItem({id:'truffleFries',name:'TRUFFLE & GRANA PADANO FRIES',price:15,desc:'Truffle oil & Grana Padano',type:'fries'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">TRUFFLE & GRANA PADANO FRIES</div>
-            <div class="item-desc">Truffle oil & Grana Padano</div>
-          </div>
-          <div class="price">$15</div>
-        </div>
-      </div>
-
-      <div class="item-card" onclick="openItem({id:'noriFries',name:'NORI FRIES WITH WASABI AIOLI',price:13,desc:'Nori & wasabi aioli',type:'fries'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">NORI FRIES WITH WASABI AIOLI</div>
-            <div class="item-desc">Nori & wasabi aioli</div>
-          </div>
-          <div class="price">$13</div>
-        </div>
-      </div>
-
-      <div class="item-card" onclick="openItem({id:'malaFries',name:'MALA GARLIC FRIES',price:13,desc:'Mala garlic fries',type:'fries'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">MALA GARLIC FRIES</div>
-            <div class="item-desc">Mala garlic fries</div>
-          </div>
-          <div class="price">$13</div>
-        </div>
-      </div>
-
-      <div class="item-card" onclick="openItem({id:'nachoFries',name:'NACHO CHEESE & ASSAM AIOLI FRIES',price:14,desc:'Nacho cheese & Assam aioli',type:'fries'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">NACHO CHEESE & ASSAM AIOLI FRIES</div>
-            <div class="item-desc">Nacho cheese & Assam aioli</div>
-          </div>
-          <div class="price">$14</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-</div><!-- /.container -->
-
-<!-- Modal -->
-<div id="modalBg" class="modal-bg" aria-hidden="true">
-  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalNamePrice" onclick="event.stopPropagation()">
-    <div class="modal-title">
-      <div>
-        <div id="modalNamePrice" class="modal-name">Item name</div>
-        <div id="modalPrice" class="modal-price">$0</div>
-      </div>
-      <button class="modal-close-btn" onclick="closeModal()" aria-label="Close">✕</button>
+    <!-- Prosciutto option -->
+    <div class="option-block" id="optProsciutto" style="display:none;">
+      <div class="option-label">Prosciutto Option</div>
+      <select id="prosciuttoSelect" class="option-select">
+        <option value="Regular">Regular</option>
+        <option value="With Aged Prosciutto +$7">With Aged Prosciutto +$7</option>
+      </select>
     </div>
 
-    <div id="modalDesc" class="modal-desc">Description ...</div>
-
-    <!-- prosciutto option (for truffle brie) -->
-    <div id="prosciuttoOption" class="option-block" style="display:none">
-      <div style="font-weight:700;color:#ddd;margin-bottom:8px">Choose Option</div>
-      <label class="radio"><input type="radio" name="truf_opt" value="regular"> <span class="small-add-on">Regular</span></label>
-      <label class="radio" style="margin-left:6px"><input type="radio" name="truf_opt" value="with"> <span class="small-add-on">With Aged Prosciutto (+$7)</span></label>
+    <!-- Fries option -->
+    <div class="option-block" id="optFries" style="display:none;">
+      <div class="option-label">Choose Fries</div>
+      <select id="friesSelect" class="option-select">
+        <option value="Skin On Fries">Skin On Fries</option>
+        <option value="Twister Fries">Twister Fries</option>
+      </select>
     </div>
 
-    <!-- fries selectors -->
-    <div id="friesSelector" class="option-block" style="display:none">
-      <div style="font-weight:700;color:#ddd;margin-bottom:8px">Choose Fries Type</div>
-      <div class="radio-row">
-        <label class="radio"><input type="radio" name="fries_choice" value="Skin-on Fries"> <span class="small-add-on">Skin-on</span></label>
-        <label class="radio" style="margin-left:6px"><input type="radio" name="fries_choice" value="Twister Fries"> <span class="small-add-on">Twister</span></label>
-      </div>
+    <!-- Spice option -->
+    <div class="option-block" id="optSpice" style="display:none;">
+      <div class="option-label">Spice Level</div>
+      <select id="spiceSelect" class="option-select">
+        <option value="non-spicy">Non-Spicy</option>
+        <option value="spicy">Spicy</option>
+      </select>
     </div>
 
-    <!-- spicy option for mussels -->
-    <div id="spiceOption" class="option-block" style="display:none">
-      <div style="font-weight:700;color:#ddd;margin-bottom:8px">Spice Level</div>
-      <div class="radio-row">
-        <label class="radio"><input type="radio" name="spice_choice" value="spicy" checked> <span class="small-add-on">Spicy</span></label>
-        <label class="radio" style="margin-left:6px"><input type="radio" name="spice_choice" value="non-spicy"> <span class="small-add-on">Non-Spicy</span></label>
-      </div>
-    </div>
-
-    <!-- special request -->
+    <!-- Special request -->
     <div class="option-block">
-      <div style="font-weight:700;color:#ddd;margin-bottom:8px">Special Request (Optional)</div>
-      <textarea id="specialRequestInput" placeholder="e.g., less oil, no onion, sauce on the side"></textarea>
+      <div class="option-label">Special Request (optional)</div>
+      <textarea id="specialText" class="modal-textarea"></textarea>
     </div>
 
-    <!-- quantity -->
-    <div class="qty-row" aria-label="Quantity selector">
-      <button class="qty-btn" onclick="qtyChange(-1)" aria-label="Decrease quantity">−</button>
-      <div class="qty-val" id="qtyValue">1</div>
-      <button class="qty-btn" onclick="qtyChange(1)" aria-label="Increase quantity">+</button>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="addToCart()">Add</button>
     </div>
 
-    <div class="add-row">
-      <button id="modalAddBtn" class="btn-pill" aria-label="Add to cart">Add to Cart</button>
-      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- flying clone holder (animation) -->
-<div id="flyingCloneHolder"></div>
-
-<!-- pagination -->
-<div class="footer-pages" role="navigation" aria-label="Pages">
-  <a class="page-num current" href="page1.html">1</a>
-  <a class="page-num" href="page2.html">2</a>
-  <a class="page-num" href="page3.html">3</a>
-  <a class="page-num" href="page4.html">4</a>
-  <a class="page-num" href="page5.html">5</a>
-  <a class="page-num" href="page6.html">6</a>
-  <a class="page-num" href="page7.html">7</a>
-</div>
-
-<!-- premium cart bottom-right -->
-<div id="cartWrap" aria-hidden="false">
-  <div id="cartBtn" title="View cart" role="button" aria-label="View cart">
-    <!-- Premium custom gold SVG (line + filled accents) -->
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="28" height="28">
-      <g stroke="none" fill="none">
-        <path d="M3 4h2l1.5 7h9L21 6H7z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-        <circle cx="9" cy="18.2" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/>
-        <circle cx="17" cy="18.2" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/>
-      </g>
-    </svg>
-    <div id="cartBadge" aria-live="polite">0</div>
   </div>
 </div>
 
 <script>
-/* ----------------------------
-   Cart & UI helpers
-   ---------------------------- */
-function getCart(){ return JSON.parse(localStorage.getItem('cart')||'[]'); }
-function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); refreshCartBadge(); }
-function refreshCartBadge(){
-  const c = getCart();
-  const qty = c.reduce((s,it)=>s + (it.qty||0),0);
-  const b = document.getElementById('cartBadge');
-  if(b){ b.textContent = qty; b.style.display = qty>0 ? 'inline-flex' : 'none'; }
-}
-refreshCartBadge();
+let currentItemName = "";
+let currentItemPrice = 0;
 
-/* ----------------------------
-   Tabs
-   ---------------------------- */
-function openTab(name){
-  document.querySelectorAll('.tab').forEach(t=>{
-    t.classList.toggle('active', t.dataset.tab===name);
-    t.setAttribute('aria-selected', t.dataset.tab===name ? 'true':'false');
-  });
-  document.querySelectorAll('.tab-panel').forEach(p=>{
-    p.style.display = (p.dataset.panel===name) ? 'block' : 'none';
-  });
-}
+/* CART STORAGE */
+function getCart(){ return JSON.parse(localStorage.getItem("cart") || "[]"); }
+function saveCart(c){ localStorage.setItem("cart", JSON.stringify(c)); }
 
-/* ----------------------------
-   Modal open/close & qty
-   ---------------------------- */
-let _currentItem = null;
+/* OPEN OPTIONS MODAL */
+function openOptions(name, price){
+  currentItemName = name;
+  currentItemPrice = price;
 
-function openItem(item){
-  _currentItem = item;
-  document.getElementById('modalNamePrice').textContent = item.name;
-  document.getElementById('modalPrice').textContent = '$' + item.price;
-  document.getElementById('modalDesc').textContent = item.desc || '';
-  document.getElementById('specialRequestInput').value = '';
-  document.getElementById('qtyValue').textContent = '1';
+  document.getElementById("modalName").textContent = name;
 
-  // show/hide extras
-  document.getElementById('prosciuttoOption').style.display = item.prosciutto ? 'block' : 'none';
-  document.getElementById('friesSelector').style.display = item.type === 'fries' ? 'block' : 'none';
-  document.getElementById('spiceOption').style.display = item.hasSpiceOption ? 'block' : 'none';
+  // Determine which options to show
+  document.getElementById("optProsciutto").style.display =
+    name.includes("Brie") ? "block" : "none";
 
-  // clear previously checked radios
-  document.querySelectorAll('input[name="truf_opt"]').forEach(i=>i.checked=false);
-  document.querySelectorAll('input[name="fries_choice"]').forEach(i=>i.checked=false);
-  document.querySelectorAll('input[name="spice_choice"]').forEach(i=>i.checked=false);
+  document.getElementById("optFries").style.display =
+    name.includes("Wings") ? "block" : "none";
 
-  // default spice checked if shown
-  if(item.hasSpiceOption){
-    const el = document.querySelector('input[name="spice_choice"]');
-    if(el) el.checked = true;
-  }
+  document.getElementById("optSpice").style.display =
+    name.includes("Wings") ? "block" : "none";
 
-  const bg = document.getElementById('modalBg');
-  bg.style.display = 'flex';
-  bg.setAttribute('aria-hidden','false');
-  setTimeout(()=> bg.classList.add('show'), 12);
+  // Reset fields
+  document.getElementById("specialText").value = "";
 
-  // on mobile, scroll modal into view for focus
-  setTimeout(()=> document.getElementById('specialRequestInput').focus(), 200);
+  const modal = document.getElementById("optionModal");
+  modal.style.display = "flex";
+  modal.style.opacity = "1";  /* prevents flash */
 }
 
+/* CLOSE MODAL */
 function closeModal(){
-  const bg = document.getElementById('modalBg');
-  bg.classList.remove('show');
-  bg.setAttribute('aria-hidden','true');
-  setTimeout(()=> bg.style.display = 'none', 180);
+  const modal = document.getElementById("optionModal");
+  modal.style.opacity = "0";
+  setTimeout(()=> modal.style.display = "none", 200);
 }
 
-function qtyChange(delta){
-  const el = document.getElementById('qtyValue');
-  let v = Number(el.textContent) || 1;
-  v += delta;
-  if(v<1) v = 1;
-  el.textContent = v;
+/* ADD TO CART */
+function addToCart(){
+  const item = {
+    name: currentItemName,
+    price: currentItemPrice,
+    qty: 1,
+    prosciutto: document.getElementById("optProsciutto").style.display === "block"
+      ? document.getElementById("prosciuttoSelect").value
+      : null,
+    fries: document.getElementById("optFries").style.display === "block"
+      ? document.getElementById("friesSelect").value
+      : null,
+    spicy: document.getElementById("optSpice").style.display === "block"
+      ? document.getElementById("spiceSelect").value
+      : null,
+    request: document.getElementById("specialText").value.trim()
+  };
+
+  const cart = getCart();
+  cart.push(item);   // no merging — matches your current cart.html
+  saveCart(cart);
+
+  closeModal();
+
+  // small delay prevents flash on redirect
+  setTimeout(()=> location.href = "cart.html", 60);
 }
-
-/* ----------------------------
-   Premium modal-shrink -> clone -> fly -> cart
-   (Animation style A: clone of modal card scales down and flies diagonally)
-   ---------------------------- */
-function animateModalCloneToCartAndAdd(){
-  if(!_currentItem) return;
-
-  // prepare final name/price
-  let finalName = _currentItem.name;
-  let finalPrice = _currentItem.price;
-
-  // prosciutto
-  if(_currentItem.prosciutto){
-    const opt = document.querySelector('input[name="truf_opt"]:checked');
-    if(!opt){ alert('Please choose Regular or With Aged Prosciutto'); return; }
-    if(opt.value === 'with'){ finalName += ' (With Aged Prosciutto)'; finalPrice += 7; }
-    else finalName += ' (Regular)';
-  }
-
-  // fries
-  if(_currentItem.type === 'fries'){
-    const fc = document.querySelector('input[name="fries_choice"]:checked');
-    if(!fc){ alert('Please choose Skin-on or Twister fries'); return; }
-    finalName += ' — ' + fc.value;
-  }
-
-  // spice (mussels)
-  if(_currentItem.hasSpiceOption){
-    const sp = document.querySelector('input[name="spice_choice"]:checked');
-    if(sp && sp.value === 'non-spicy'){ finalName += ' (Non-Spicy)'; }
-    else finalName += ' (Spicy)';
-  }
-
-  const qty = Number(document.getElementById('qtyValue').textContent) || 1;
-  const special = document.getElementById('specialRequestInput').value.trim();
-
-  // grab modal-card and compute rect
-  const modalCard = document.querySelector('.modal-card');
-  const rect = modalCard.getBoundingClientRect();
-
-  // clone modal-card to flying clone
-  const clone = modalCard.cloneNode(true);
-  clone.className = 'flying-clone';
-  clone.style.width = rect.width + 'px';
-  clone.style.height = rect.height + 'px';
-  clone.style.left = rect.left + 'px';
-  clone.style.top = rect.top + 'px';
-  clone.style.position = 'fixed';
-  clone.style.margin = '0';
-  clone.style.transform = 'none';
-  clone.style.opacity = '1';
-  clone.style.transition = 'transform .82s cubic-bezier(.2,.9,.2,1), opacity .82s linear';
-  document.getElementById('flyingCloneHolder').appendChild(clone);
-
-  // inside clone: remove heavy interactive elements to keep animation light
-  try {
-    // remove inputs from clone to reduce repaint cost
-    clone.querySelectorAll('input, textarea, button').forEach(n => n.remove());
-  } catch(e){}
-
-  // compute target (center of cartBtn)
-  const cartBtn = document.getElementById('cartBtn');
-  const cartRect = cartBtn.getBoundingClientRect();
-  const targetX = (cartRect.left + cartRect.width/2) - (rect.left + rect.width/2);
-  const targetY = (cartRect.top + cartRect.height/2) - (rect.top + rect.height/2);
-
-  // start a tiny scale-down of the original modal for visual continuity
-  modalCard.style.transition = 'transform .28s ease, opacity .28s linear';
-  modalCard.style.transform = 'scale(.96)';
-  modalCard.style.opacity = '0.98';
-
-  // animate clone to cart after next frame
-  requestAnimationFrame(()=> {
-    clone.style.transform = `translate(${targetX}px, ${targetY}px) scale(.12)`;
-    clone.style.opacity = '0';
-  });
-
-  // cart bounce visual
-  setTimeout(()=>{ cartBtn.style.transform = 'scale(1.12)'; cartBtn.style.transition = 'transform .32s ease'; }, 520);
-  setTimeout(()=>{ cartBtn.style.transform = ''; }, 840);
-
-  // cleanup and add to cart after animation
-  setTimeout(()=>{
-    // push to cart
-    const cart = getCart();
-    cart.push({ name: finalName, price: finalPrice, qty: qty, request: special });
-    saveCart(cart);
-
-    // remove clone
-    clone.remove();
-
-    // restore original modal visuals and close it
-    modalCard.style.transform = '';
-    modalCard.style.opacity = '';
-    closeModal();
-
-    // tiny pulse on badge
-    const b = document.getElementById('cartBadge');
-    try { b.animate([{transform:'scale(1.18)'},{transform:'scale(1)'}], {duration:320, easing:'ease-out'}); } catch(e){}
-  }, 880);
-}
-
-/* ----------------------------
-   Hook Add button (single binding)
-   ---------------------------- */
-document.addEventListener('click', function(e){
-  if(e.target && e.target.id === 'modalAddBtn'){
-    e.preventDefault();
-    animateModalCloneToCartAndAdd();
-  }
-});
-
-/* ----------------------------
-   Cart click: navigate to cart page (preserve table param)
-   ---------------------------- */
-document.getElementById('cartBtn').addEventListener('click', function(){
-  const params = new URLSearchParams(window.location.search);
-  const table = params.get('table');
-  location.href = table ? `cart.html?table=${table}` : 'cart.html';
-});
-
-/* ----------------------------
-   Init
-   ---------------------------- */
-document.addEventListener('DOMContentLoaded', function(){
-  // accessibility: allow Enter to open items
-  document.querySelectorAll('.item-card').forEach(card=>{
-    card.setAttribute('tabindex','0');
-    card.addEventListener('keydown', function(e){
-      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
-    });
-  });
-  openTab('sharing');
-  refreshCartBadge();
-
-  // close modal when clicking backdrop
-  document.getElementById('modalBg').addEventListener('click', function(e){
-    if(e.target === this) closeModal();
-  });
-});
 </script>
 
 </body>
