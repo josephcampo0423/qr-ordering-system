@@ -222,245 +222,119 @@ textarea{width:100%;height:84px;border-radius:12px;border:1px solid rgba(255,255
 <div class="container">
 
   <!-- Tabs -->
-  <div class="tab-row" role="tablist" aria-label="Menu sections">
-    <button class="tab active" data-tab="sharing" onclick="openTab('sharing')" role="tab" aria-selected="true">Sharing Plates</button>
-    <button class="tab" data-tab="sashimi" onclick="openTab('sashimi')" role="tab" aria-selected="false">Sashimi & Crudo</button>
-    <button class="tab" data-tab="fries" onclick="openTab('fries')" role="tab" aria-selected="false">Skin-on & Twister Fries</button>
-  </div>
+  <div class="tab-row">
+  <button class="tab active" onclick="openTab('desserts')">Desserts</button>
+  <button class="tab" onclick="openTab('beverages')">Beverages</button>
+</div>
 
-  <!-- SHARING PLATES TAB -->
-  <div class="tab-panel" data-panel="sharing" style="display:block">
-    <div class="section-title">Sharing Plates</div>
-    <div class="grid">
+<!-- ===================== DESSERTS ===================== -->
+<div class="tab-panel" data-panel="desserts" style="display:block">
 
-      <!-- 1 -->
-      <div class="item-card" onclick="openItem({id:'bread',name:'TOASTED GARLIC SOURDOUGH BREAD',price:8,desc:'Toasted sourdough bread with homemade garlic confit butter'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">TOASTED GARLIC SOURDOUGH BREAD</div>
-            <div class="item-desc">Toasted sourdough bread with homemade garlic confit butter</div>
-          </div>
-          <div class="price">$8</div>
-        </div>
-      </div>
+<div class="section-title">Desserts</div>
+<div class="grid">
 
-      <!-- 2 -->
-      <div class="item-card" onclick="openItem({id:'wings',name:'CRISPY SPICY MIDWINGS',price:14,desc:'5 Pieces deep fried spicy midwings, homemade curry, spice mix, curry ketchup'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">CRISPY SPICY MIDWINGS</div>
-            <div class="item-desc">5 Pieces deep fried spicy midwings, homemade curry, spice mix, curry ketchup</div>
-          </div>
-          <div class="price">$14</div>
-        </div>
-      </div>
+<div class="item-card" onclick="openItem({id:'tiramisu1',name:'TIRAMISU KUEH PIE TEE',price:9,desc:'3 pcs - $9 / 5 pcs - $15',sizeOptions:true})">
+  <div class="item-row"><div><div class="item-title">TIRAMISU KUEH PIE TEE</div><div class="item-desc">3 pcs - $9 / 5 pcs - $15</div></div><div class="price">$9 / $15</div></div>
+</div>
 
-      <!-- 3 -->
-      <div class="item-card" onclick="openItem({id:'foie',name:'FOIE GRAS WITH MALIBU COMPRESSED ROCK MELON',price:23,desc:'Pan seared hungarian foie gras, malibu marinated, rock melon, sourdough toast'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">FOIE GRAS WITH MALIBU COMPRESSED ROCK MELON</div>
-            <div class="item-desc">Pan seared hungarian foie gras, malibu marinated, rock melon, sourdough toast</div>
-          </div>
-          <div class="price">$23</div>
-        </div>
-      </div>
+<div class="item-card" onclick="openItem({id:'tiramisu2',name:'TIRAMISU YUZU KUEH PIE TEE',price:10,desc:'3 pcs - $10 / 5 pcs - $16',sizeOptions:true})">
+  <div class="item-row"><div><div class="item-title">TIRAMISU YUZU KUEH PIE TEE</div><div class="item-desc">3 pcs - $10 / 5 pcs - $16</div></div><div class="price">$10 / $16</div></div>
+</div>
 
-      <!-- 4 -->
-      <div class="item-card" onclick="openItem({id:'provola',name:'SMOKED PROVOLA CHEESE TEMPURA WITH AGED PROSCIUTTO',price:21,desc:'Smoked provola cheese, aged prosciutto, fresh tomatoes, arugula, balsamic glaze, honey'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SMOKED PROVOLA CHEESE TEMPURA WITH AGED PROSCIUTTO</div>
-            <div class="item-desc">Smoked provola cheese, aged prosciutto, fresh tomatoes, arugula, balsamic glaze, honey</div>
-          </div>
-          <div class="price">$21</div>
-        </div>
-      </div>
+<div class="item-card" onclick="openItem({id:'lava',name:'MOLTEN CHOCOLATE LAVA CAKE',price:15,desc:'Choose gelato',gelato:true})">
+  <div class="item-row"><div><div class="item-title">MOLTEN CHOCOLATE LAVA CAKE</div></div><div class="price">$15</div></div>
+</div>
 
-      <!-- 5 -->
-      <div class="item-card" onclick="openItem({id:'corn',name:'FRIED CORN RIBS WITH ASSAM AIOLI',price:15,desc:'Sweet corn ribs, assam aioli, homemade curry spice, fried curry leaves'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">FRIED CORN RIBS WITH ASSAM AIOLI</div>
-            <div class="item-desc">Sweet corn ribs, assam aioli, homemade curry spice, fried curry leaves</div>
-          </div>
-          <div class="price">$15</div>
-        </div>
-      </div>
+<div class="item-card" onclick="openItem({id:'cheesecake',name:'CHEESECAKE WITH ROCK MELON GRANITA',price:15})">
+  <div class="item-row"><div class="item-title">CHEESECAKE WITH ROCK MELON GRANITA</div><div class="price">$15</div></div>
+</div>
 
-      <!-- 6 -->
-      <div class="item-card" onclick="openItem({id:'brusch',name:'SOURDOUGH BRUSCHETTA WITH SMOKED SALMON',price:16,desc:'Toasted sourdough, garlic confit butter, smoked salmon, bonito aioli, fresh Japanese cucumbers, red onions'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SOURDOUGH BRUSCHETTA WITH SMOKED SALMON</div>
-            <div class="item-desc">Toasted sourdough, garlic confit butter, smoked salmon, bonito aioli, fresh Japanese cucumbers, red onions</div>
-          </div>
-          <div class="price">$16</div>
-        </div>
-      </div>
+<div class="item-card" onclick="openItem({id:'gelato',name:'GELATO',price:5,gelato:true})">
+  <div class="item-row"><div class="item-title">GELATO</div><div class="price">$5</div></div>
+</div>
 
-      <!-- 7 -->
-      <div class="item-card" onclick="openItem({id:'truffle',name:'BAKED TRUFFLE BRIE CHEESE',price:21,desc:'Baked brie cheese, truffle paste, white truffle oil, hot honey, toasted sourdough',prosciutto:true})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">BAKED TRUFFLE BRIE CHEESE</div>
-            <div class="item-desc">Baked brie cheese, truffle paste, white truffle oil, hot honey, toasted sourdough</div>
-          </div>
-          <div class="price">$21</div>
-        </div>
-      </div>
+</div>
+</div>
 
-      <!-- 8 -->
-      <div class="item-card" onclick="openItem({id:'squid',name:'SZECHUAN SPICE CRISPY SQUID',price:16,desc:'Crispy fried squid, szechuan spice, garlic sprouts, dried chillies'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SZECHUAN SPICE CRISPY SQUID</div>
-            <div class="item-desc">Crispy fried squid, szechuan spice, garlic sprouts, dried chillies</div>
-          </div>
-          <div class="price">$16</div>
-        </div>
-      </div>
+<!-- ===================== BEVERAGES ===================== -->
+<div class="tab-panel" data-panel="beverages" style="display:none">
 
-      <!-- 9 -->
-      <div class="item-card" onclick="openItem({id:'mussels',name:'SPICY LIVE MUSSELS & WHITE CLAMS STEW',price:20,desc:'White clams, live greenshell mussels, cherry tomatoes, katsuobushi, stewed in pomodoro & prawn broth',hasSpiceOption:true})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SPICY LIVE MUSSELS & WHITE CLAMS STEW</div>
-            <div class="item-desc">White clams, live greenshell mussels, cherry tomatoes, katsuobushi, stewed in pomodoro & prawn broth</div>
-          </div>
-          <div class="price">$20</div>
-        </div>
-      </div>
+<div class="section-title">F R E S H L Y &nbsp; B R E W E D &nbsp; C O F F E E</div>
+<div class="grid">
+<script>
+const coffees=[
+['ESPRESSO',5,false],
+['AMERICANO',5.5,true],
+['LATTE',6.5,true],
+['CAPPUCCINO',6.5,true],
+['BUTTERSCOTCH LATTE',7,true],
+['CARAMEL LATTE',7,true],
+['MOCHA LATTE',7,true],
+['HAZELNUT LATTE',7,true],
+['DIRTY MATCHA LATTE',8,true],
+['MATCHA LATTE',7.5,true],
+['CHAI LATTE',7,true],
+['PREMIUM CHOCOLATE',7,true],
+['VANILLA AFFOGATO',10,false]
+];
+document.write(coffees.map(c=>`
+<div class="item-card" onclick="openItem({id:'${c[0]}',name:'${c[0]}',price:${c[1]},addons:${c[2]}})">
+<div class="item-row"><div class="item-title">${c[0]}</div><div class="price">$${c[1]}</div></div>
+</div>`).join(''));
+</script>
+</div>
 
-      <!-- 10 -->
-      <div class="item-card" onclick="openItem({id:'burrata',name:'BURRATA & AGED PROSCIUTTO SALAD',price:25,desc:'Burrata cheese, aged prosciutto, arugula leaves, cherry tomatoes, peach, balsamic vinaigrette'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">BURRATA & AGED PROSCIUTTO SALAD</div>
-            <div class="item-desc">Burrata cheese, aged prosciutto, arugula leaves, cherry tomatoes, peach, balsamic vinaigrette</div>
-          </div>
-          <div class="price">$25</div>
-        </div>
-      </div>
+<div class="section-title">I N F U S E D &nbsp; I C E &nbsp; B R E W E D &nbsp; T E A S</div>
+<div class="grid">
+<script>
+['ICE BLACK TEA','ICE LYCHEE TEA','ICE STRAWBERRY TEA','ICE BLUEBERRY TEA','ICE MANGO TEA','ICE LEMON TEA','ICE PASSIONFRUIT TEA','ICE PEACH TEA','ICE APPLE CINNAMON SPICE TEA']
+.forEach((t,i)=>document.write(`<div class="item-card" onclick="openItem({id:'tea${i}',name:'${t}',price:${i==0?5:(i==8?7:6)}})">
+<div class="item-row"><div class="item-title">${t}</div><div class="price">$${i==0?5:(i==8?7:6)}</div></div></div>`));
+</script>
+</div>
 
-    </div>
-  </div>
+<div class="section-title">J U I C E S</div>
+<div class="grid">
+<script>
+['APPLE JUICE','LIME JUICE','PINEAPPLE JUICE','MANGO JUICE','ORANGE JUICE']
+.forEach(j=>document.write(`<div class="item-card" onclick="openItem({id:'${j}',name:'${j}',price:7})"><div class="item-row"><div class="item-title">${j}</div><div class="price">$7</div></div></div>`));
+</script>
+</div>
 
-  <!-- SASHIMI & CRUDO TAB -->
-  <div class="tab-panel" data-panel="sashimi" style="display:none">
-    <div class="section-title">Sashimi & Crudo</div>
-    <div class="grid">
+<div class="section-title">S O F T &nbsp; D R I N K S &nbsp; &amp; &nbsp; W A T E R</div>
+<div class="grid">
+<script>
+[
+['COKE',6],['COKE ZERO',6],['SPRITE',6],['TONIC WATER',6],['SODA WATER',6],
+['ACQUA SAN FELICE MINERAL WATER',5],['ACQUA SAN FELICE SPARKLING WATER',5]
+].forEach(s=>document.write(`<div class="item-card" onclick="openItem({id:'${s[0]}',name:'${s[0]}',price:${s[1]}})">
+<div class="item-row"><div class="item-title">${s[0]}</div><div class="price">$${s[1]}</div></div></div>`));
+</script>
+</div>
 
-      <div class="item-card" onclick="openItem({id:'scallop',name:'HOKKAIDO SCALLOPS CRUDO',price:19,desc:'6 slices hokkaido scallops, yuzu & citrus vinaigrette, peruvian teardrop peppers, pickled onions'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">HOKKAIDO SCALLOPS CRUDO</div>
-            <div class="item-desc">6 slices hokkaido scallops, yuzu & citrus vinaigrette, peruvian teardrop peppers, pickled onions</div>
-          </div>
-          <div class="price">$19</div>
-        </div>
-      </div>
+</div>
 
-      <div class="item-card" onclick="openItem({id:'salmon',name:'SALMON SASHIMI',price:15,desc:'5 pieces salmon sashimi, house made nam jim chilli, wasabi, shiso leaf, Japanese cucumbers'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SALMON SASHIMI</div>
-            <div class="item-desc">5 pieces salmon sashimi, house made nam jim chilli, wasabi, shiso leaf, Japanese cucumbers</div>
-          </div>
-          <div class="price">$15</div>
-        </div>
-      </div>
+</div>
 
-      <div class="item-card" onclick="openItem({id:'octopus',name:'OCTOPUS SASHIMI',price:13,desc:'5 pieces octopus sashimi, house made nam jim chilli, wasabi, shiso leaf, Japanese cucumbers'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">OCTOPUS SASHIMI</div>
-            <div class="item-desc">5 pieces octopus sashimi, house made nam jim chilli, wasabi, shiso leaf, Japanese cucumbers</div>
-          </div>
-          <div class="price">$13</div>
-        </div>
-      </div>
+<!-- ===== PAGINATION ===== -->
+<div class="footer-pages">
+  <a class="page-num" href="sharing_plates.html">1</a>
+  <a class="page-num" href="mains_sides.html">2</a>
+  <a class="page-num" href="pastas.html">3</a>
+  <a class="page-num" href="hot_stone_pizzas.html">4</a>
+  <a class="page-num current" href="desserts_beverages.html">5</a>
+</div>
 
-      <div class="item-card" onclick="openItem({id:'tartare',name:'SPICY SALMON TARTARE WITH CRISPY POPPADUMS',price:18,desc:'Salmon sashimi tartare, spicy aji verde, mexican hot sauce, mango, fresh onions, crispy poppadums, shiso leaf'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SPICY SALMON TARTARE WITH CRISPY POPPADUMS</div>
-            <div class="item-desc">Salmon sashimi tartare, spicy aji verde, mexican hot sauce, mango, fresh onions, crispy poppadums, shiso leaf</div>
-          </div>
-          <div class="price">$18</div>
-        </div>
-      </div>
+<script>
+function openTab(tab){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.style.display='none');
+  document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add('active');
+  document.querySelector(`[data-panel="${tab}"]`).style.display='block';
+}
+</script>
 
-      <div class="item-card" onclick="openItem({id:'oysters',name:'JAPANESE HYOGO PREFECTURE OYSTERS — 1/2 DOZEN',price:28,desc:'6 pieces Japanese hyogo prefecture oysters, house made nam jim chilli'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">JAPANESE HYOGO PREFECTURE OYSTERS — 1/2 DOZEN</div>
-            <div class="item-desc">6 pieces Japanese hyogo prefecture oysters, house made nam jim chilli</div>
-          </div>
-          <div class="price">$28</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- FRIES TAB -->
-  <div class="tab-panel" data-panel="fries" style="display:none">
-    <div class="section-title">Skin-on & Twister Fries</div>
-    <div class="grid">
-
-      <div class="item-card" onclick="openItem({id:'salted',name:'SALTED FRIES',price:8,desc:'Served with homemade curry ketchup',type:'fries'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">SALTED FRIES</div>
-            <div class="item-desc">Served with homemade curry ketchup</div>
-          </div>
-          <div class="price">$8</div>
-        </div>
-      </div>
-
-      <div class="item-card" onclick="openItem({id:'truffleFries',name:'TRUFFLE & GRANA PADANO FRIES',price:15,desc:'White truffle oil, grana padano cheese',type:'fries'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">TRUFFLE & GRANA PADANO FRIES</div>
-            <div class="item-desc">White truffle oil, grana padano cheese</div>
-          </div>
-          <div class="price">$15</div>
-        </div>
-      </div>
-
-      <div class="item-card" onclick="openItem({id:'noriFries',name:'NORI FRIES WITH WASABI AIOLI',price:13,desc:'Japanese nori, wasabi aioli',type:'fries'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">NORI FRIES WITH WASABI AIOLI</div>
-            <div class="item-desc">Japanese nori, wasabi aioli</div>
-          </div>
-          <div class="price">$13</div>
-        </div>
-      </div>
-
-      <div class="item-card" onclick="openItem({id:'malaFries',name:'MALA GARLIC FRIES',price:13,desc:'Homemade Szechuan spice mix, fresh garlic, dried chillies',type:'fries'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">MALA GARLIC FRIES</div>
-            <div class="item-desc">Homemade Szechuan spice mix, fresh garlic, dried chillies</div>
-          </div>
-          <div class="price">$13</div>
-        </div>
-      </div>
-
-      <div class="item-card" onclick="openItem({id:'nachoFries',name:'NACHO CHEESE & ASSAM AIOLI FRIES',price:14,desc:'Nacho cheese sauce, assam aioli, sweet relish, pickled jalapeno, red onions',type:'fries'})">
-        <div class="item-row">
-          <div class="item-left">
-            <div class="item-title">NACHO CHEESE & ASSAM AIOLI FRIES</div>
-            <div class="item-desc">Nacho cheese sauce, assam aioli, sweet relish, pickled jalapeno, red onions</div>
-          </div>
-          <div class="price">$14</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
+</body>
 
 </div><!-- /.container -->
 
