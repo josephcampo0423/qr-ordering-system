@@ -1,51 +1,53 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Mingle Bistro — Desserts & Beverages</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desserts & Beverages</title>
 
 <style>
-/* ===== SAME STYLE — UNCHANGED ===== */
 :root{
   --gold:#D4AF37;
   --bg:#0f0f0f;
   --card:#151515;
+  --text:#fff;
   --muted:#bfbfbf;
-  --glass-border: rgba(212,175,55,0.16);
-  --text:#ffffff;
-  --option-bg: rgba(255,255,255,0.02);
-  --option-border: rgba(255,255,255,0.04);
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-.container{padding:12px 12px 140px}
-.top-header{text-align:center;padding:20px 16px 10px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto}
+.container{padding:14px 14px 130px}
+
+/* HEADER */
+.top-header{text-align:center;padding:18px}
 .restaurant-name{font-size:26px;font-weight:900;color:var(--gold)}
-.tab-row{display:flex;justify-content:center;gap:8px;padding:12px}
-.tab{padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.05);background:transparent;color:var(--gold);font-weight:800;cursor:pointer}
-.tab.active{background:rgba(212,175,55,.08)}
-.section-title{color:var(--gold);font-weight:900;margin:14px 6px 12px;border-left:4px solid var(--gold);padding-left:10px}
+
+/* TABS */
+.tab-row{display:flex;justify-content:center;gap:8px;margin-bottom:14px}
+.tab{padding:10px 18px;border-radius:999px;border:1px solid #333;background:transparent;color:var(--gold);font-weight:800;cursor:pointer}
+.tab.active{background:rgba(212,175,55,.12)}
+
+/* SECTION */
+.section-title{margin:18px 4px 10px;font-weight:900;color:var(--gold);border-left:4px solid var(--gold);padding-left:10px}
+
+/* GRID */
 .grid{display:grid;grid-template-columns:1fr;gap:12px}
-.item-card{background:#151515;padding:14px;border-radius:12px;cursor:pointer}
+
+/* ITEM CARD */
+.item-card{background:var(--card);padding:14px;border-radius:12px;cursor:pointer}
 .item-row{display:flex;justify-content:space-between;gap:12px}
 .item-title{font-weight:900}
-.item-desc{color:#bfbfbf;font-size:13px;margin-top:6px}
+.item-desc{font-size:13px;color:var(--muted);margin-top:6px}
 .price{font-weight:900}
-.footer-pages{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:8px;padding:10px;background:#070707}
-.page-num{padding:8px 12px;border-radius:8px;background:#222;color:#ddd}
-.page-num.current{background:var(--gold);color:#000}
 
-/* ===== MODAL + OPTIONS (UNCHANGED BASE) ===== */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:1000}
-.modal-card{background:#0f0f0f;width:92vw;max-width:520px;padding:18px;border-radius:16px}
-.modal-name{color:var(--gold);font-weight:900}
-.option-card{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid #333;border-radius:10px;margin-bottom:8px;cursor:pointer}
-.option-card input{margin:0}
-.option-cards{margin-top:10px}
-.qty-row{display:flex;justify-content:center;gap:14px;margin-top:14px}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);align-items:center;justify-content:center;z-index:9999}
+.modal-card{background:#0f0f0f;width:92vw;max-width:520px;border-radius:16px;padding:18px}
+.modal-name{color:var(--gold);font-weight:900;font-size:18px}
+.option-block{margin-top:14px}
+.option-card{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #333;border-radius:10px;margin-bottom:8px;cursor:pointer}
+.qty-row{display:flex;justify-content:center;gap:14px;margin-top:12px}
 .qty-btn{width:36px;height:36px}
-.btn-pill{width:100%;padding:12px;margin-top:14px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-weight:900}
+.btn-pill{width:100%;margin-top:16px;padding:12px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-weight:900}
 .cancel-btn{margin-top:10px;width:100%}
 </style>
 </head>
@@ -58,117 +60,227 @@ html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-sys
 
 <div class="container">
 
-<!-- ===== TABS ===== -->
+<!-- TABS -->
 <div class="tab-row">
   <button class="tab active" onclick="openTab('desserts')">Desserts</button>
   <button class="tab" onclick="openTab('beverages')">Beverages</button>
 </div>
 
-<!-- ===================== DESSERTS ===================== -->
-<div class="tab-panel" data-panel="desserts" style="display:block">
+<!-- ================= DESSERTS ================= -->
+<div class="tab-panel" data-panel="desserts">
 
-<div class="section-title">Desserts</div>
 <div class="grid">
 
-<div class="item-card" onclick="openItem({id:'tiramisu1',name:'TIRAMISU KUEH PIE TEE',price:9,desc:'3 pcs - $9 / 5 pcs - $15',sizeOptions:true})">
-  <div class="item-row"><div><div class="item-title">TIRAMISU KUEH PIE TEE</div><div class="item-desc">3 pcs - $9 / 5 pcs - $15</div></div><div class="price">$9 / $15</div></div>
+<div class="item-card" onclick="openItem({
+  name:'TIRAMISU KUEH PIE TEE',
+  base:9,
+  options:[
+    {label:'3 pcs', price:9},
+    {label:'5 pcs', price:15}
+  ]
+})">
+  <div class="item-row">
+    <div>
+      <div class="item-title">TIRAMISU KUEH PIE TEE</div>
+      <div class="item-desc">3 pcs - $9 / 5 pcs - $15</div>
+    </div>
+    <div class="price">$9 / $15</div>
+  </div>
 </div>
 
-<div class="item-card" onclick="openItem({id:'tiramisu2',name:'TIRAMISU YUZU KUEH PIE TEE',price:10,desc:'3 pcs - $10 / 5 pcs - $16',sizeOptions:true})">
-  <div class="item-row"><div><div class="item-title">TIRAMISU YUZU KUEH PIE TEE</div><div class="item-desc">3 pcs - $10 / 5 pcs - $16</div></div><div class="price">$10 / $16</div></div>
+<div class="item-card" onclick="openItem({
+  name:'TIRAMISU YUZU KUEH PIE TEE',
+  base:10,
+  options:[
+    {label:'3 pcs', price:10},
+    {label:'5 pcs', price:16}
+  ]
+})">
+  <div class="item-row">
+    <div>
+      <div class="item-title">TIRAMISU YUZU KUEH PIE TEE</div>
+      <div class="item-desc">3 pcs - $10 / 5 pcs - $16</div>
+    </div>
+    <div class="price">$10 / $16</div>
+  </div>
 </div>
 
-<div class="item-card" onclick="openItem({id:'lava',name:'MOLTEN CHOCOLATE LAVA CAKE',price:15,desc:'Choose gelato',gelato:true})">
-  <div class="item-row"><div><div class="item-title">MOLTEN CHOCOLATE LAVA CAKE</div></div><div class="price">$15</div></div>
+<div class="item-card" onclick="openItem({
+  name:'MOLTEN CHOCOLATE LAVA CAKE',
+  base:15,
+  options:[
+    {label:'Vanilla Gelato', price:0},
+    {label:'Chocolate Gelato', price:0}
+  ]
+})">
+  <div class="item-row">
+    <div class="item-title">MOLTEN CHOCOLATE LAVA CAKE</div>
+    <div class="price">$15</div>
+  </div>
 </div>
 
-<div class="item-card" onclick="openItem({id:'cheesecake',name:'CHEESECAKE WITH ROCK MELON GRANITA',price:15})">
-  <div class="item-row"><div class="item-title">CHEESECAKE WITH ROCK MELON GRANITA</div><div class="price">$15</div></div>
+<div class="item-card" onclick="openItem({
+  name:'CHEESECAKE WITH ROCK MELON GRANITA',
+  base:15
+})">
+  <div class="item-row">
+    <div class="item-title">CHEESECAKE WITH ROCK MELON GRANITA</div>
+    <div class="price">$15</div>
+  </div>
 </div>
 
-<div class="item-card" onclick="openItem({id:'gelato',name:'GELATO',price:5,gelato:true})">
-  <div class="item-row"><div class="item-title">GELATO</div><div class="price">$5</div></div>
+<div class="item-card" onclick="openItem({
+  name:'GELATO',
+  base:5,
+  options:[
+    {label:'Vanilla Gelato', price:0},
+    {label:'Chocolate Gelato', price:0}
+  ]
+})">
+  <div class="item-row">
+    <div class="item-title">GELATO</div>
+    <div class="price">$5</div>
+  </div>
 </div>
 
 </div>
 </div>
 
-<!-- ===================== BEVERAGES ===================== -->
+<!-- ================= BEVERAGES ================= -->
 <div class="tab-panel" data-panel="beverages" style="display:none">
 
 <div class="section-title">F R E S H L Y &nbsp; B R E W E D &nbsp; C O F F E E</div>
-<div class="grid">
-<script>
-const coffees=[
-['ESPRESSO',5,false],
-['AMERICANO',5.5,true],
-['LATTE',6.5,true],
-['CAPPUCCINO',6.5,true],
-['BUTTERSCOTCH LATTE',7,true],
-['CARAMEL LATTE',7,true],
-['MOCHA LATTE',7,true],
-['HAZELNUT LATTE',7,true],
-['DIRTY MATCHA LATTE',8,true],
-['MATCHA LATTE',7.5,true],
-['CHAI LATTE',7,true],
-['PREMIUM CHOCOLATE',7,true],
-['VANILLA AFFOGATO',10,false]
-];
-document.write(coffees.map(c=>`
-<div class="item-card" onclick="openItem({id:'${c[0]}',name:'${c[0]}',price:${c[1]},addons:${c[2]}})">
-<div class="item-row"><div class="item-title">${c[0]}</div><div class="price">$${c[1]}</div></div>
-</div>`).join(''));
-</script>
-</div>
+<div class="grid" id="coffeeGrid"></div>
 
 <div class="section-title">I N F U S E D &nbsp; I C E &nbsp; B R E W E D &nbsp; T E A S</div>
-<div class="grid">
-<script>
-['ICE BLACK TEA','ICE LYCHEE TEA','ICE STRAWBERRY TEA','ICE BLUEBERRY TEA','ICE MANGO TEA','ICE LEMON TEA','ICE PASSIONFRUIT TEA','ICE PEACH TEA','ICE APPLE CINNAMON SPICE TEA']
-.forEach((t,i)=>document.write(`<div class="item-card" onclick="openItem({id:'tea${i}',name:'${t}',price:${i==0?5:(i==8?7:6)}})">
-<div class="item-row"><div class="item-title">${t}</div><div class="price">$${i==0?5:(i==8?7:6)}</div></div></div>`));
-</script>
-</div>
+<div class="grid" id="teaGrid"></div>
 
 <div class="section-title">J U I C E S</div>
-<div class="grid">
-<script>
-['APPLE JUICE','LIME JUICE','PINEAPPLE JUICE','MANGO JUICE','ORANGE JUICE']
-.forEach(j=>document.write(`<div class="item-card" onclick="openItem({id:'${j}',name:'${j}',price:7})"><div class="item-row"><div class="item-title">${j}</div><div class="price">$7</div></div></div>`));
-</script>
-</div>
+<div class="grid" id="juiceGrid"></div>
 
 <div class="section-title">S O F T &nbsp; D R I N K S &nbsp; &amp; &nbsp; W A T E R</div>
-<div class="grid">
+<div class="grid" id="softGrid"></div>
+
+</div>
+</div>
+
+<!-- ================= MODAL ================= -->
+<div class="modal-bg" id="modal">
+  <div class="modal-card">
+    <div class="modal-name" id="modalName"></div>
+    <div id="modalOptions"></div>
+
+    <div class="qty-row">
+      <button class="qty-btn" onclick="qty--">-</button>
+      <div id="qtyVal">1</div>
+      <button class="qty-btn" onclick="qty++">+</button>
+    </div>
+
+    <button class="btn-pill" onclick="addToCart()">Add to Cart</button>
+    <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
 <script>
-[
-['COKE',6],['COKE ZERO',6],['SPRITE',6],['TONIC WATER',6],['SODA WATER',6],
-['ACQUA SAN FELICE MINERAL WATER',5],['ACQUA SAN FELICE SPARKLING WATER',5]
-].forEach(s=>document.write(`<div class="item-card" onclick="openItem({id:'${s[0]}',name:'${s[0]}',price:${s[1]}})">
-<div class="item-row"><div class="item-title">${s[0]}</div><div class="price">$${s[1]}</div></div></div>`));
-</script>
-</div>
+let currentItem=null, qty=1;
 
-</div>
-
-</div>
-
-<!-- ===== PAGINATION ===== -->
-<div class="footer-pages">
-  <a class="page-num" href="sharing_plates.html">1</a>
-  <a class="page-num" href="mains_sides.html">2</a>
-  <a class="page-num" href="pastas.html">3</a>
-  <a class="page-num" href="hot_stone_pizzas.html">4</a>
-  <a class="page-num current" href="desserts_beverages.html">5</a>
-</div>
-
-<script>
 function openTab(tab){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.style.display='none');
   document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add('active');
   document.querySelector(`[data-panel="${tab}"]`).style.display='block';
 }
+
+function openItem(item){
+  currentItem=item;
+  qty=1;
+  document.getElementById('qtyVal').innerText=qty;
+  document.getElementById('modalName').innerText=item.name;
+
+  let optHtml='';
+  if(item.options){
+    optHtml='<div class="option-block">';
+    item.options.forEach(o=>{
+      optHtml+=`
+      <label class="option-card">
+        <input type="radio" name="opt" checked>
+        ${o.label} ${o.price?`+$${o.price}`:''}
+      </label>`;
+    });
+    optHtml+='</div>';
+  }
+  document.getElementById('modalOptions').innerHTML=optHtml;
+  document.getElementById('modal').style.display='flex';
+}
+
+function closeModal(){ document.getElementById('modal').style.display='none'; }
+function addToCart(){ closeModal(); }
+
+/* ===== BEVERAGE DATA ===== */
+const coffeeAddons=[
+ {label:'Oat milk',price:1.5},
+ {label:'Extra shot',price:1},
+ {label:'Iced',price:1}
+];
+
+const coffees=[
+ ['ESPRESSO',5,false],
+ ['AMERICANO',5.5,true],
+ ['LATTE',6.5,true],
+ ['CAPPUCCINO',6.5,true],
+ ['BUTTERSCOTCH LATTE',7,true],
+ ['CARAMEL LATTE',7,true],
+ ['MOCHA LATTE',7,true],
+ ['HAZELNUT LATTE',7,true],
+ ['DIRTY MATCHA LATTE',8,true],
+ ['MATCHA LATTE',7.5,true],
+ ['CHAI LATTE',7,true],
+ ['PREMIUM CHOCOLATE',7,true],
+ ['VANILLA AFFOGATO',10,false]
+];
+
+coffees.forEach(c=>{
+  document.getElementById('coffeeGrid').innerHTML+=`
+  <div class="item-card" onclick="openItem({
+    name:'${c[0]}',
+    base:${c[1]},
+    options:${c[2]?JSON.stringify(coffeeAddons):'null'}
+  })">
+    <div class="item-row">
+      <div class="item-title">${c[0]}</div>
+      <div class="price">$${c[1]}</div>
+    </div>
+  </div>`;
+});
+
+[
+ ['ICE BLACK TEA',5],['ICE LYCHEE TEA',6],['ICE STRAWBERRY TEA',6],
+ ['ICE BLUEBERRY TEA',6],['ICE MANGO TEA',6],['ICE LEMON TEA',6],
+ ['ICE PASSIONFRUIT TEA',6],['ICE PEACH TEA',6],['ICE APPLE CINNAMON SPICE TEA',7]
+].forEach(t=>{
+ document.getElementById('teaGrid').innerHTML+=`
+ <div class="item-card" onclick="openItem({name:'${t[0]}',base:${t[1]}})">
+  <div class="item-row"><div class="item-title">${t[0]}</div><div class="price">$${t[1]}</div></div>
+ </div>`;
+});
+
+['APPLE','LIME','PINEAPPLE','MANGO','ORANGE'].forEach(j=>{
+ document.getElementById('juiceGrid').innerHTML+=`
+ <div class="item-card" onclick="openItem({name:'${j} JUICE',base:7})">
+  <div class="item-row"><div class="item-title">${j} JUICE</div><div class="price">$7</div></div>
+ </div>`;
+});
+
+[
+ ['COKE',6],['COKE ZERO',6],['SPRITE',6],['TONIC WATER',6],
+ ['SODA WATER',6],['ACQUA SAN FELICE MINERAL WATER',5],
+ ['ACQUA SAN FELICE SPARKLING WATER',5]
+].forEach(s=>{
+ document.getElementById('softGrid').innerHTML+=`
+ <div class="item-card" onclick="openItem({name:'${s[0]}',base:${s[1]}})">
+  <div class="item-row"><div class="item-title">${s[0]}</div><div class="price">$${s[1]}</div></div>
+ </div>`;
+});
 </script>
 
 </body>
